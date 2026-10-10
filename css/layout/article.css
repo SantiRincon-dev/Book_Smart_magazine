@@ -63,6 +63,16 @@
   min-height: calc(var(--num) * 0.74);
   padding-inline-end: calc(var(--num) * 1.5);     /* keep the tags clear of the numeral */
 }
+/* The issue's topics: a line of their own under the section and the week (the
+   primary labels), so the hierarchy reads at a glance: what area it belongs to,
+   then what it is about. Added by js/core.js from the manifest. */
+.article-header__topics {
+  display: flex;
+  flex: 1 0 100%;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-block-start: var(--space-1);
+}
 .article-header h1 {
   margin-block-start: var(--space-5);
   font-size: var(--fs-h1);
@@ -94,6 +104,24 @@
   font-size: var(--fs-ui);
   color: var(--c-text-muted);
 }
+
+/* An "open" header: no band, no rule, no numeral. The issues that have a layout
+   of their own (css/issues/wNN.css) give it their own look; this class only
+   takes away what the generic header adds, and keeps the parts the page's
+   script and entrance rely on (.article-header, __inner and its children). */
+.article-header--open {
+  padding-block: var(--space-7) var(--space-6);
+  overflow: visible;
+  background: none;
+  border-block-end: 0;
+  box-shadow: none;
+}
+.article-header--open::before { content: none; }
+.article-header--open .article-header__tags { min-height: 0; padding-inline-end: 0; }
+
+/* The previous / next issue at the foot of a page whose body is not .prose:
+   put the nav inside <div class="prose article-doors">. */
+.article-doors { padding-block-end: var(--space-9); }
 
 /* The entrance, the page's one orchestrated moment, in plain CSS so it needs
    no script: the headline wipes up from its baseline and the rest of the
@@ -207,6 +235,61 @@
     grid-column: content;
     justify-self: stretch;
   }
+}
+
+/* ---------- Stills: several small pictures in one frame (Week 06) ----------
+   A figure that holds a row of pictures under ONE caption: the visual aids of
+   a text. They share one height, the one of the smallest of them, so none is
+   enlarged and the row reads as a strip; on a phone they stack, each at its own
+   size. */
+.stills { --still-h: 16rem; }
+.stills__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+/* (Two classes in the selector: it has to outweigh `.prose > figure img`.) */
+.stills .stills__row img {
+  width: auto;
+  height: var(--still-h);
+}
+@media (max-width: 700px) {
+  .stills .stills__row img { height: auto; }
+}
+
+/* ---------- Numbered list of items (Week 06: ten clichés) ----------
+   The students' items, each led by its number in the sign face and the hue, set
+   between fine rules and in two columns on a wide screen (1 to 5 down the left,
+   6 to 10 down the right). The numbers are the list's own counter, so the items
+   hold only the students' words. */
+.cliches {
+  /* No margin here: .wide centres the list in the page, and a margin set in
+     this layer would beat it. (role="list" in the HTML takes away the bullets
+     and the padding, see reset.css.) */
+  counter-reset: cliche;
+  columns: 2 24rem;
+  column-gap: var(--space-8);
+  border-block-start: var(--rule-accent) solid var(--hue);
+}
+.cliches > li {
+  counter-increment: cliche;
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+  padding-block: var(--space-4);
+  border-block-end: var(--hairline) solid var(--c-line);
+  break-inside: avoid;
+}
+.cliches > li::before {
+  content: counter(cliche, decimal-leading-zero);
+  font-family: var(--font-display);
+  font-size: var(--fs-tile);
+  font-weight: 800;
+  font-stretch: var(--stretch-display);
+  font-variant-numeric: lining-nums;
+  line-height: 0.8;
+  color: var(--hue);
 }
 
 /* ---------- Closing doors: the previous and next issue ----------

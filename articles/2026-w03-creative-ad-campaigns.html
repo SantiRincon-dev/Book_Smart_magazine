@@ -8,7 +8,7 @@
   <meta property="og:type" content="article">
   <meta property="og:title" content="Three Brands, Three Ads - Book Smart">
   <meta property="og:description" content="Three original print-ad concepts for three real brands, made for Session 3: Aguapanela, Arturo Calle and Ramo.">
-  <meta property="article:published_time" content="2026-09-18">
+  <meta property="article:published_time" content="2026-09-16">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Three Brands, Three Ads - Book Smart">
   <meta name="twitter:description" content="Three original print-ad concepts for three real brands, made for Session 3: Aguapanela, Arturo Calle and Ramo.">
@@ -44,13 +44,14 @@
 
   <!-- Relative paths: this file sits one level below the project root -->
   <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/issues/w03.css">
   <script defer src="../js/vendor/gsap.min.js"></script>
   <script defer src="../js/vendor/ScrollTrigger.min.js"></script>
   <script defer src="../js/data/articles.js"></script>
   <script defer src="../js/core.js"></script>
   <script defer src="../js/article.js"></script>
 </head>
-<body data-base="../">
+<body data-base="../" data-issue="w03">
   <a class="skip-link" href="#content">Skip to content</a>
   <div class="reading-progress" aria-hidden="true"></div>
 
@@ -87,8 +88,7 @@
           <p class="lede">For Session 3 we picked three real brands and designed an original print ad for each one, built around its own headline and image.</p>
           <p class="meta">
             <span>Editorial Board</span>
-            <time datetime="2026-09-18">September 18, 2026</time>
-            <span>2 min read</span>
+            <time datetime="2026-09-16">September 16, 2026</time>
           </p>
         </div>
       </header>
@@ -101,29 +101,49 @@
            -->
       <div class="article-body prose">
 
-        <h2 id="ad-01">1. Aguapanela</h2>
-        <figure class="wide">
-          <img src="../assets/img/articles/w03-aguapanela-ad.png"
-               alt="A steaming clay cup of aguapanela next to blocks of panela, a piece of cheese, an almojabana, a spoon and a slice of lemon on a wooden table, beside a cream note card carrying the ad's text."
-               loading="lazy" decoding="async" width="772" height="328">
-          <figcaption>Ad concept: Aguapanela.</figcaption>
-        </figure>
+        <!-- ============ THREE PRESS PROOFS ============
+             Each ad is a proof sheet: the finished ad at its real size on a sheet
+             of paper, with crop marks at its corners, registration marks at its
+             sides and a colour bar (the four section hues) in the foot
+             (css/issues/w03.css). The image and every word of its copy are exactly
+             as the students designed them; the alt of each one carries that copy. -->
 
-        <h2 id="ad-02">2. Arturo Calle</h2>
-        <figure class="wide">
-          <img src="../assets/img/articles/w03-arturo-calle-ad.png"
-               alt="A collage-style ad for Arturo Calle: a man in a dark suit stands beside a cartoon hand pointing at the Arturo Calle logo, surrounded by clothing product photos, with a small side label reading 'Ivan Cepeda - Candidate for President.'"
-               loading="lazy" decoding="async" width="1088" height="598">
-          <figcaption>Ad concept: Arturo Calle.</figcaption>
-        </figure>
+        <section class="proof wide" aria-labelledby="ad-01" style="--ad-w: 772px">
+          <h2 id="ad-01" class="proof__title"><span class="proof__no">1.</span> Aguapanela</h2>
+          <figure class="proof__sheet" data-reveal>
+            <div class="proof__trim">
+              <img src="../assets/img/articles/w03-aguapanela-ad.png"
+                   alt="A steaming clay cup of aguapanela next to blocks of panela, a piece of cheese, an almojabana, a spoon and a slice of lemon on a wooden table, beside a cream note card with the ad's text: 'Created by colombian farmers, this hot drink is extracted from sugar cane and it is perfect to enjoy any moment. Don't forget it is better with a piece of cheese and an lolmoabai. almojabana. Moreover, if you have a cold add some lemon and you will get better.' It ends in gold script: 'Santo remedio!'"
+                   loading="lazy" decoding="async" width="772" height="328">
+            </div>
+            <figcaption>Ad concept: Aguapanela.<span class="proof__bar" aria-hidden="true"><span data-section="current-events"></span><span data-section="politics"></span><span data-section="education"></span><span data-section="history"></span></span></figcaption>
+          </figure>
+        </section>
 
-        <h2 id="ad-03">3. Ramo</h2>
-        <figure class="wide">
-          <img src="../assets/img/articles/w03-ramo-ad.png"
-               alt="Three young adults at a street protest eating Ramo snack products while holding cardboard signs, with a 'Nuestra Causa' mark in the corner."
-               loading="lazy" decoding="async" width="519" height="519">
-          <figcaption>Ad concept: Ramo.</figcaption>
-        </figure>
+        <section class="proof wide" aria-labelledby="ad-02" style="--ad-w: 1088px">
+          <h2 id="ad-02" class="proof__title"><span class="proof__no">2.</span> Arturo Calle</h2>
+          <figure class="proof__sheet" data-reveal>
+            <div class="proof__trim">
+              <img src="../assets/img/articles/w03-arturo-calle-ad.png"
+                   alt="A collage-style ad for Arturo Calle: a man in a dark suit stands beside a cartoon hand pointing at the Arturo Calle logo, surrounded by clothing product photos. The headline reads: 'If you don't want Arturo Calle to give away all your secrets, you should buy their products.' A small side label reads 'Iv&aacute;n Cepeda - Candidate for President.'"
+                   loading="lazy" decoding="async" width="1088" height="598">
+            </div>
+            <figcaption>Ad concept: Arturo Calle.<span class="proof__bar" aria-hidden="true"><span data-section="current-events"></span><span data-section="politics"></span><span data-section="education"></span><span data-section="history"></span></span></figcaption>
+          </figure>
+        </section>
+
+        <section class="proof wide" aria-labelledby="ad-03" style="--ad-w: 519px">
+          <h2 id="ad-03" class="proof__title"><span class="proof__no">3.</span> Ramo</h2>
+          <figure class="proof__sheet" data-reveal>
+            <div class="proof__trim">
+              <img src="../assets/img/articles/w03-ramo-ad.png"
+                   alt="Three young adults at a street protest eating Ramo snack products while holding cardboard signs. The headline reads: 'If you are going to fight for the public education remember: Full belly, brave heart.' A banner behind them, partly hidden by the people in front, shows the words 'educaci&oacute;n p&uacute;blica' and 'coraz&oacute;n valiente'. A 'Nuestra Causa' mark sits in the corner."
+                   loading="lazy" decoding="async" width="519" height="519">
+            </div>
+            <figcaption>Ad concept: Ramo.<span class="proof__bar" aria-hidden="true"><span data-section="current-events"></span><span data-section="politics"></span><span data-section="education"></span><span data-section="history"></span></span></figcaption>
+          </figure>
+        </section>
+
         <!-- The previous / next issue and the archive. Built by js/article.js from
              the manifest, so publishing a new issue never means editing this one. -->
         <nav class="article-nav" aria-label="Elsewhere" data-article-nav>

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>But at Least&hellip; - Book Smart</title>
+  <meta name="description" content="Three comic strips on the theme &ldquo;I&rsquo;ve done a lot of stuff in my life I&rsquo;m not proud of, but at least&hellip;&rdquo;, made for Session 5.">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="But at Least&hellip; - Book Smart">
+  <meta property="og:description" content="Three comic strips on the theme &ldquo;I&rsquo;ve done a lot of stuff in my life I&rsquo;m not proud of, but at least&hellip;&rdquo;, made for Session 5.">
+  <meta property="article:published_time" content="2026-09-30">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="But at Least&hellip; - Book Smart">
+  <meta name="twitter:description" content="Three comic strips on the theme &ldquo;I&rsquo;ve done a lot of stuff in my life I&rsquo;m not proud of, but at least&hellip;&rdquo;, made for Session 5.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#ecece9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#18181a" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+
+  <!-- Runs before the first paint, on every page:
+       1. applies a saved light/dark choice, so nobody sees a flash of the wrong one;
+       2. if the reader just clicked an issue, puts that issue's colour over the page
+          (the arriving half of the page transition, see css/components/curtain.css)
+          and flags the page as arriving, so its entrance waits for the curtain. -->
+  <script>
+    (function (d) {
+      try {
+        var t = localStorage.getItem('magazine:theme');
+        if (t === 'light' || t === 'dark') d.dataset.theme = t;
+      } catch (e) {}
+      try {
+        var n = JSON.parse(sessionStorage.getItem('bs:nav') || 'null');
+        sessionStorage.removeItem('bs:nav');
+        if (n && n.hue && Date.now() - n.t < 6000) {
+          var c = d.appendChild(document.createElement('div'));
+          c.className = 'curtain curtain--arriving';
+          c.setAttribute('aria-hidden', 'true');
+          c.style.backgroundColor = n.hue;
+          d.classList.add('is-arriving');
+        }
+      } catch (e) {}
+    })(document.documentElement);
+  </script>
+
+  <!-- Relative paths: this file sits one level below the project root -->
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/issues/w05.css">
+  <script defer src="../js/vendor/gsap.min.js"></script>
+  <script defer src="../js/vendor/ScrollTrigger.min.js"></script>
+  <script defer src="../js/data/articles.js"></script>
+  <script defer src="../js/core.js"></script>
+  <script defer src="../js/article.js"></script>
+</head>
+<body data-base="../" data-issue="w05">
+  <a class="skip-link" href="#content">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="../index.html">Book Smart</a>
+      <div class="site-header__tools">
+        <nav aria-label="Main">
+          <ul class="nav" role="list">
+            <li><a class="nav__link" href="../index.html">Home</a></li>
+            <li><a class="nav__link" href="../archive.html">Archive</a></li>
+          </ul>
+        </nav>
+        <button class="btn btn--ghost btn--icon" data-theme-toggle type="button" aria-label="Switch theme"></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="content">
+    <article data-section="politics">
+
+      <!-- ============ ARTICLE HEADER ============
+           The issue's masthead. data-section picks its hue (the numeral, the
+           rule and the pills), data-week draws the big numeral in the top-right
+           corner (so it is typed once). -->
+      <header class="article-header" data-section="politics" data-week="05">
+        <div class="article-header__inner">
+          <p class="article-header__tags">
+            <span class="pill">Politics</span>
+            <span class="pill pill--neutral">Week 05</span>
+          </p>
+          <h1>But at Least&hellip;</h1>
+          <p class="article-header__kicker">Comic Strips</p>
+          <p class="lede">For Session 5 we made three comic strips on the theme &ldquo;I&rsquo;ve done a lot of stuff in my life I&rsquo;m not proud of, but at least&hellip;&rdquo;</p>
+          <p class="meta">
+            <span>Editorial Board</span>
+            <time datetime="2026-09-30">September 30, 2026</time>
+          </p>
+        </div>
+      </header>
+
+      <!-- ============ ARTICLE BODY ============
+           The three comic strips are the finished work from sesión 5 (the PNG
+           files in that folder): every word of them is lettered inside the
+           pictures, exactly as the students made them, so the alt of each one
+           carries all of its text, with the students' own spelling ("off",
+           "stuck stuck", "shoted", "needed appeal"). The only words outside
+           the pictures are interface (the headings and the captions).
+           -->
+      <div class="article-body prose">
+
+        <!-- ============ THE CONFESSION ============
+             The assignment's sentence, set at monumental scale in two beats: the
+             confession, then (after a pause) the turn that every strip answers.
+             It is the task's own wording, already in the standfirst above, so it
+             is hidden from screen readers (css/issues/w05.css). -->
+        <section class="confession wide" aria-hidden="true">
+          <p class="confession__setup">I&rsquo;ve done a lot of stuff in my life I&rsquo;m not proud of,</p>
+          <p class="confession__turn" data-reveal>but at least&hellip;</p>
+        </section>
+
+        <!-- ============ THE COMIC PAGE ============
+             The three strips as one page: the wide one on top, the two tall ones
+             below it, one on each side, the second lower. Each strip keeps its
+             real size and carries its number above its frame; the number is the
+             heading (the words "Comic strip" are read, not shown). -->
+        <div class="comic-page wide">
+
+          <section class="strip strip--1" aria-labelledby="strip-1" style="--strip-w: 762px">
+            <h2 id="strip-1" class="strip__title"><span class="visually-hidden">Comic strip </span><span aria-hidden="true">1</span></h2>
+            <figure class="strip__panel" data-reveal>
+              <img src="../assets/img/articles/w05-comic-1.png"
+                   alt="A colour comic strip in three boxes. Box 1: a cartoon hero with spiky golden hair and a red headband sits on a log in a backyard full of gadgets, resting his face on his hands. The speech bubble says: 'I've done a lot of stuff I'm not proud off...'. Box 2: the hero lies in bed talking on a phone, with Dora and her monkey Boots behind the bed curtain and, in a round inset, Phineas and Ferb beside a car under a 'Traffic' sign. The speech bubble says: 'like telling my friends that i got stuck in traffic while i'm still in bed'. Box 3: the hero points at a wooden sign reading 'Traffic-free zone' above a map, while Phineas looks surprised and Perry the Platypus stands nearby. The speech bubble says: 'But at least I've never gotten stuck stuck in traffic'."
+                   loading="lazy" decoding="async" width="762" height="310">
+              <figcaption>Comic strip 1.</figcaption>
+            </figure>
+          </section>
+
+          <section class="strip strip--2" aria-labelledby="strip-2" style="--strip-w: 436px">
+            <h2 id="strip-2" class="strip__title"><span class="visually-hidden">Comic strip </span><span aria-hidden="true">2</span></h2>
+            <figure class="strip__panel" data-reveal>
+              <img src="../assets/img/articles/w05-comic-2.png"
+                   alt="A black-and-white inked comic strip in four boxes. Box 1: a bearded man in a dark jacket looks down in a study with bookshelves and a flag behind him. The speech bubble says: 'I've done a lot of stuff in my life I'm not proud of'. Box 2: the same man looks toward the viewer and gestures with one hand. The speech bubble says: 'like increasing my popularity by making people believe we need SECURITY'. Box 3: a close-up of his eyes. The speech bubble says: 'but at least i have never shoted innocent people, making them look as criminal casualties'. Box 4: the man salutes in front of a flag with a coat of arms. A caption box reads: 'Now, the past... and the present.'"
+                   loading="lazy" decoding="async" width="436" height="781">
+              <figcaption>Comic strip 2.</figcaption>
+            </figure>
+          </section>
+
+          <section class="strip strip--3" aria-labelledby="strip-3" style="--strip-w: 495px">
+            <h2 id="strip-3" class="strip__title"><span class="visually-hidden">Comic strip </span><span aria-hidden="true">3</span></h2>
+            <figure class="strip__panel" data-reveal>
+              <img src="../assets/img/articles/w05-comic-3.png"
+                   alt="A black-and-white comic strip in three stacked boxes, drawn like a 1930s cartoon. Box 1: angry cartoon characters sit around a round table with a glowing ballot box labeled 'Community polls'. The caption reads: 'We have never disrespected the official poll results from the community in order to designate our infamous candidate.' Box 2: a crowd of cartoon protesters with signs reading 'No!' and 'Strike' marches toward a university building, while a character in a top hat and a fur-collared coat, whose face is a photograph of a smiling bald man with glasses, stands with his hands on his hips. The caption reads: 'Nor have I sparked a strike which stopped all the academic and work activities and affected students and employees for months.' Box 3: the same character, again with the photographed face, stands on a wooden platform in front of a domed building and lifts a crown off his head, beside a sign reading 'The legitimate president of the university', while worried onlookers watch. The caption reads: 'Neither have I needed appeal to a judge or to take the university president because of my ego.'"
+                   loading="lazy" decoding="async" width="495" height="881">
+              <figcaption>Comic strip 3.</figcaption>
+            </figure>
+          </section>
+
+        </div>
+
+        <!-- The previous / next issue and the archive. Built by js/article.js from
+             the manifest, so publishing a new issue never means editing this one. -->
+        <nav class="article-nav" aria-label="Elsewhere" data-article-nav>
+          <noscript>
+            <a class="door" href="../archive.html">
+              <span class="door__top">Archive</span>
+              <span class="door__title">Every issue this semester</span>
+            </a>
+          </noscript>
+        </nav>
+
+      </div>
+    </article>
+  </main>
+
+  <!-- The footer is the same on every page. The section legend and the team's
+       names are generated by js/core.js from SECTIONS and TEAM in
+       js/data/articles.js: write the names there, not here. -->
+  <footer class="site-footer">
+    <nav class="legend" aria-label="Sections" data-legend>
+      <noscript><a class="legend__item" href="../archive.html"><span class="legend__name">Browse by section</span></a></noscript>
+    </nav>
+    <div class="container site-footer__inner">
+      <p class="site-footer__name">Book Smart</p>
+      <p class="site-footer__info">Intensive English III<br>Universidad Nacional de Colombia, Bogot&aacute;<br>Semester 2026-2</p>
+      <a class="site-footer__top" href="#top" data-top>Back to top</a>
+    </div>
+  </footer>
+</body>
+</html>

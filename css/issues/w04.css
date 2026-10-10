@@ -1,0 +1,262 @@
+/* ============================================================
+   WEEK 04: THE NEWSPAPER   (History, sage)
+   Payphones and the old-vs-new matchups. The students' infographic is a
+   newspaper page (blackletter title, double rules, black label boxes), so the
+   body of this issue speaks newspaper, in two parts that never share a screen:
+
+   1. THE INFOGRAPHIC, alone, at its real size, in the usual framed figure.
+   2. THE VOTE, on its own sheet of paper: a form to fill in, with two columns
+      of ballots, a printed instruction line and the early returns.
+
+   What stays as in every issue: the standard header (big week numeral and
+   rule in the hue, the title, the entrance), the scroll reveals, the doors.
+   What this file adds, scoped by [data-issue="w04"] on <body>:
+   - Both section headings in UnifrakturCook, the same kind of blackletter as
+     the infographic's own title (a 10 KB file embedded in w04-fonts.css, made
+     by tools/make-issue-fonts.py).
+   - The vote sheet is PAPER: color-scheme: light on it makes every token inside
+     resolve to its day value, so it stays in the day edition on a dark page.
+     It is printed in two inks: graphite and the History sage (the spot colour:
+     the sheet's top line, the label boxes, the marks, the leader, the count).
+   - A ballot: a box to mark per option (an X appears on the one YOU voted for), the
+     share drawn as a printed bar, and a photo printed in black and white that
+     "develops" into colour once somebody votes in it: old to new.
+   ============================================================ */
+@import url("w04-fonts.css");
+
+@layer pages {
+
+/* ---------- Section headings ---------- */
+[data-issue="w04"] .np-title {
+  font-family: "UnifrakturCook", var(--font-display);
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  font-stretch: normal;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+/* ---------- 1. The infographic: alone, centred, at its real size ---------- */
+[data-issue="w04"] .prose > figure.plate {
+  grid-column: full;
+  justify-self: center;
+  width: min(100%, 52rem);                 /* its 800px plus the mat */
+  margin-block-end: 0;
+}
+[data-issue="w04"] .plate img { margin-inline: auto; }
+@media (max-width: 700px) {
+  [data-issue="w04"] .prose > figure.plate {
+    grid-column: content;
+    justify-self: stretch;
+    width: auto;
+  }
+}
+
+/* ---------- 2. The vote sheet ---------- */
+[data-issue="w04"] .sheet {
+  color-scheme: light;
+  padding: var(--space-8) var(--space-8) var(--space-7);
+  color: var(--c-text);
+  background-color: var(--c-surface);
+  border: var(--hairline) solid var(--c-line);
+  border-block-start: var(--rule-accent) solid var(--hue);
+  box-shadow: 0 1.5rem 3rem -1.5rem rgb(24 24 26 / 0.5);
+}
+@media (max-width: 40rem) {
+  [data-issue="w04"] .sheet { padding: var(--space-6) var(--space-4) var(--space-5); }
+}
+
+/* The instruction line and the running count, over a double rule */
+[data-issue="w04"] .sheet__intro {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4) var(--space-7);
+  margin-block-end: var(--space-8);
+  padding-block-end: var(--space-5);
+  border-block-end: 5px double var(--c-text);
+}
+[data-issue="w04"] .sheet__intro p {
+  max-width: 34ch;
+  margin: 0;
+}
+[data-issue="w04"] .sheet__total {
+  max-width: none !important;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-stretch: var(--stretch-display);
+  font-weight: 800;
+  line-height: 0.9;
+  color: var(--hue);
+}
+[data-issue="w04"] .sheet__note {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+}
+
+/* Two columns that flow top to bottom (a newspaper's), with a hairline between */
+[data-issue="w04"] .versus {
+  columns: 2 24rem;
+  column-gap: var(--space-8);
+  column-rule: var(--hairline) solid var(--c-line);
+}
+
+/* Black label boxes, as in the infographic, in the sage ink */
+[data-issue="w04"] .label {
+  display: block;
+  width: fit-content;
+  margin: 0;
+  padding: 0.3rem 0.85rem 0.35rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-stretch: var(--stretch-ui);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: var(--c-bg);
+  background-color: var(--hue);
+}
+
+/* ---------- A ballot (a matchup card, restyled) ---------- */
+[data-issue="w04"] .versus-card {
+  margin: 0 0 var(--space-8);
+  background-color: transparent;
+  border: 0;
+  border-block-start: 5px double var(--c-text);
+  box-shadow: none;
+}
+[data-issue="w04"] .versus-card__head {
+  align-items: baseline;
+  padding: var(--space-3) 0 var(--space-4);
+}
+[data-issue="w04"] .versus-card__title {
+  font-family: var(--font-text);
+  font-size: 2rem;
+  font-stretch: normal;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.005em;
+}
+[data-issue="w04"] .versus-card__media {
+  place-items: start;
+  padding: 0;
+  background: none;
+}
+/* Printed in black and white until somebody votes in it, then it develops. */
+[data-issue="w04"] .versus-card__media img {
+  border: var(--rule) solid var(--c-text);
+  filter: grayscale(1) contrast(1.06);
+  transition: filter 1.2s var(--ease-out);
+}
+[data-issue="w04"] .versus-card.is-voted .versus-card__media img { filter: none; }
+
+/* The options are rows of a form: a box to mark, the name, the count and the
+   share, with the share drawn as a printed bar under the row. */
+[data-issue="w04"] .versus-card__options {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  padding: var(--space-4) 0 0;
+}
+[data-issue="w04"] .vote {
+  display: grid;
+  grid-template-columns: 1.2rem minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--space-3);
+  padding: var(--space-3) 0 calc(var(--space-3) + 3px);
+  color: var(--c-text);
+  background-color: transparent;
+  border: 0;
+  border-block-end: var(--hairline) solid var(--c-line);
+}
+[data-issue="w04"] .vote:not(:disabled):hover {
+  background-color: color-mix(in srgb, var(--hue) 8%, transparent);
+  border-color: var(--c-line);
+}
+[data-issue="w04"] .vote::before {
+  content: "";
+  width: 1.15rem;
+  height: 1.15rem;
+  border: 2px solid var(--c-text);
+  background-color: var(--c-surface);
+}
+/* The option you voted for is marked with an X in the sage ink. */
+[data-issue="w04"] .vote.is-mine::before {
+  border-color: var(--hue);
+  background-image:
+    linear-gradient(45deg, transparent calc(50% - 1.2px), var(--hue) calc(50% - 1.2px) calc(50% + 1.2px), transparent calc(50% + 1.2px)),
+    linear-gradient(-45deg, transparent calc(50% - 1.2px), var(--hue) calc(50% - 1.2px) calc(50% + 1.2px), transparent calc(50% + 1.2px));
+}
+[data-issue="w04"] .vote__label {
+  font-family: var(--font-text);
+  font-size: 1.125rem;
+  font-stretch: normal;
+  font-weight: 600;
+  line-height: 1.25;
+}
+[data-issue="w04"] .vote__stats {
+  width: auto;
+  gap: var(--space-3);
+  font-size: var(--fs-sm);
+}
+[data-issue="w04"] .vote::after {
+  inset-block-end: -1px;
+  height: 3px;
+  background-color: var(--c-text-soft);
+}
+[data-issue="w04"] .vote.is-leading,
+[data-issue="w04"] .vote.is-leading:not(:disabled):hover {
+  background-color: transparent;
+  border-color: var(--c-line);
+  box-shadow: none;
+}
+[data-issue="w04"] .vote.is-leading .vote__label,
+[data-issue="w04"] .vote.is-leading .vote__stats { color: var(--hue); }
+[data-issue="w04"] .vote.is-leading::after { background-color: var(--hue); }
+
+/* ---------- The returns ---------- */
+[data-issue="w04"] .returns {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0 0 var(--space-8);
+  padding: var(--space-5);
+  border: var(--rule) solid var(--c-text);
+  break-inside: avoid;
+}
+[data-issue="w04"] .returns table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+[data-issue="w04"] .returns th,
+[data-issue="w04"] .returns td {
+  padding: 0.55rem 0.5rem 0.55rem 0;
+  border-block-end: var(--hairline) solid var(--c-line);
+  text-align: left;
+  vertical-align: baseline;
+}
+[data-issue="w04"] .returns thead th {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-stretch: var(--stretch-ui);
+  font-weight: 700;
+  color: var(--c-text-muted);
+}
+[data-issue="w04"] .returns tbody th { font-weight: 700; }
+[data-issue="w04"] .returns td:last-child {
+  padding-inline-end: 0;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Print: the sheet is the page ---------- */
+@media print {
+  [data-issue="w04"] .sheet {
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+  }
+  [data-issue="w04"] .versus-card__media img { filter: grayscale(1); }
+}
+
+} /* @layer pages */

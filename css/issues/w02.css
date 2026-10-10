@@ -1,0 +1,241 @@
+/* ============================================================
+   WEEK 02: TWO LANES   (Current Events, ochre)
+   Minute sellers and moto-taxis: two street jobs, told one lane after the
+   other, with a stretch of road between them. Both are jobs of the hours of the
+   day (peak hours, "6 am to 8 pm"), so each lane ends with the working day drawn
+   as a 24-hour strip, from the very hours the students wrote.
+
+   A lane reads, top to bottom, with room between the parts:
+   1. THE TITLE in the sign face at headline size, beside the job's mark (the
+      sombrero, the chequered flag) on a pale plate, so the black flag shows on
+      the night edition too.
+   2. THE STORY: the photo in its frame and the students' paragraph, side by side
+      on a wide screen, mirrored in the second lane (the traffic goes the other
+      way). A photo is never enlarged: the files are small.
+   3. THE JOB AT A GLANCE: four sign plates (an inner ring like a road sign) and
+      the day strip. Colour is a line, a ring or a mark, as everywhere.
+   Between the lanes: the road, two edges and a dashed centre line in the hue.
+
+   What stays as in every issue: the standard header (numeral, rule, title
+   entrance), the scroll reveals (photos, the road; the strips fill in) and the
+   doors. Scoped by [data-issue="w02"] on <body>.
+   ============================================================ */
+
+@layer pages {
+
+/* ---------- A lane ---------- */
+[data-issue="w02"] .lane {
+  display: grid;
+  gap: var(--space-8);
+  padding-block-start: var(--space-7);
+  border-block-start: var(--rule-accent) solid var(--hue);
+}
+/* The road replaces the line that would open the second lane. */
+[data-issue="w02"] .road + .lane {
+  padding-block-start: 0;
+  border-block-start: 0;
+}
+
+/* ---------- 1. Title and mark ---------- */
+[data-issue="w02"] .lane__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-5) var(--space-6);
+}
+/* A pale plate whatever the edition: color-scheme: light turns every token
+   inside it to its day value, so black ink stays visible at night. */
+[data-issue="w02"] .lane__mark {
+  color-scheme: light;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 8rem;
+  height: 8rem;
+  background-color: var(--c-surface);
+  border: var(--hairline) solid var(--c-line);
+  box-shadow: inset 0 0 0 5px var(--c-surface), inset 0 0 0 6px var(--hue);
+}
+[data-issue="w02"] .lane__mark img {
+  width: auto;
+  height: auto;
+  max-width: 5.25rem;
+  max-height: 4.5rem;
+}
+[data-issue="w02"] .lane__title {
+  margin: 0;
+  font-size: var(--fs-xl);
+  line-height: 0.9;
+  text-wrap: balance;
+}
+
+/* ---------- 2. The story: photo and text ---------- */
+[data-issue="w02"] .lane__story {
+  display: grid;
+  gap: var(--space-6);
+}
+/* --photo-w (set in the HTML) is the picture's own width. The frame is that wide
+   plus its mat, or its column if that is narrower, so the picture is never
+   enlarged and, because the width is known before the file arrives, a lazy
+   photo holds its place (the img's width and height give its ratio). */
+[data-issue="w02"] .lane__photo {
+  width: min(100%, calc(var(--photo-w) + var(--mat) * 2 + var(--hairline) * 2));
+  margin: 0;
+  padding: var(--mat);
+  background-color: var(--c-surface);
+  border: var(--hairline) solid var(--c-line);
+  border-block-start: var(--rule-accent) solid var(--hue);
+  box-shadow: inset 0 1px 0 var(--c-edge);
+}
+[data-issue="w02"] .lane__photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+[data-issue="w02"] .lane__photo figcaption {
+  max-width: 34ch;
+  padding-block-start: var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  line-height: 1.3;
+  color: var(--c-text-muted);
+}
+[data-issue="w02"] .lane__text p {
+  max-width: 58ch;
+  font-size: var(--fs-md);
+  line-height: var(--lh-text);
+}
+
+@media (min-width: 880px) {
+  [data-issue="w02"] .lane__story {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: var(--space-9);
+    align-items: start;
+  }
+  /* The second lane runs the other way: text first, photo on the right. */
+  [data-issue="w02"] .lane--reverse .lane__story {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+  [data-issue="w02"] .lane--reverse .lane__photo {
+    order: 2;
+    justify-self: end;
+  }
+  [data-issue="w02"] .lane--reverse .lane__text { order: 1; }
+}
+
+/* ---------- 3a. Sign plates ---------- */
+[data-issue="w02"] .lane__plates {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+}
+[data-issue="w02"] .lane__plates > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-6) var(--space-5);
+  background-color: var(--c-surface);
+  border: var(--hairline) solid var(--c-line);
+  /* the ring a road sign has just inside its edge */
+  box-shadow: inset 0 0 0 6px var(--c-surface), inset 0 0 0 7px var(--hue);
+}
+[data-issue="w02"] .lane__plates dt {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-stretch: var(--stretch-ui);
+  font-weight: 700;
+  color: var(--hue);
+}
+[data-issue="w02"] .lane__plates dd {
+  margin: 0;
+  font-size: 1.375rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+/* ---------- 3b. The day strip ----------
+   24 columns, one per hour, midnight on the left. Each span sits on its hours
+   (--from and --to are grid lines: 6 am is line 7). The tint is the flexible
+   day; the solid marks are the hours the students named. */
+[data-issue="w02"] .clock { padding-block-end: var(--space-2); }
+[data-issue="w02"] .clock__bar {
+  display: grid;
+  grid-template-columns: repeat(24, minmax(0, 1fr));
+  height: 3.5rem;
+  border-block: var(--hairline) solid var(--c-border);
+  /* a hairline at every hour */
+  background-image: linear-gradient(90deg, var(--c-line) var(--hairline), transparent var(--hairline));
+  background-size: calc(100% / 24) 100%;
+}
+[data-issue="w02"] .clock__span {
+  grid-row: 1;
+  grid-column: var(--from) / var(--to);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-stretch: var(--stretch-ui);
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--c-bg);
+  background-color: var(--hue);
+}
+[data-issue="w02"] .clock__span--flex {
+  grid-column: 1 / -1;
+  place-items: center start;
+  padding-inline: var(--space-3);
+  color: var(--hue);
+  background-color: color-mix(in srgb, var(--hue) 13%, var(--c-surface));
+}
+[data-issue="w02"] .clock__ticks {
+  position: relative;
+  height: 2rem;
+  margin: 0;
+  padding: 0;
+}
+[data-issue="w02"] .clock__ticks li {
+  position: absolute;
+  inset-block-start: var(--space-2);
+  inset-inline-start: calc(var(--at) * 25%);
+  transform: translateX(-50%);
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-stretch: var(--stretch-ui);
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--c-text-muted);
+}
+[data-issue="w02"] .clock__ticks li:first-child { transform: none; }
+[data-issue="w02"] .clock__ticks li:last-child  { transform: translateX(-100%); }
+
+/* On a phone an hour is a hair wide: the marks stay, their words go (the plate
+   above says the same hours). */
+@media (max-width: 700px) {
+  [data-issue="w02"] .clock__span:not(.clock__span--flex) { font-size: 0; }
+  [data-issue="w02"] .lane__mark { width: 6rem; height: 6rem; }
+  [data-issue="w02"] .lane__mark img { max-width: 3.75rem; max-height: 3.25rem; }
+}
+
+/* ---------- The road ---------- */
+[data-issue="w02"] .road {
+  height: 3.5rem;
+  margin-block: var(--space-9);
+  border-block: var(--rule) solid var(--c-border);
+  /* the dashed centre line */
+  background-image: repeating-linear-gradient(90deg, var(--hue) 0 2.5rem, transparent 2.5rem 4.5rem);
+  background-size: 100% 4px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@media print {
+  [data-issue="w02"] .lane__plates > div,
+  [data-issue="w02"] .lane__mark { box-shadow: none; }
+}
+
+} /* @layer pages */

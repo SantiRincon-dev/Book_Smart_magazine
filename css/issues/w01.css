@@ -1,0 +1,168 @@
+/* ============================================================
+   WEEK 01: THE ALMANAC   (Education, indigo)
+   "I was today years old": ten posts, each one a belief that fell, dated
+   anywhere between 2008 and 2026. An almanac is a book of dates, so the wall
+   becomes one: the posts are grouped by year, oldest first, and every year is a
+   section with its own giant numeral in the hue.
+
+   - The numerals sit in a left column and STAY under the header while their
+     year scrolls past (position: sticky), so the reader always knows where in
+     time they are. A year is never beside a second kind of content: the column
+     holds the numeral and a count, the other holds the posts.
+   - Time takes room. Between two years the page leaves a stretch proportional
+     to the years that went by (--years, set in the HTML), along a hairline
+     spine that runs the whole almanac, with the gap said out loud in the
+     margin ("7 years later"). Nothing is drawn in that void but the line.
+   - The posts are the usual mock tweets (tweet-card.css), unchanged: this file
+     only gives them a place. Years with two posts stagger them; the rest sit
+     alone, alternating sides, so the column breathes.
+
+   What stays as in every issue: the standard header (numeral, rule, title
+   entrance), the scroll reveals (each post is data-reveal) and the doors.
+   Scoped by [data-issue="w01"] on <body>.
+   ============================================================ */
+
+@layer pages {
+
+[data-issue="w01"] .almanac {
+  --spine: var(--space-6);                    /* the spine's distance from the left edge */
+  --year-gap: var(--space-6);                 /* the void left per elapsed year */
+  --year-min: var(--space-7);                 /* the least any two years are apart */
+}
+
+/* ---------- One year ---------- */
+[data-issue="w01"] .almanac__year {
+  --void: 0rem;                               /* the first year has nothing before it */
+  position: relative;
+  display: grid;
+  gap: var(--space-5) var(--space-7);
+  padding-block-start: var(--void);
+  padding-inline-start: var(--spine);
+}
+/* Every later year is set apart by a minimum plus a stretch for each year that
+   went by (--years comes from the HTML). */
+[data-issue="w01"] .almanac__year[data-gap] {
+  --void: calc(var(--year-min) + var(--years) * var(--year-gap));
+}
+/* The spine: one hairline for the whole almanac, drawn by each year over its own
+   box (padding, and therefore the void before it, included), so it never breaks. */
+[data-issue="w01"] .almanac__year::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: var(--hairline);
+  background-color: var(--c-line);
+}
+/* What the void means, in the margin: "7 years later". The text is decoration
+   (the dates are in the posts), so it carries an empty alternative where the
+   browser supports one. */
+[data-issue="w01"] .almanac__year[data-gap]::after {
+  content: attr(data-gap);
+  content: attr(data-gap) / "";
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: var(--spine);
+  display: flex;
+  align-items: center;
+  height: var(--void);
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-stretch: var(--stretch-ui);
+  font-weight: 600;
+  color: var(--c-text-muted);
+}
+
+/* ---------- The numeral and its count ---------- */
+[data-issue="w01"] .almanac__label {
+  position: relative;
+  align-self: start;
+}
+[data-issue="w01"] .almanac__numeral {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(4.5rem, 3rem + 6vw, 8.5rem);
+  font-stretch: var(--stretch-display);
+  font-weight: 800;
+  font-variant-numeric: lining-nums;
+  line-height: 0.8;
+  letter-spacing: -0.01em;
+  color: var(--hue);
+}
+/* A square on the spine marks the year (structure is square in this site). */
+[data-issue="w01"] .almanac__numeral::before {
+  content: "";
+  position: absolute;
+  inset-block-start: 0.2em;
+  inset-inline-start: calc(var(--spine) * -1 - 0.3rem + 0.5px);
+  width: 0.6rem;
+  height: 0.6rem;
+  background-color: var(--hue);
+}
+[data-issue="w01"] .almanac__count {
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-stretch: var(--stretch-ui);
+  font-weight: 600;
+  color: var(--c-text-muted);
+}
+
+/* ---------- The posts of a year ---------- */
+[data-issue="w01"] .almanac__posts {
+  display: grid;
+  /* auto-fit, not auto-fill: a year with one post keeps one track, so
+     justify-content can lean it to a side. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 24rem));
+  gap: var(--space-6) var(--space-7);
+  align-items: start;
+  padding-block-end: var(--space-6);
+}
+[data-issue="w01"] .almanac__posts > li { margin: 0; }
+
+@media (min-width: 900px) {
+  [data-issue="w01"] .almanac__year {
+    grid-template-columns: minmax(10rem, 16rem) minmax(0, 1fr);
+    column-gap: var(--space-8);
+  }
+  /* The numeral follows the reader down its year, parked under the header. */
+  [data-issue="w01"] .almanac__label {
+    position: sticky;
+    inset-block-start: calc(var(--header-h) + var(--space-5));
+  }
+  /* A second post of a year hangs lower than the first, and the years that have
+     a single post alternate which side it leans to, so the column does not read
+     as a ruler. (A pair fills the column, so it never leans: its left edge stays
+     on the same line as every other year's.) */
+  [data-issue="w01"] .almanac__posts > li:nth-child(even) { margin-block-start: var(--space-8); }
+  [data-issue="w01"] .almanac__year:nth-child(even) .almanac__posts:has(> li:only-child) { justify-content: end; }
+}
+
+/* ---------- Narrow screens: numeral above its posts, one column ---------- */
+@media (max-width: 899px) {
+  [data-issue="w01"] .almanac__posts { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ---------- Print: no sticky, no void ---------- */
+@media print {
+  [data-issue="w01"] .almanac__year,
+  [data-issue="w01"] .almanac__year[data-gap] { --void: var(--space-5); }
+  [data-issue="w01"] .almanac__year::after { content: none; }
+  [data-issue="w01"] .almanac__label { position: static; }
+}
+
+/* The note that the numbers beside the heart and the arrows are real (shown by
+   js/live.js only while they are arriving). */
+[data-issue="w01"] .live-note {
+  max-width: 62ch;
+  padding-inline-start: var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-stretch: var(--stretch-ui);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--c-text-muted);
+  border-inline-start: var(--rule-accent) solid var(--hue);
+}
+
+} /* @layer pages */

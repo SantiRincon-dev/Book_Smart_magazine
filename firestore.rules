@@ -1,0 +1,65 @@
+rules_version = '2';
+
+// ============================================================================
+// BOOK SMART: Firestore security rules for the live counters (js/live.js).
+//
+// PUBLISH THEM: Firebase console > Firestore Database > Rules > paste > Publish.
+// (Do this once. Without them a new database is either closed, so nothing is
+// shown, or in "test mode", which is open to everybody and expires in 30 days.)
+//
+// The site has no accounts, so these rules cannot know WHO is voting. What they
+// can do, and do, is make the data impossible to wreck by accident or with a
+// single careless request:
+//   - everybody may READ the counters;
+//   - a counter is a document with one field, `count`, an integer;
+//   - a write moves it by at most 1 (+1 to count, -1 to take it back), and
+//     never below 0, so no request can set "count" to a million or to -5;
+//   - only the ids this site uses are accepted, and nothing can be deleted.
+// Somebody who scripts thousands of +1 requests could still inflate a counter:
+// no rule can prevent that without sign-in. If that ever matters, turn on
+// Authentication > Anonymous and Firebase App Check, and key each vote by the
+// reader's uid.
+// ============================================================================
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // A counter document: { count: <integer, 0 or more> }, moved by one at a time.
+    function isCounter() {
+      return request.resource.data.keys().hasOnly(['count'])
+          && request.resource.data.count is int
+          && request.resource.data.count >= 0
+          && (resource == null
+                ? request.resource.data.count <= 1
+                : request.resource.data.count - resource.data.count <= 1
+                  && resource.data.count - request.resource.data.count <= 1);
+    }
+
+    // Week 06: the ten clichés ("1" to "10") and "_readers", how many readers
+    // ticked at least one.
+    match /cliches_stats/{id} {
+      allow read: if true;
+      allow create, update: if id.matches('^([1-9]|10|_readers)$') && isCounter();
+      allow delete: if false;
+    }
+
+    // Week 04: one counter per option of each matchup, named <poll>__<option>.
+    match /poll_votes/{id} {
+      allow read: if true;
+      allow create, update: if id.matches('^[a-z0-9-]{1,40}__[a-z0-9-]{1,40}$') && isCounter();
+      allow delete: if false;
+    }
+
+    // Week 01: likes and reposts of the mock tweets, named <tweet>__like or
+    // <tweet>__retweet.
+    match /tweet_reactions/{id} {
+      allow read: if true;
+      allow create, update: if id.matches('^[a-z0-9-]{1,40}__(like|retweet)$') && isCounter();
+      allow delete: if false;
+    }
+
+    // Everything else stays closed.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

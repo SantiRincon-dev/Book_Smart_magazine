@@ -7,6 +7,11 @@
    (the week number). Pills are round on purpose: structure is square, labels
    are round (see the shape rule in tokens.css).
 
+   .pill--tag is an issue's TOPIC (Culture, Film Critique...): a link, outlined
+   and without a fill so it stays quieter than the section pill; on hover or
+   keyboard focus it takes the section's hue. It is at least 28px tall, so it is
+   an easy target.
+
    Contrast: the hue on its own 13% tint is at least 4.5:1 in both editions
    (measured when the tones were chosen).
    ============================================================ */
@@ -30,4 +35,19 @@
   color: var(--c-text-soft);
   background-color: var(--c-surface-2);
   border-color: var(--c-line);
+}
+
+.pill--tag {
+  min-height: 1.75rem;
+  color: var(--c-text-soft);
+  text-decoration: none;
+  background-color: transparent;
+  border-color: var(--c-border);
+  transition: color var(--t-fast), background-color var(--t-fast), border-color var(--t-fast);
+}
+.pill--tag:hover,
+.pill--tag:focus-visible {
+  color: var(--hue);
+  background-color: color-mix(in srgb, var(--hue) 13%, var(--c-surface));
+  border-color: var(--hue);
 }

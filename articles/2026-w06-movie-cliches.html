@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Clich&eacute;s - Book Smart</title>
+  <meta name="description" content="Ten Hollywood clich&eacute;s, an overrated series and an underrated actor, made for Session 6.">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Movie Clich&eacute;s - Book Smart">
+  <meta property="og:description" content="Ten Hollywood clich&eacute;s, an overrated series and an underrated actor, made for Session 6.">
+  <meta property="article:published_time" content="2026-10-07">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Movie Clich&eacute;s - Book Smart">
+  <meta name="twitter:description" content="Ten Hollywood clich&eacute;s, an overrated series and an underrated actor, made for Session 6.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#ecece9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#18181a" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+
+  <!-- Runs before the first paint, on every page:
+       1. applies a saved light/dark choice, so nobody sees a flash of the wrong one;
+       2. if the reader just clicked an issue, puts that issue's colour over the page
+          (the arriving half of the page transition, see css/components/curtain.css)
+          and flags the page as arriving, so its entrance waits for the curtain. -->
+  <script>
+    (function (d) {
+      try {
+        var t = localStorage.getItem('magazine:theme');
+        if (t === 'light' || t === 'dark') d.dataset.theme = t;
+      } catch (e) {}
+      try {
+        var n = JSON.parse(sessionStorage.getItem('bs:nav') || 'null');
+        sessionStorage.removeItem('bs:nav');
+        if (n && n.hue && Date.now() - n.t < 6000) {
+          var c = d.appendChild(document.createElement('div'));
+          c.className = 'curtain curtain--arriving';
+          c.setAttribute('aria-hidden', 'true');
+          c.style.backgroundColor = n.hue;
+          d.classList.add('is-arriving');
+        }
+      } catch (e) {}
+    })(document.documentElement);
+  </script>
+
+  <!-- Relative paths: this file sits one level below the project root -->
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/issues/w06.css">
+  <script defer src="../js/vendor/gsap.min.js"></script>
+  <script defer src="../js/vendor/ScrollTrigger.min.js"></script>
+  <script defer src="../js/data/articles.js"></script>
+  <script defer src="../js/data/firebase-config.js"></script>
+  <script defer src="../js/core.js"></script>
+  <script defer src="../js/live.js"></script>
+  <script defer src="../js/article.js"></script>
+</head>
+<body data-base="../" data-issue="w06">
+  <a class="skip-link" href="#content">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="../index.html">Book Smart</a>
+      <div class="site-header__tools">
+        <nav aria-label="Main">
+          <ul class="nav" role="list">
+            <li><a class="nav__link" href="../index.html">Home</a></li>
+            <li><a class="nav__link" href="../archive.html">Archive</a></li>
+          </ul>
+        </nav>
+        <button class="btn btn--ghost btn--icon" data-theme-toggle type="button" aria-label="Switch theme"></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="content">
+    <article data-section="current-events">
+
+      <!-- ============ ARTICLE HEADER ============
+           The issue's masthead. data-section picks its hue (the numeral, the
+           rule and the pills), data-week draws the big numeral in the top-right
+           corner (so it is typed once). -->
+      <header class="article-header" data-section="current-events" data-week="06">
+        <div class="article-header__inner">
+          <p class="article-header__tags">
+            <span class="pill">Current Events</span>
+            <span class="pill pill--neutral">Week 06</span>
+          </p>
+          <h1>Movie Clich&eacute;s</h1>
+          <p class="article-header__kicker">Overrated &amp; Underrated</p>
+          <p class="lede">For Session 6 we listed ten Hollywood clich&eacute;s, then picked one overrated series and one underrated actor.</p>
+          <p class="meta">
+            <span>Editorial Board</span>
+            <time datetime="2026-10-07">October 7, 2026</time>
+          </p>
+        </div>
+      </header>
+
+      <!-- ============ ARTICLE BODY ============
+           Everything the students wrote is reproduced from the .txt files in
+           sesión 6, word for word: the introduction (introduction.txt), the
+           ten clichés (movies clichés.txt) and the two short texts (texto.txt
+           in "Overrated series" and in "Underrated actor"). Wording, spelling
+           and grammar are left exactly as submitted ("surprisely", a sentence
+           that starts in lower case, and so on); only the typesetting of
+           quotation marks and apostrophes is polished. The headings, captions
+           and alt texts are interface.
+           -->
+      <div class="article-body prose">
+
+        <!-- ---------- TASK 1: movie clichés ---------- -->
+        <section>
+          <p class="dropcap">
+            Movies contain different scenes that make them awesome. They create an entire world which
+            makes us dream and expand our imagination. However, sometimes they can become so predictable,
+            which is interpreted as a loss in its narration power and the capacity to create new ideas.
+            Certainly, it depends on the kind of genre. For instance, we all love clich&eacute;s in romantic
+            or comedy films. Nevertheless, in drama movies we&rsquo;d rather rest on a plot which surprises
+            or shows us a totally new and exciting situation. Despite the result, we all love the magic of
+            cinema. That&rsquo;s why we&rsquo;ll be looking at some predictable scenes or clich&eacute;s that
+            appear in some situations on the screen.
+          </p>
+        </section>
+
+        <!-- The poster collage on a dark "screen" (css/issues/w06.css). -->
+        <figure class="screen wide" style="--screen-w: 887px" data-reveal>
+          <img src="../assets/img/articles/w06-movie-posters.png"
+               alt="A collage of five movie posters. At the top left, a Fast &amp; Furious poster with the number 11 and an ensemble cast in front of a rainy city skyline. At the top right, the poster of Monster-in-Law, with the names Jennifer Lopez and Jane Fonda at the top and two smiling women and a man. At the bottom left, the poster of Wrong Turn: a dark forest scene with a frightened woman and a figure behind her. In the middle, the poster of Grown Ups, with the names Adam Sandler, Kevin James, Chris Rock, David Spade and Rob Schneider above men riding a water slide. At the bottom right, a superhero team poster with a group in capes on a stormy hill."
+               loading="lazy" decoding="async" width="887" height="697">
+          <figcaption>A collage of movie posters.</figcaption>
+        </figure>
+
+        <h2 id="cliches">Ten Hollywood Clich&eacute;s</h2>
+
+        <!-- The clichés as a card the reader ticks: real checkboxes in the HTML
+             (disabled until js/article.js wakes them up, so nothing is pressable
+             without a script); the ticks are remembered in this browser only.
+             The numbers are the list's own counter, so each item holds the
+             students' sentence and nothing else. -->
+        <div class="bingo-head wide">
+          <p class="bingo-head__hint">Tick the clich&eacute;s you have already spotted on screen.</p>
+          <p class="bingo-head__count" data-checklist-count aria-live="polite"></p>
+          <p class="bingo-head__live" data-live-note hidden></p>
+        </div>
+
+        <ol class="bingo wide" role="list" data-checklist>
+          <li><label class="cliche"><input class="cliche__input" type="checkbox" value="1" disabled><span class="cliche__text">A main character suddenly dies and miraculously appears alive at the end of the movie.</span><span class="cliche__box" aria-hidden="true"></span></label></li>
+          <li><label class="cliche"><input class="cliche__input" type="checkbox" value="2" disabled><span class="cliche__text">When the villain tells the whole plan to the main character.</span><span class="cliche__box" aria-hidden="true"></span></label></li>
+          <li><label class="cliche"><input class="cliche__input" type="checkbox" value="3" disabled><span class="cliche__text">The main character faces the hardest situation of the movie, and they need one specific tool or weapon to solve the problem and surprisely they found it in their pocket.</span><span class="cliche__box" aria-hidden="true"></span></label></li>
+          <li><label class="cliche"><input class="cliche__input" type="checkbox" value="4" disabled><span class="cliche__text">The main character surviving an explosion just walking by and they don&rsquo;t even look back.</span><span class="cliche__box" aria-hidden="true"></span></label></li>
+          <li><label class="cliche"><input class="cliche__input" type="checkbox" value="5" disabled><span class="cliche__text">When the antagonist and protagonist have to join forces to defeat a bigger threat:</span><span class="cliche__box" aria-hidden="true"></span></label></li>
+          <li><label class="cliche"><input class="cliche__input" type="checkbox" value="6" disabled><span class="cliche__text">The blonde girl always dies first at the beginning of a horror movie.</span><span class="cliche__box" aria-hidden="true"></span></label></li>
+          <li><label class="cliche"><input class="cliche__input" type="checkbox" value="7" disabled><span class="cliche__text">The girl that survives at the end of a horror movie, and she is just drinking something and sitting in an ambulance.</span><span class="cliche__box" aria-hidden="true"></span></label></li>
+          <li><label class="cliche"><input class="cliche__input" type="checkbox" value="8" disabled><span class="cliche__text">When an anime protagonist is losing a fight against a more powerful villain, yet he unexpectedly gets a power up to make a comeback.</span><span class="cliche__box" aria-hidden="true"></span></label></li>
+          <li><label class="cliche"><input class="cliche__input" type="checkbox" value="9" disabled><span class="cliche__text">When in horror movies the group of protagonists always choose to split up</span><span class="cliche__box" aria-hidden="true"></span></label></li>
+          <li><label class="cliche"><input class="cliche__input" type="checkbox" value="10" disabled><span class="cliche__text">In Action movies when the enemy soldier always fails to aim properly even though the protagonist is not moving.</span><span class="cliche__box" aria-hidden="true"></span></label></li>
+        </ol>
+
+        <!-- ---------- TASK 2: overrated / underrated ----------
+             Two islands, one after the other. The overrated one is forced to the
+             DAY edition (overexposed: everything lit), the underrated one to the
+             NIGHT edition (underexposed: in the shadows), whatever the reader's
+             own theme is (css/issues/w06.css). -->
+        <h2 id="overrated-underrated">Overrated / Underrated</h2>
+
+        <section class="island island--over wide" aria-labelledby="overrated" data-reveal>
+          <div class="island__meter" aria-hidden="true"><span>&minus;</span><i></i><span>+</span></div>
+          <h3 id="overrated" class="island__title"><span class="island__kind">Overrated series:</span> Fast and Furious</h3>
+          <div class="island__text">
+            <p>
+              We all know that Fast and Furious is one of the most successful series in this century.
+              Furthermore, in the first movies the plot was about racing and tuning. From that point on, it
+              started to gain popularity. Thanks to that, the directors and producers wanted to add more
+              &ldquo;amazing content&rdquo; to hook even more people to the theaters, For instance, make the main
+              characters go to space, jump between two bridges with a tank, fight against terrorists, and save
+              the world. Moreover, because of the popularity of the first movies, this content actually worked out.
+            </p>
+            <p>
+              Given the above, we consider that they achieved their goal of making a lot of money by making dumb movies.
+            </p>
+          </div>
+
+          <!-- Several small pictures in one caption (.stills). -->
+          <figure class="stills">
+            <div class="stills__row">
+              <img src="../assets/img/articles/w06-overrated-1.png"
+                   alt="A dented red car with tanks on its roof floats in space above the Earth, with satellite parts around it."
+                   loading="lazy" decoding="async" width="442" height="266" style="--w: 442px">
+              <img src="../assets/img/articles/w06-overrated-2.png"
+                   alt="Two people leap through the air above a highway bridge, with the front of a tank at the right edge of the frame."
+                   loading="lazy" decoding="async" width="508" height="286" style="--w: 508px">
+            </div>
+            <figcaption>Visual aids: Fast and Furious.</figcaption>
+          </figure>
+        </section>
+
+        <section class="island island--under wide" aria-labelledby="underrated" data-reveal>
+          <div class="island__meter" aria-hidden="true"><span>&minus;</span><i></i><span>+</span></div>
+          <h3 id="underrated" class="island__title"><span class="island__kind">Underrated actor:</span> Robert Pattinson</h3>
+          <div class="island__text">
+            <p>
+              what is your first thought when you hear about Robert Pattinson? if your answer is Twilight, you
+              are probably underrating him. To those who have been living under a rock, Robert Pattinson is a
+              British actor with a 22-year-career span who has been stereotyped as only a good-looking actor.
+              Despite his recent serious roles, he is still being underrated by the general public. For instance,
+              he was the protagonist of Batman, whose role was awesome because of his solemn performance. Apart
+              from this, we have his most recent role as Antinoos in The Odyssey, which is being classified as one
+              of the best movies in 2026. To sum up, Robert Pattinson is an actor who deserves to be more recognized.
+            </p>
+          </div>
+
+          <figure class="stills">
+            <div class="stills__row">
+              <img src="../assets/img/articles/w06-underrated-1.png"
+                   alt="A young man with tousled dark hair and a serious expression looks to the side against a blurred teal background."
+                   loading="lazy" decoding="async" width="347" height="300" style="--w: 347px">
+              <img src="../assets/img/articles/w06-underrated-2.png"
+                   alt="A man with short dark hair, in dark leather armor with a fur collar and a cloak, looks down with a serious expression in a warmly lit room."
+                   loading="lazy" decoding="async" width="335" height="426" style="--w: 335px">
+              <img src="../assets/img/articles/w06-underrated-3.png"
+                   alt="A split image: on the left, a man with dark hair in a suit and tie; on the right, Batman in his cowl and cape, against a blurred city street."
+                   loading="lazy" decoding="async" width="449" height="255" style="--w: 449px">
+            </div>
+            <figcaption>Visual aids: Robert Pattinson.</figcaption>
+          </figure>
+        </section>
+
+        <!-- The previous / next issue and the archive. Built by js/article.js from
+             the manifest, so publishing a new issue never means editing this one. -->
+        <nav class="article-nav" aria-label="Elsewhere" data-article-nav>
+          <noscript>
+            <a class="door" href="../archive.html">
+              <span class="door__top">Archive</span>
+              <span class="door__title">Every issue this semester</span>
+            </a>
+          </noscript>
+        </nav>
+
+      </div>
+    </article>
+  </main>
+
+  <!-- The footer is the same on every page. The section legend and the team's
+       names are generated by js/core.js from SECTIONS and TEAM in
+       js/data/articles.js: write the names there, not here. -->
+  <footer class="site-footer">
+    <nav class="legend" aria-label="Sections" data-legend>
+      <noscript><a class="legend__item" href="../archive.html"><span class="legend__name">Browse by section</span></a></noscript>
+    </nav>
+    <div class="container site-footer__inner">
+      <p class="site-footer__name">Book Smart</p>
+      <p class="site-footer__info">Intensive English III<br>Universidad Nacional de Colombia, Bogot&aacute;<br>Semester 2026-2</p>
+      <a class="site-footer__top" href="#top" data-top>Back to top</a>
+    </div>
+  </footer>
+</body>
+</html>

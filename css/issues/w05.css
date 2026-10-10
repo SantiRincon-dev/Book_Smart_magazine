@@ -1,0 +1,121 @@
+/* ============================================================
+   WEEK 05: THE CONFESSION   (Politics, terracotta)
+   Three comic strips on one sentence: "I've done a lot of stuff in my life I'm
+   not proud of, but at least..." Every strip is a confession with a turn, so the
+   page opens with the sentence itself at monumental scale, in its two beats:
+   the confession in the text colour, then (after a pause) the turn, in the hue
+   and at the far right, with a field of halftone dots (the printing dots of a
+   comic) running up to it through the empty part of its line. Dots are only
+   ever drawn in empty space, never behind a word.
+
+   Then the strips are laid out as ONE COMIC PAGE: the wide strip on top, the two
+   tall ones below it, one on each side, the third a step lower, each at its real
+   size (they are small files: never enlarged) with its number, big and in the
+   hue, above its frame.
+
+   What stays as in every issue: the standard header (numeral, rule, title
+   entrance), the scroll reveals (the turn and each strip are data-reveal), the
+   doors. Scoped by [data-issue="w05"] on <body>.
+   ============================================================ */
+
+@layer pages {
+
+/* ---------- The confession ---------- */
+[data-issue="w05"] .confession {
+  --size: clamp(2.75rem, 0.5rem + 9vw, 9rem);
+  display: grid;
+  gap: var(--space-7);                        /* the pause between the two beats */
+  margin-block: var(--space-8) var(--space-10);
+}
+[data-issue="w05"] .confession p {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--size);
+  font-stretch: var(--stretch-display);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+[data-issue="w05"] .confession__setup { max-width: 14em; }
+
+/* The turn: the hue, at the far right, with the dots running up to it. */
+[data-issue="w05"] .confession__turn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  color: var(--hue);
+}
+[data-issue="w05"] .confession__turn::before {
+  content: "";
+  flex: 1 1 4rem;
+  min-width: 0;
+  height: 0.72em;
+  background-image: radial-gradient(circle, var(--hue) 0 36%, transparent 40%);
+  background-size: 0.6rem 0.6rem;
+  /* the dots fade in towards the word, so the line seems to be drawn by the sentence */
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 85%);
+          mask-image: linear-gradient(90deg, transparent, black 85%);
+}
+
+/* ---------- The comic page ---------- */
+[data-issue="w05"] .comic-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-9) var(--space-8);
+  align-items: start;
+  margin-block-start: 0;
+}
+
+/* A strip: its number above, then its frame. --strip-w (set in the HTML) is the
+   file's own width: the frame is that wide plus its mat, or its column when that
+   is narrower, so a picture is never enlarged and a lazy one holds its place. */
+[data-issue="w05"] .strip {
+  display: grid;
+  gap: var(--space-4);
+  width: min(100%, calc(var(--strip-w) + var(--mat) * 2 + var(--hairline) * 2));
+}
+[data-issue="w05"] .strip__title {
+  margin: 0;
+  font-size: var(--fs-xl);
+  line-height: 0.8;
+  color: var(--hue);
+}
+[data-issue="w05"] .strip__panel {
+  margin: 0;
+  padding: var(--mat);
+  background-color: var(--c-surface);
+  border: var(--hairline) solid var(--c-line);
+  border-block-start: var(--rule-accent) solid var(--hue);
+  box-shadow: inset 0 1px 0 var(--c-edge);
+}
+[data-issue="w05"] .strip__panel img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+[data-issue="w05"] .strip__panel figcaption {
+  padding-block-start: var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  line-height: 1.3;
+  color: var(--c-text-muted);
+}
+
+/* Two columns only where each tall strip keeps nearly its real size (measured:
+   at 1100px the 495px strip is shown at 0.91 and the other at 1.00; at 1024px it
+   would be 0.83); below that they stack, each at its own size. */
+@media (min-width: 68.75rem) {
+  [data-issue="w05"] .comic-page { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* The wide strip is the page's first row, on the left; the tall ones are the
+     second row, the first against the left edge and the second against the right. */
+  [data-issue="w05"] .strip--1 { grid-column: 1 / -1; }
+  [data-issue="w05"] .strip--3 {
+    justify-self: end;
+    margin-block-start: var(--space-8);       /* a step lower than the second */
+  }
+}
+
+} /* @layer pages */

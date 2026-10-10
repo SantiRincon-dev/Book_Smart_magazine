@@ -45,6 +45,31 @@
   border-color: var(--hue);
 }
 
+/* A topic chip carries how many issues have that topic (a quiet number). Several
+   may be on at once; "Any of them / All of them" appears once two are. */
+.chip__count {
+  margin-inline-start: 0.45em;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.72;
+}
+/* Topic chips are the long list, so they are a size smaller; "Show all" is dashed
+   to read as a control rather than a topic. */
+.chip--topic { padding: 0.32rem 0.8rem; font-size: 0.8125rem; }
+.chip--more {
+  padding: 0.32rem 0.8rem;
+  font-size: 0.8125rem;
+  color: var(--c-text-soft);
+  border-style: dashed;
+}
+.filters__hint {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  color: var(--c-text-muted);
+}
+.filters__match { display: grid; gap: var(--space-2); margin-block-start: var(--space-2); }
+
 /* Search and select: a boxed field on a surface, with its label above it
    (never a placeholder acting as the label). */
 .field {

@@ -4,7 +4,9 @@
  *  - the reading-progress bar and the one-time reveal of figures,
  *  - the previous / next doors at the end, generated from the manifest,
  *  - the interactive blocks some issues carry: mock-tweet reactions (Week 01),
- *    the old-vs-new polls (Week 04) and the optional gallery lightbox.
+ *    the old-vs-new polls (Week 04), the tick-list of clichés (Week 06) and the
+ *    optional gallery lightbox. The first three are shared with every reader
+ *    through js/live.js (Firebase) and fall back to this browser alone.
  *
  * Each part looks for its own markup and does nothing when it is not there,
  * so one script serves every article. (The header's entrance is plain CSS, see
@@ -37,11 +39,21 @@
     if (BS.reducedMotion()) return;
     // Each work is uncovered once, the first time it scrolls into view: the
     // eye is drawn to the students' work, not to the chrome around it.
-    $$('.prose > figure, .job-profile__media, .versus-card').forEach(function (node) {
+    $$('.prose > figure, .job-profile__media, .versus-card, [data-reveal]').forEach(function (node) {
       gsap.fromTo(node,
         { clipPath: 'inset(0% 0% 100% 0%)' },
         { clipPath: 'inset(0% 0% 0% 0%)', duration: 1, ease: 'power3.out', clearProps: 'clipPath',
           scrollTrigger: { trigger: node, start: 'top 88%', once: true } });
+    });
+
+    // The 24-hour strips (Week 02) fill in once, left to right in the order of
+    // the day: the tint first, then each peak. A wipe, not a stretch, so the
+    // hours written on the marks are never squashed.
+    $$('[data-clock]').forEach(function (clock) {
+      gsap.fromTo($$('.clock__span', clock),
+        { clipPath: 'inset(0% 100% 0% 0%)' },
+        { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.1, ease: 'power3.out', stagger: 0.28, clearProps: 'clipPath',
+          scrollTrigger: { trigger: clock, start: 'top 90%', once: true } });
     });
   }
 
@@ -84,8 +96,12 @@
   }
 
   /* ---------- Mock tweets: like, repost, share (Week 01) ----------
-     Nothing talks to a server: these are fictional posts, the numbers are
-     cosmetic and the reactions are remembered in this browser only. */
+     The posts, and the big numbers inside each card, are the students' fiction
+     and are never touched. What is REAL are the small numbers beside the heart
+     and the repost arrows: how many readers of this magazine pressed them, shared
+     live through js/live.js (Firebase). Pressing again takes your reaction back.
+     What each browser pressed is remembered here (localStorage), so a reaction
+     survives a reload; with no connection the page works from this browser alone. */
   function initTweets() {
     var grid = $('[data-tweet-grid]');
     if (!grid) return;
@@ -140,10 +156,37 @@
     }
 
     var state = load();
-    $$('[data-action]', grid).forEach(function (button) {
-      var action = button.dataset.action;
-      if ((action === 'like' || action === 'retweet') && state[keyFor(button)]) applyToggle(button, true);
+    var tracker = BS.live && BS.live.track('tweets', 'tweet_reactions');
+    /** "w01-04:like" is stored here; the shared counter is "w01-04__like". */
+    function liveIds() {
+      return Object.keys(state).filter(function (k) { return state[k]; }).map(function (k) { return k.replace(':', '__'); });
+    }
+
+    var reactions = $$('[data-action="like"], [data-action="retweet"]', grid);
+    reactions.forEach(function (button) {
+      if (state[keyFor(button)]) applyToggle(button, true);
+      // The reader count sits right after its button; it stays hidden until real numbers arrive.
+      var card = button.closest('[data-tweet-id]');
+      button.dataset.label = button.getAttribute('aria-label');
+      button.insertAdjacentElement('afterend', el('span', {
+        class: 'tweet-card__live', hidden: true, 'data-live-for': card.dataset.tweetId + '__' + button.dataset.action
+      }));
     });
+    if (tracker) tracker.set(liveIds());
+
+    if (BS.live) {
+      BS.live.watch('tweet_reactions', function (counts) {
+        $$('[data-live-for]', grid).forEach(function (span) {
+          var n = counts[span.dataset.liveFor] || 0;
+          var button = span.previousElementSibling;
+          span.textContent = n;
+          span.hidden = false;
+          // The number is part of the button's name, so a screen reader hears it too.
+          button.setAttribute('aria-label', button.dataset.label + '. ' + n +
+            (n === 1 ? ' reader has' : ' readers have') + (button.dataset.action === 'like' ? ' liked it.' : ' reposted it.'));
+        });
+      });
+    }
 
     grid.addEventListener('click', function (event) {
       var button = event.target.closest('[data-action]');
@@ -155,119 +198,256 @@
       applyToggle(button, pressed, pressed);
       if (pressed) state[keyFor(button)] = true; else delete state[keyFor(button)];
       save(state);
+      if (tracker) tracker.set(liveIds());
     });
   }
 
-  /* ---------- Old-vs-new polls (Week 04, Task 2) ----------
-     Each click on an option adds one vote, so a whole class can vote from a
-     single screen. No server: the counts live in localStorage, per browser.
+  /* ---------- Old-vs-new polls (Week 04) ----------
+     One vote per reader in each matchup, shared with every reader (js/live.js).
+     Press an option to vote; press another one to CHANGE your vote; press your own
+     again, or "Remove my vote", to take it back. What this browser voted is
+     remembered in localStorage; the totals and the percentages are the whole
+     readership's, live. With no connection the page works from this browser
+     alone: each matchup then shows just your own vote.
+     The matchups may sit in more than one [data-versus] block (the Week 04
+     front page splits them); the totals are shared by the whole page.
      Markup contract (see the Week 04 article):
+       [data-versus]       a block of matchups (any number of them)
        [data-poll="id"]    one matchup card
        [data-option="id"]  a vote button; holds [data-count], [data-share], .vote__label
        [data-total]        the card's own "N votes" label
-       [data-status]       visually hidden aria-live line, announced on each vote
+       [data-status]       visually hidden aria-live line, announced on each change
        [data-versus-total] the page-wide "N votes cast" label
-       [data-versus-reset] the two-step reset button, with a [data-reset-label] inside */
+       [data-returns]      optional: a box that is shown, and filled with each
+                           matchup's current leader, once this script runs
+     Classes it toggles: .is-leading (an option: the whole readership's leader),
+     .is-mine (the option YOU voted for), .is-voted (a card you voted in). It adds
+     one .vote-retract button to every card. */
   function initPolls() {
-    var root = $('[data-versus]');
-    if (!root) return;
-    var KEY = 'magazine:versusVotes';
+    var roots = $$('[data-versus]');
+    if (!roots.length) return;
+    var KEY = 'magazine:versusChoice';
 
+    var cards = $$('[data-poll]');
+    var allTotal = $('[data-versus-total]');
+    var returnsBox = $('[data-returns]');
+    var returnsBody = returnsBox && $('tbody', returnsBox);
+
+    /** { poll: option }: this reader's vote in each matchup. Storage is user-editable:
+        only keep votes for a matchup and an option that exist on this page. */
     function load() {
-      try {
-        var saved = JSON.parse(localStorage.getItem(KEY));
-        return saved && typeof saved === 'object' && !Array.isArray(saved) ? saved : {};
-      } catch (e) { return {}; }
+      var saved = {};
+      try { saved = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { saved = {}; }
+      var clean = {};
+      cards.forEach(function (card) {
+        var option = saved && typeof saved === 'object' ? saved[card.dataset.poll] : null;
+        if (typeof option === 'string' && $('[data-option="' + option + '"]', card)) clean[card.dataset.poll] = option;
+      });
+      return clean;
     }
-    function save(state) {
-      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* private mode */ }
+    function save() {
+      try { localStorage.setItem(KEY, JSON.stringify(choice)); } catch (e) { /* private mode */ }
     }
     function plural(n) { return n + ' ' + (n === 1 ? 'vote' : 'votes'); }
-    /** Saved counts are user-editable storage: only trust real, non-negative numbers. */
-    function countOf(votes, option) {
-      var n = votes && votes[option];
-      return isFinite(n) && n > 0 ? Math.floor(n) : 0;
+
+    var choice = load();
+    var everyone = null;             // { "poll__option": n }, once the real numbers arrive
+    var tracker = BS.live && BS.live.track('versus', 'poll_votes');
+    function liveIds() {
+      return Object.keys(choice).map(function (poll) { return poll + '__' + choice[poll]; });
     }
 
-    var state = load();
-    var cards = $$('[data-poll]', root);
-    var allTotal = $('[data-versus-total]', root);
+    /** The votes for one option: the whole readership's when known, else just yours. */
+    function countOf(poll, option) {
+      if (everyone) {
+        var n = everyone[poll + '__' + option];
+        return isFinite(n) && n > 0 ? Math.floor(n) : 0;
+      }
+      return choice[poll] === option ? 1 : 0;
+    }
 
-    /** Paints one card from its saved counts. Returns the card's total. */
-    function paint(card, votes) {
+    // A way back for every card: take your vote off without having to find the option.
+    cards.forEach(function (card) {
+      var options = $('.versus-card__options', card);
+      if (!options) return;
+      options.insertAdjacentElement('afterend', el('button', { class: 'vote-retract', type: 'button', hidden: true }, 'Remove my vote'));
+    });
+
+    /** Paints one card. Returns the card's total. */
+    function paint(card) {
+      var poll = card.dataset.poll;
       var buttons = $$('[data-option]', card);
-      var counts = buttons.map(function (b) { return countOf(votes, b.dataset.option); });
+      var counts = buttons.map(function (b) { return countOf(poll, b.dataset.option); });
       var total = counts.reduce(function (sum, n) { return sum + n; }, 0);
       var top = Math.max.apply(null, counts);
       var singleLeader = counts.filter(function (n) { return n === top; }).length === 1;
 
       buttons.forEach(function (button, i) {
         var share = total ? counts[i] / total : 0;
+        var mine = choice[poll] === button.dataset.option;
         button.style.setProperty('--p', share.toFixed(4));
         $('[data-count]', button).textContent = counts[i];
         $('[data-share]', button).textContent = Math.round(share * 100) + '%';
+        button.classList.toggle('is-mine', mine);
+        button.setAttribute('aria-pressed', String(mine));
         // A tie has no leader: highlighting one of two equal options would lie.
         button.classList.toggle('is-leading', total > 0 && singleLeader && counts[i] === top);
       });
+      card.classList.toggle('is-voted', Boolean(choice[poll]));
+      var retract = $('.vote-retract', card);
+      if (retract) retract.hidden = !choice[poll];
       var label = $('[data-total]', card);
       if (label) label.textContent = plural(total);
       return total;
     }
+
+    /** The "returns" table: one row per matchup with who leads it now. */
+    function paintReturns() {
+      if (!returnsBody) return;
+      var rows = cards.map(function (card) {
+        var buttons = $$('[data-option]', card);
+        var counts = buttons.map(function (b) { return countOf(card.dataset.poll, b.dataset.option); });
+        var total = counts.reduce(function (sum, n) { return sum + n; }, 0);
+        var top = Math.max.apply(null, counts);
+        var leaders = buttons.filter(function (b, i) { return counts[i] === top; });
+        var verdict = !total ? 'No votes yet' : leaders.length > 1 ? 'Tied' : $('.vote__label', leaders[0]).textContent;
+        var share = total && leaders.length === 1 ? Math.round(top / total * 100) + '%' : '';
+        return el('tr', {},
+          el('th', { scope: 'row' }, $('.versus-card__title', card).textContent),
+          el('td', {}, verdict),
+          el('td', {}, share));
+      });
+      returnsBody.replaceChildren.apply(returnsBody, rows);
+    }
+
     function paintAll() {
-      var sum = cards.reduce(function (acc, card) { return acc + paint(card, state[card.dataset.poll]); }, 0);
+      var sum = cards.reduce(function (acc, card) { return acc + paint(card); }, 0);
       if (allTotal) allTotal.textContent = plural(sum) + ' cast';
+      paintReturns();
     }
 
     // The buttons ship disabled in the HTML so that, without JavaScript,
     // nobody presses something that does nothing. Now they are live.
-    $$('[data-option]', root).forEach(function (button) { button.disabled = false; });
+    $$('[data-option]').forEach(function (button) { button.disabled = false; });
+    if (returnsBox) returnsBox.hidden = false;
     paintAll();
+    if (tracker) tracker.set(liveIds());
+    if (BS.live) BS.live.watch('poll_votes', function (counts) { everyone = counts; paintAll(); });
 
-    root.addEventListener('click', function (event) {
-      var button = event.target.closest('[data-option]');
-      var card = button && button.closest('[data-poll]');
-      if (!button || !card || !root.contains(card)) return;
+    roots.forEach(function (root) {
+      root.addEventListener('click', function (event) {
+        var retract = event.target.closest('.vote-retract');
+        var button = event.target.closest('[data-option]');
+        var card = (retract || button) && (retract || button).closest('[data-poll]');
+        if (!card || !root.contains(card)) return;
 
-      var votes = state[card.dataset.poll] = state[card.dataset.poll] || {};
-      votes[button.dataset.option] = countOf(votes, button.dataset.option) + 1;
-      save(state);
-      paintAll();
+        var poll = card.dataset.poll;
+        var message;
+        if (retract || choice[poll] === button.dataset.option) {
+          // Your own option again, or the remove button: take the vote back.
+          delete choice[poll];
+          message = 'Your vote was removed.';
+        } else {
+          var changed = Boolean(choice[poll]);
+          choice[poll] = button.dataset.option;
+          message = (changed ? 'Your vote changed to ' : 'You voted for ') + $('.vote__label', button).textContent + '.';
+        }
+        save();
+        if (tracker) tracker.set(liveIds());
+        paintAll();
 
-      button.classList.remove('is-pop');
-      void button.offsetWidth;                 // restart the animation
-      button.classList.add('is-pop');
-      button.addEventListener('animationend', function () { button.classList.remove('is-pop'); }, { once: true });
+        if (button && choice[poll] === button.dataset.option) {
+          button.classList.remove('is-pop');
+          void button.offsetWidth;               // restart the animation
+          button.classList.add('is-pop');
+          button.addEventListener('animationend', function () { button.classList.remove('is-pop'); }, { once: true });
+        }
+        var status = $('[data-status]', card);
+        if (status) status.textContent = message;
+      });
+    });
+  }
 
-      var status = $('[data-status]', card);
-      if (status) {
-        status.textContent = $('.vote__label', button).textContent + ': ' +
-          plural(Number($('[data-count]', button).textContent)) + ', ' + $('[data-share]', button).textContent + '.';
-      }
+  /* ---------- A checklist the reader ticks (Week 06: the clichés) ----------
+     Real checkboxes inside [data-checklist]; which ones are ticked is remembered
+     in this browser only (localStorage), and counted for every reader through
+     js/live.js: under each cliché sits how many readers marked it, as a number
+     and as a share of the readers who ticked anything. [data-checklist-count]
+     shows this reader's own "N of M seen"; [data-live-note] says, once the real
+     numbers are arriving, how many readers have played.
+     Markup contract: each <input type="checkbox"> has a unique value. The
+     boxes ship disabled in the HTML (nothing to press without a script). */
+  function initChecklist() {
+    var list = $('[data-checklist]');
+    if (!list) return;
+    var KEY = 'magazine:clicheSeen';
+    var boxes = $$('input[type="checkbox"]', list);
+    var counter = $('[data-checklist-count]');
+    var note = $('[data-live-note]');
+    var tracker = BS.live && BS.live.track('cliches', 'cliches_stats');
+
+    function load() {
+      try {
+        var saved = JSON.parse(localStorage.getItem(KEY));
+        return Array.isArray(saved) ? saved : [];
+      } catch (e) { return []; }
+    }
+    function ticked() {
+      return boxes.filter(function (b) { return b.checked; }).map(function (b) { return b.value; });
+    }
+    function save() {
+      try { localStorage.setItem(KEY, JSON.stringify(ticked())); } catch (e) { /* private mode */ }
+    }
+    function count() {
+      if (counter) counter.textContent = ticked().length + ' of ' + boxes.length + ' seen';
+    }
+    /** The shared counters this reader has "on": each ticked cliché, plus "_readers"
+        (counted once for a reader who has ticked at least one). */
+    function liveIds() {
+      var on = ticked();
+      return on.length ? on.concat('_readers') : [];
+    }
+
+    // Under each cliché, what everybody else did. Hidden until real numbers arrive.
+    var stats = boxes.map(function (box) {
+      var stat = el('span', { class: 'cliche__stat', hidden: true },
+        el('span', { class: 'cliche__stat-text' }),
+        el('span', { class: 'cliche__stat-share' }),
+        el('span', { class: 'cliche__stat-bar', 'aria-hidden': 'true' }));
+      var cell = box.closest('.cliche');
+      if (cell) cell.appendChild(stat);
+      return stat;
     });
 
-    // Reset: two clicks, no confirm() dialog.
-    var reset = $('[data-versus-reset]', root);
-    var resetLabel = reset && $('[data-reset-label]', reset);
-    if (!reset || !resetLabel) return;
-    var idle = resetLabel.textContent;
-    var timer;
-    function disarm() {
-      clearTimeout(timer);
-      reset.dataset.armed = 'false';
-      resetLabel.textContent = idle;
+    var saved = load();
+    boxes.forEach(function (box) { box.checked = saved.indexOf(box.value) !== -1; box.disabled = false; });
+    count();
+    if (tracker) tracker.set(liveIds());
+
+    if (BS.live) {
+      BS.live.watch('cliches_stats', function (counts) {
+        var readers = counts._readers || 0;
+        boxes.forEach(function (box, i) {
+          var n = counts[box.value] || 0;
+          var share = readers ? Math.min(1, n / readers) : 0;
+          var stat = stats[i];
+          $('.cliche__stat-text', stat).textContent = n ? 'Marked by ' + n + (n === 1 ? ' reader' : ' readers') : 'Nobody has marked this yet';
+          $('.cliche__stat-share', stat).textContent = readers && n ? Math.round(share * 100) + '%' : '';
+          stat.style.setProperty('--p', share.toFixed(4));
+          stat.hidden = false;
+        });
+        if (note) {
+          note.textContent = 'Counted with every reader, live. ' + (readers
+            ? readers + (readers === 1 ? ' reader has' : ' readers have') + ' ticked at least one.'
+            : 'Be the first to tick one.');
+        }
+      });
     }
-    reset.addEventListener('click', function () {
-      if (reset.dataset.armed !== 'true') {
-        reset.dataset.armed = 'true';
-        resetLabel.textContent = 'Click again to confirm';
-        timer = setTimeout(disarm, 3000);
-        return;
-      }
-      Object.keys(state).forEach(function (key) { delete state[key]; });
-      save(state);
-      paintAll();
-      $$('[data-status]', root).forEach(function (node) { node.textContent = ''; });
-      disarm();
+
+    list.addEventListener('change', function () {
+      save();
+      count();
+      if (tracker) tracker.set(liveIds());
     });
   }
 
@@ -312,6 +492,7 @@
   initDoors();
   initTweets();
   initPolls();
+  initChecklist();
   initLightbox();
   ready.then(function () { if (BS.hasGsap) window.ScrollTrigger.refresh(); });
 })();

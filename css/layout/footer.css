@@ -3,7 +3,11 @@
    and as the section's name in type, never as a block of colour. Each is a link
    to the archive filtered by that section. They are generated from SECTIONS
    (js/core.js), so the footer can never name a category the manifest does not
-   have. */
+   have.
+
+   Under the legend: the name of the magazine, the course, and "Back to top"
+   in one row, and, when the manifest lists any (TEAM in js/data/articles.js),
+   a row of the team's names between a hairline and the foot of the page. */
 .site-footer {
   margin-block-start: var(--space-9);
   background-color: var(--c-surface);
@@ -57,12 +61,21 @@
   .legend__item { flex: 1 1 50%; min-height: 6rem; }
 }
 
+/* One column on a phone, two on a tablet, three from 900px (name | course |
+   back to top). The team row, when there is one, spans every column and comes
+   before "Back to top" in the source, so on a narrow screen the names are read
+   before the way back up; from 900px "Back to top" is put back on the first row. */
 .site-footer__inner {
   display: grid;
   gap: var(--space-5) var(--space-7);
-  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
   align-items: end;
   padding-block: var(--space-7) var(--space-8);
+}
+@media (min-width: 35rem) {
+  .site-footer__inner { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 900px) {
+  .site-footer__inner { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 .site-footer__name {
   font-family: var(--font-display);
@@ -72,6 +85,36 @@
   line-height: var(--lh-display);
 }
 .site-footer__info { color: var(--c-text-soft); }
+
+/* The team: a label, then the names side by side (they wrap onto more lines if
+   there are many). Plain type on the surface, under a hairline. */
+.site-footer__team {
+  grid-column: 1 / -1;
+  align-self: start;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-6);
+  padding-block-start: var(--space-5);
+  border-block-start: var(--hairline) solid var(--c-line);
+}
+.site-footer__label {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  font-stretch: var(--stretch-ui);
+  color: var(--c-text-muted);
+}
+.site-footer__members {
+  display: flex;
+  flex: 1 1 20rem;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-6);
+  margin: 0;
+  padding: 0;
+  color: var(--c-text-soft);
+}
+
 .site-footer__top {
   justify-self: start;
   font-family: var(--font-display);
@@ -81,5 +124,9 @@
   text-decoration-thickness: 2px;
 }
 @media (min-width: 900px) {
-  .site-footer__top { justify-self: end; }
+  .site-footer__top {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+  }
 }

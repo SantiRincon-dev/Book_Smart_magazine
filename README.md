@@ -24,6 +24,12 @@ when a page is opened by double click. So:
 - The two typefaces are **embedded as base64** in `css/fonts.css`. From a
   `file://` page some browsers refuse font files that live in another folder.
 - GSAP is vendored in `js/vendor/` as its ready-made classic (UMD) builds.
+- The one thing that needs the internet, the shared counters (see "Live
+  counters" below), loads Google's Firebase SDK from its CDN with a dynamic
+  `import()` inside a classic script. That works from a `file://` page (the CDN
+  allows any origin) where a `<script type="module">` pointing at a local file
+  would be refused, and it works unchanged on GitHub Pages. If it cannot load,
+  every counter keeps working from the reader's own browser.
 - The page transition is done with GSAP and `sessionStorage`. The browser's own
   View Transitions API for navigation needs a real server origin, so it is not
   used for pages (it is used for the light/dark toggle, which is one document).
@@ -105,6 +111,38 @@ There is one rule, and it is what keeps the navigation DRY:
 A fifth section is: one line in `SECTIONS`, one pair of raw tones (day and
 night) and one `[data-section]` line in `css/base/tokens.css`.
 
+### Topics (tags)
+
+A section is one of four big areas and sets an issue's colour (Weeks 01 to 06
+sit in Education, Current Events, Politics, History, Politics, Current Events).
+An issue also carries **topics**, as many as the piece earns (three to five is
+plenty): the forms it takes (Opinion, Satire, Humor, Confessions, Comics, Visual
+Essay, Cultural Reportage, Interactive) and what it looks at (Film Critique,
+Media Critique, Publicity, Pop Culture, Internet Culture, Urban Life, Labor,
+Technology, Archival, University Life, Culture, Literature). Topics have no
+colour of their own, and a topic never repeats the issue's own section.
+
+- The vocabulary is `TAGS` in `js/data/articles.js`: one line per topic
+  (`'film-critique': { label: 'Film Critique' }`).
+- An issue lists its topics in `tags`, as keys of `TAGS`
+  (`tags: ['publicity', 'satire', 'media-critique']`). Free words that only the
+  archive's search box should read go in `keywords`. A typo in a key, or a topic
+  that repeats the section, is reported in the browser's console.
+- **In the header** of every issue the section and the week come first; the
+  topics follow on a line of their own, as quiet outlined round tags that are
+  links to the archive filtered by that topic (`archive.html?tag=satire`).
+  Nothing is typed in the issue's HTML: `js/core.js` draws them from the manifest.
+- **In the archive** the Topic filter is a multiple choice, generated from the
+  topics some issue carries (a topic nobody carries yet does not appear), the
+  most used first, each with how many issues have it. Press several and, with
+  two or more, choose **Any of them** (the default: the issue has at least one)
+  or **All of them** (it has every one). The choice lives in the URL
+  (`?tag=humor,satire&match=all`), combines with the section, the week and the
+  search (which also reads the topics' names), and a link with a single
+  `?tag=` still works.
+- The sidebar of filters scrolls inside itself when it is taller than the
+  screen, so the lower filters are never out of reach.
+
 ## Publishing an assignment (two steps, always the same)
 
 1. Copy `docs/article-template.html` to `articles/2026-wNN-slug.html` and write
@@ -116,9 +154,17 @@ night) and one `[data-section]` line in `css/base/tokens.css`.
 
 The home page's shelf, the archive, the filters, the search, the footer and the
 previous / next links at the end of every article all update themselves.
-**Never** edit `index.html` or `archive.html` to publish. (The one manual
-touch-point is the `<noscript>` link on the home page, which names the latest
-article for visitors without JavaScript.)
+**Never** edit `archive.html` to publish, and edit `index.html` only for the one
+manual touch-point: the hero button's `href` and the `<noscript>` link on the
+home page name the newest issue for visitors without JavaScript (with
+JavaScript the button is filled from the manifest). Today both point at Week 06.
+
+Blocks an issue can reuse (copy them from the issue that has them): mock posts
+(Week 01), job profiles (Week 02), a plain framed figure (Week 03 and, for
+comic strips, Week 05: one figure per strip, and since the words of a strip are
+lettered inside the picture, its `alt` carries all of them), an infographic and
+polls (Week 04), a numbered list, `ol.cliches`, and a row of small pictures
+under one caption, `figure.stills` (both Week 06).
 
 Optional but recommended, once the cover image is in `assets/img/articles/`:
 
@@ -144,6 +190,79 @@ row is as tall as the tallest, with the credits at the foot. On a short screen
 the pinned shelf gives the covers less height (and, below 720px of screen
 height, drops the deck and credits) so a card is never cut off. The **archive**
 lays the same tiles out as a justified contact sheet.
+
+### The team's names (footer)
+
+The footer of every page ends with one row: a label ("Editorial Board") and
+the team's names. They are generated from `TEAM` in `js/data/articles.js`, so
+they are typed once for the whole site: edit the names there (one per line;
+add or delete lines freely) and, if you like, change the `label`. An empty
+`members` list hides the row (without JavaScript the row is not shown either).
+
+## Live counters (Firebase)
+
+Three things are shared between every reader, in real time: the **old-vs-new
+votes** (Week 04), the **tick-list of clichés** (Week 06) and the **likes and
+reposts** of the mock tweets (Week 01; the fictional numbers inside each card
+are the students' and are never touched, the small numbers beside the heart and
+the arrows are the real ones). Nothing else on the site talks to a server.
+
+How it works, in three files:
+
+- `js/data/firebase-config.js`: the project's keys (public by design) and the
+  SDK version. `enabled: false` switches every counter back to this browser only.
+- `js/live.js`: the only code that knows Firebase exists. It listens to the
+  counters (`onSnapshot`, so every screen updates the instant anybody votes) and
+  sends what this browser chose.
+- `js/article.js`: asks `live.js` for the numbers and tells it what the reader
+  chose; the page works the same if it never answers.
+
+What a reader chose is kept in their `localStorage` (so it survives a reload, an
+offline spell and a closed tab); the totals come from Firestore. Whatever was
+never sent is sent the next time the page is open and online. Each reader has
+**one vote per matchup, which they can change** (press another option; the old
+one loses a vote and the new one gains it in one atomic batch) **or remove**
+(press their own option again, or "Remove my vote"). A cliché or a like is
+taken back by pressing it again.
+
+The data is a set of counter documents `{ count: n }`, moved only with
+`increment()`, which Firestore applies atomically on the server:
+
+| Collection | Document | Meaning |
+| --- | --- | --- |
+| `cliches_stats` | `1` to `10` | readers who ticked that cliché |
+| `cliches_stats` | `_readers` | readers who ticked at least one (the denominator of the percentages) |
+| `poll_votes` | `<poll>__<option>`, e.g. `snape__left` | votes for one option of a matchup |
+| `tweet_reactions` | `<tweet>__like` or `<tweet>__retweet` | readers who pressed it |
+
+### Setting it up (once)
+
+The code is ready; the project still has to be switched on, in the Firebase
+console (<https://console.firebase.google.com>, project `magazine-votes`):
+
+1. **Build > Firestore Database > Create database.** Until it exists the
+   counters stay in "offline" mode (the page's console says so). Choose the
+   production mode and a location near the readers.
+2. **Firestore Database > Rules:** paste the whole of `firestore.rules` and
+   press **Publish**. It lets everybody read, and lets a write move one counter
+   by one, never below zero, only for the ids this site uses, and never delete.
+   Without these rules a new database is closed (nothing shows) or, in "test
+   mode", open to everybody and expiring in 30 days.
+3. That is all: reload any issue and the live numbers appear. To reset the
+   counters, delete the documents in the console.
+
+The site has no accounts, so the rules cannot know *who* votes: somebody who
+scripts thousands of requests could still inflate a counter. If that ever
+matters, turn on Authentication > Anonymous and App Check and key every vote by
+the reader's uid.
+
+### Publishing on GitHub Pages
+
+The folder is already a static site with relative paths: push it to a
+repository, then **Settings > Pages > Deploy from a branch** and pick the branch
+and `/ (root)`. It also keeps working by double click. Nothing else is needed
+for Firestore (it has no domain list to fill in; the keys in
+`firebase-config.js` are meant to be public).
 
 ## The students' words
 
@@ -171,12 +290,17 @@ corrected. The interface text (labels, captions, buttons) is the magazine's own.
   specificity**, so do not set `margin` or `display` on a component if a layout
   rule needs to place it.
 - One component = one file in `css/components/` + one line in `css/main.css`.
+- An issue with a layout of its own = one file in `css/issues/` (`w01.css`),
+  linked from that article after `main.css`, with `data-issue="w01"` on `<body>`
+  and every rule scoped by it inside `@layer pages`. The standard header (week
+  numeral, hue rule, title entrance) stays; the issue only reshapes its body.
 - Class names use BEM: `.block__element--modifier`.
 - Structure is square (cards, bands, fields, buttons); labels are round
   (category pills, filter chips, the avatars of the mock tweets). Nothing
   overlaps anything.
-- JavaScript: no `import` / `export`, no `fetch()` of local files, no `scroll`
-  listeners (use ScrollTrigger). Every part looks for its own markup and does
+- JavaScript: no `import` / `export` between our own files, no `fetch()` of
+  local files (the Firebase SDK is loaded from the CDN with a dynamic
+  `import()`, see "Live counters"), no `scroll` listeners (use ScrollTrigger). Every part looks for its own markup and does
   nothing when it is not there.
 - File names are lowercase and hyphenated: `2026-w01-my-article.html`.
 - Every `<img>` has a real `alt` and real `width` / `height`; decorative icons
@@ -204,14 +328,18 @@ revista/
 │   ├── components/             button, pill, tile, filters, progress, curtain,
 │   │                           tweet-card, versus, gallery
 │   ├── pages/                  home, archive
+│   ├── issues/                 one stylesheet per issue with its own layout
 │   └── utils/                  helpers (skip link, print)
 ├── js/
 │   ├── vendor/                 GSAP, ScrollTrigger, Flip (unmodified)
 │   ├── data/articles.js        THE MANIFEST: source of truth for content
+│   ├── data/firebase-config.js The Firebase project's keys and SDK version
+│   ├── live.js                 The shared counters (Firebase), nothing else
 │   ├── core.js                 Shared: helpers, icons, theme, tile, transition
 │   ├── home.js                 Shelf, pinned pan, magnetic button
 │   ├── archive.js              Filters, search, sort, Flip
 │   └── article.js              Progress, reveals, doors, tweets, polls, lightbox
+├── firestore.rules             Security rules to publish in the Firebase console
 ├── docs/article-template.html  Copied for every new assignment
 └── tools/                      One-off generators (fonts, thumbnails, W01 cover)
 ```
@@ -225,6 +353,7 @@ Only needed when you change something they generate. They need Python 3.
 | `tools/make-fonts.py` | Rebuilds `css/fonts.css` (downloads both typefaces from Google Fonts, trims them to Latin, embeds them). Needs `fonttools` and `brotli`. |
 | `tools/make-thumbs.py` | WebP thumbnails of the covers (see above; it keeps a cover's transparency when it has some). Needs `pillow`. |
 | `tools/w01-cover.html` | The source of Week 01's cover: three real posts from the article, drawn in the night tones on a transparent background so the cover sits on the tile's mat in either edition. Screenshot it at 1600x1000 with a transparent background, then run `make-thumbs.py`. |
+| `tools/w05-cover.html` | The source of Week 05's cover: the three comic strips, untouched, each in the frame it has in the article, side by side on a transparent background. Same two steps as the Week 01 cover. |
 
 ## Credits and licences
 

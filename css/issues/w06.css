@@ -1,0 +1,366 @@
+/* ============================================================
+   WEEK 06: EXPOSURE   (Current Events, ochre)
+   Movie clichés, then one overrated and one underrated pick. Cinema is light, so
+   the page is exposed like a photograph:
+   - THE SCREEN: the poster collage on a dark panel at its real size, like a
+     frame on a screen in a dark room.
+   - THE CARD: the ten clichés as a card the reader ticks, "seen it" or not,
+     with a count and a memory (js/article.js, initChecklist; the boxes are real
+     checkboxes, disabled in the HTML until the script wakes them up).
+   - TWO ISLANDS, one after the other, never side by side. The OVERRATED pick is
+     forced to the day edition (overexposed: everything lit, a glow from the
+     top), the UNDERRATED pick to the night edition (underexposed: in the
+     shadows, a spot from the top), whatever the reader's own theme is. The
+     device is color-scheme on the subtree, which makes every token inside
+     resolve to its day or night value (the same one the vote sheet of Week 04
+     and the proofs of Week 03 use). Each carries a small exposure meter, from
+     minus to plus, with its marker at the end its verdict points to; the second
+     island is the first one's mirror image.
+
+   What stays as in every issue: the standard header (numeral, rule, title
+   entrance), the scroll reveals (the screen and the islands are data-reveal),
+   the doors. Scoped by [data-issue="w06"] on <body>.
+   ============================================================ */
+
+@layer pages {
+
+/* ---------- The screen: the poster collage ---------- */
+[data-issue="w06"] .screen {
+  color-scheme: dark;                          /* a dark room, whatever the edition */
+  grid-column: full;                           /* centred on the page, not in the reading column */
+  width: min(100%, calc(var(--screen-w) + var(--space-7) * 2 + var(--hairline) * 2), 100% - var(--gutter) * 2);
+  justify-self: center;
+  margin-inline: auto;
+  padding: var(--space-7);
+  color: var(--c-text);
+  background-color: var(--c-bg);
+  border: var(--hairline) solid var(--c-line);
+  border-block-start: var(--rule-accent) solid var(--hue);
+}
+[data-issue="w06"] .screen img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+[data-issue="w06"] .screen figcaption {
+  padding-block-start: var(--space-4);
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  line-height: 1.3;
+  color: var(--c-text-muted);
+}
+
+/* ---------- The card of clichés ---------- */
+[data-issue="w06"] .bingo-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-6);
+  margin-block: var(--space-5) var(--space-4);
+}
+[data-issue="w06"] .bingo-head p { margin: 0; }
+[data-issue="w06"] .bingo-head__hint {
+  font-size: var(--fs-md);
+  color: var(--c-text-soft);
+}
+[data-issue="w06"] .bingo-head__count {
+  font-family: var(--font-display);
+  font-size: var(--fs-tile);
+  font-stretch: var(--stretch-display);
+  font-weight: 800;
+  line-height: 0.9;
+  color: var(--hue);
+}
+[data-issue="w06"] .bingo-head__count:empty { display: none; }   /* no script, no count */
+/* How many readers have played, said once real numbers arrive (js/live.js). */
+[data-issue="w06"] .bingo-head__live {
+  flex-basis: 100%;
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-stretch: var(--stretch-ui);
+  font-weight: 600;
+  color: var(--c-text-muted);
+}
+
+[data-issue="w06"] .bingo {
+  counter-reset: cliche;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+  margin-block-start: 0;
+}
+[data-issue="w06"] .bingo > li {
+  counter-increment: cliche;
+  margin: 0;
+}
+@media (min-width: 52rem) {
+  [data-issue="w06"] .bingo { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-5); }
+}
+
+/* One cell: the number, the students' sentence, the box. The whole cell is the
+   label, so a press anywhere on it ticks it. */
+[data-issue="w06"] .cliche {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.75rem minmax(0, 1fr) 2rem;
+  align-items: start;
+  gap: var(--space-4);
+  grid-template-rows: 1fr auto;               /* the cliché above, what everybody did pinned below */
+  height: 100%;
+  padding: var(--space-5);
+  cursor: pointer;
+  background-color: var(--c-surface);
+  border: var(--hairline) solid var(--c-line);
+  border-block-start: var(--rule-accent) solid var(--hue);
+  box-shadow: inset 0 1px 0 var(--c-edge);
+  transition: background-color var(--t-base), border-color var(--t-base);
+}
+[data-issue="w06"] .cliche::before {
+  content: counter(cliche, decimal-leading-zero);
+  grid-column: 1;
+  grid-row: 1;
+  font-family: var(--font-display);
+  font-size: var(--fs-tile);
+  font-stretch: var(--stretch-display);
+  font-weight: 800;
+  font-variant-numeric: lining-nums;
+  line-height: 0.8;
+  color: var(--hue);
+  transition: color var(--t-base);
+}
+[data-issue="w06"] .cliche__text {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: 1.3125rem;
+  line-height: var(--lh-snug);
+  text-wrap: pretty;
+}
+[data-issue="w06"] .cliche__box {
+  grid-column: 3;
+  grid-row: 1;
+  justify-self: end;
+  width: 1.75rem;
+  height: 1.75rem;
+  background-color: var(--c-surface);
+  border: 2px solid var(--c-border);
+  transition: background-color var(--t-fast), border-color var(--t-fast);
+}
+/* What every reader did with this cliché (js/live.js): how many marked it, as a
+   number and as a share of the readers who ticked anything, drawn as a 3px line.
+   Hidden until the real numbers arrive. */
+[data-issue="w06"] .cliche__stat {
+  grid-column: 2 / -1;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: var(--space-3);
+  padding-block-start: var(--space-4);
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-stretch: var(--stretch-ui);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--c-text-muted);
+}
+[data-issue="w06"] .cliche__stat-share { font-weight: 700; color: var(--hue); }
+[data-issue="w06"] .cliche__stat-bar {
+  position: relative;
+  grid-column: 1 / -1;
+  height: 3px;
+  margin-block-start: var(--space-2);
+  background-color: color-mix(in srgb, var(--hue) 22%, transparent);
+}
+[data-issue="w06"] .cliche__stat-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--hue);
+  transform: scaleX(var(--p, 0));
+  transform-origin: 0 50%;
+  transition: transform 600ms var(--ease-out);
+}
+
+/* The real checkbox stays in the page for the keyboard and for screen readers;
+   what the eye sees is the box beside it. */
+[data-issue="w06"] .cliche__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+/* Without the script the boxes stay disabled: show nothing to press. */
+[data-issue="w06"] .cliche__input:disabled { cursor: default; }
+[data-issue="w06"] .cliche__input:disabled ~ .cliche__box { visibility: hidden; }
+[data-issue="w06"] .cliche:has(.cliche__input:disabled) { cursor: default; }
+
+[data-issue="w06"] .cliche:has(.cliche__input:not(:disabled)):hover {
+  background-color: color-mix(in srgb, var(--hue) 7%, var(--c-surface));
+}
+[data-issue="w06"] .cliche:has(.cliche__input:focus-visible) {
+  outline: 2px solid var(--c-text);
+  outline-offset: 3px;
+}
+
+/* Ticked: the cell is washed with the hue, the box is filled, a check is drawn
+   in it (two borders of a rotated square, so it needs no image). */
+[data-issue="w06"] .cliche:has(.cliche__input:checked) {
+  background-color: color-mix(in srgb, var(--hue) 13%, var(--c-surface));
+  border-color: color-mix(in srgb, var(--hue) 45%, var(--c-line));
+}
+[data-issue="w06"] .cliche__input:checked ~ .cliche__box {
+  background-color: var(--hue);
+  border-color: var(--hue);
+}
+[data-issue="w06"] .cliche__input:checked ~ .cliche__box::after {
+  content: "";
+  display: block;
+  width: 0.5rem;
+  height: 0.9rem;
+  margin: 0.1rem auto 0;
+  border: solid var(--c-bg);
+  border-width: 0 3px 3px 0;
+  transform: rotate(45deg);
+}
+
+@media (max-width: 40rem) {
+  [data-issue="w06"] .cliche {
+    grid-template-columns: 2.75rem minmax(0, 1fr) 1.75rem;
+    gap: var(--space-3);
+    padding: var(--space-4);
+  }
+  [data-issue="w06"] .cliche__text { font-size: 1.1875rem; }
+}
+
+/* ---------- The islands ---------- */
+[data-issue="w06"] .island {
+  display: grid;
+  gap: var(--space-6);
+  padding: var(--space-8);
+  color: var(--c-text);
+  border: var(--hairline) solid var(--c-line);
+  border-block-start: var(--rule-accent) solid var(--hue);
+}
+/* Overexposed: forced day, with a glow from the top that burns out to the
+   grey of the page's own paper. */
+[data-issue="w06"] .island--over {
+  color-scheme: light;
+  background-image: radial-gradient(110% 85% at 50% 0%, var(--c-surface), var(--c-surface-2));
+}
+/* Underexposed: forced night, with a spot from the top that dies into the dark. */
+[data-issue="w06"] .island--under {
+  color-scheme: dark;
+  background-image: radial-gradient(110% 85% at 50% 0%, var(--c-surface-2), var(--c-bg));
+}
+[data-issue="w06"] .prose > .island { margin-block: var(--space-8) 0; }
+
+/* The exposure meter: minus, a scale of thirteen ticks, plus; the marker is
+   the verdict (overrated is at plus, underrated at minus). */
+[data-issue="w06"] .island__meter {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-text);
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--c-text-muted);
+}
+[data-issue="w06"] .island__meter i {
+  position: relative;
+  flex: 1;
+  height: 1rem;
+  background-image:
+    linear-gradient(90deg, var(--c-border) var(--hairline), transparent var(--hairline)),
+    linear-gradient(90deg, transparent calc(100% - var(--hairline)), var(--c-border) calc(100% - var(--hairline)));
+  background-size: calc(100% / 12) 100%, 100% 100%;
+  background-repeat: repeat-x, no-repeat;
+  border-block-end: var(--hairline) solid var(--c-border);
+}
+[data-issue="w06"] .island__meter i::after {
+  content: "";
+  position: absolute;
+  inset-block-end: -0.4rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  background-color: var(--hue);
+  transform: translateX(-50%) rotate(45deg);
+}
+[data-issue="w06"] .island--over  .island__meter i::after { inset-inline-start: 100%; }
+[data-issue="w06"] .island--under .island__meter i::after { inset-inline-start: 0; }
+[data-issue="w06"] .island__meter { padding-block-end: var(--space-2); }
+
+[data-issue="w06"] .island__title {
+  margin: 0;
+  font-size: var(--fs-xl);
+  line-height: 0.9;
+  text-wrap: balance;
+}
+[data-issue="w06"] .island__kind {
+  display: block;
+  margin-block-end: var(--space-3);
+  font-size: var(--fs-md);
+  font-stretch: var(--stretch-ui);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--hue);
+}
+[data-issue="w06"] .island__text {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 58ch;
+}
+[data-issue="w06"] .island__text p {
+  margin: 0;
+  font-size: var(--fs-md);
+  line-height: var(--lh-text);
+}
+
+/* The stills: small pictures, each at its own size or a little under, never over */
+[data-issue="w06"] .island .stills { margin: 0; }
+[data-issue="w06"] .island .stills figcaption {
+  padding-block-start: var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  line-height: 1.3;
+  color: var(--c-text-muted);
+}
+
+/* On a phone the stills stack, each at its own size or its column's: --w (set
+   in the HTML) is the picture's own width, so a lazy one holds its place (the
+   generic rule would leave it 0px tall until the file arrives). */
+@media (max-width: 700px) {
+  [data-issue="w06"] .island .stills .stills__row img {
+    width: 100%;
+    max-width: var(--w);
+    height: auto;
+  }
+}
+
+/* The second island is the first one's mirror image. */
+@media (min-width: 52rem) {
+  [data-issue="w06"] .island--under { text-align: end; }
+  [data-issue="w06"] .island--under .island__text { margin-inline-start: auto; text-align: start; }
+  [data-issue="w06"] .island--under .stills__row { justify-content: flex-end; }
+  [data-issue="w06"] .island--under .island__meter { flex-direction: row; }
+}
+@media (max-width: 40rem) {
+  [data-issue="w06"] .island { padding: var(--space-5); }
+  [data-issue="w06"] .screen { padding: var(--space-3); }
+}
+
+@media print {
+  [data-issue="w06"] .island { background-image: none; }
+  [data-issue="w06"] .cliche__input:disabled ~ .cliche__box,
+  [data-issue="w06"] .cliche__box { visibility: visible; }
+}
+
+} /* @layer pages */

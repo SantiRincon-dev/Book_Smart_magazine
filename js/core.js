@@ -8,8 +8,8 @@
  * Everything is shared through one global, `BS`.
  *
  * It provides: DOM helpers, dates, icons, the theme toggle, the footer's
- * section legend, createTile() (the one issue component used by the home
- * shelf and the archive) and the page transition (the "curtain").
+ * section legend and team names, createTile() (the one issue component used
+ * by the home shelf and the archive) and the page transition (the "curtain").
  */
 (function () {
   'use strict';
@@ -159,7 +159,7 @@
       el('p', { class: 'meta tile__credits' },
         el('span', {}, article.author),
         el('time', { datetime: article.date }, BS.formatDateShort(article.date)),
-        el('span', {}, article.readingTime + ' min read'))
+        el('span', {}, article.readingTime + ' '))
     );
   };
 
@@ -243,6 +243,44 @@
         el('span', { class: 'legend__name' }, DATA.SECTIONS[key].label),
         el('span', { class: 'legend__count' }, n + (n === 1 ? ' issue' : ' issues')));
     }));
+  }
+
+  /**
+   * The team named at the foot of the page: a label and one name per member,
+   * read from TEAM in the manifest (js/data/articles.js) so the names are
+   * written once for every page. It joins the footer's grid before "Back to
+   * top". No names, no block.
+   */
+  function renderTeam() {
+    var team = DATA.TEAM;
+    var inner = $('.site-footer__inner');
+    if (!inner || !team || !team.members || !team.members.length) return;
+
+    inner.insertBefore(
+      el('div', { class: 'site-footer__team' },
+        el('p', { class: 'site-footer__label', id: 'team-label' }, team.label || 'Team'),
+        el('ul', { class: 'site-footer__members', role: 'list', 'aria-labelledby': 'team-label' },
+          team.members.map(function (name) { return el('li', {}, name); }))),
+      $('.site-footer__top', inner));
+  }
+
+  /**
+   * The topics of the issue being read: a second line under its section and
+   * week (the primary labels), one quiet outlined tag each, read from `tags` in
+   * the manifest (so the HTML of an issue never lists them). Each is a link to
+   * the archive filtered by that topic. The line is a labelled group, so a
+   * screen reader announces "Topics" once instead of five loose links. An
+   * unknown key is skipped rather than shown raw.
+   */
+  function renderHeaderTags() {
+    var row = $('.article-header__tags');
+    var tags = (BS.current && BS.current.tags) || [];
+    if (!row || !tags.length || !DATA.TAGS) return;
+    var links = tags.filter(function (key) { return DATA.TAGS[key]; }).map(function (key) {
+      return el('a', { class: 'pill pill--tag', href: BS.base + 'archive.html?tag=' + encodeURIComponent(key) }, DATA.TAGS[key].label);
+    });
+    if (!links.length) return;
+    row.appendChild(el('span', { class: 'article-header__topics', role: 'group', 'aria-label': 'Topics' }, links));
   }
 
   function initBackToTop() {
@@ -350,6 +388,8 @@
 
   initTheme();
   renderLegend();
+  renderTeam();
+  renderHeaderTags();
   initBackToTop();
   initTransitions();
 })();

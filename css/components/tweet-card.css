@@ -169,3 +169,19 @@ button.tweet-card__action.is-toggled svg { animation: tweet-pop 300ms var(--ease
   transition: opacity var(--t-fast);
 }
 .tweet-card__toast:not(:empty) { opacity: 1; }
+
+/* The REAL number of readers who pressed the button before it (js/live.js fills
+   it; it stays hidden until real numbers arrive). It hugs its button and takes
+   the colour of the reaction once you have pressed it yourself. */
+.tweet-card__live {
+  min-width: 1.5ch;
+  margin-inline-start: calc(var(--space-3) * -1);
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  font-stretch: var(--stretch-ui);
+  font-variant-numeric: tabular-nums;
+  color: var(--c-text-muted);
+}
+button.tweet-card__action[data-action="retweet"][aria-pressed="true"] + .tweet-card__live { color: var(--c-repost); }
+button.tweet-card__action[data-action="like"][aria-pressed="true"] + .tweet-card__live { color: var(--c-like); }

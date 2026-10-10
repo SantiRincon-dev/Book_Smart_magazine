@@ -20,10 +20,19 @@
   align-items: start;
 }
 @media (min-width: 960px) {
-  .layout-archive { grid-template-columns: 15rem minmax(0, 1fr); }
+  .layout-archive { grid-template-columns: 16.5rem minmax(0, 1fr); }
+  /* The filters stay in view while the tiles scroll. With the topics there can be
+     more of them than a screen is tall, so the sidebar scrolls inside itself
+     (rather than leaving its lower part out of reach); the padding keeps the
+     focus rings of the first and last controls from being cut by that scroll. */
   .layout-archive__sidebar {
     position: sticky;
     top: calc(var(--header-h) + var(--space-5));
+    max-height: calc(100dvh - var(--header-h) - var(--space-7));
+    padding: var(--space-1);
+    margin: calc(var(--space-1) * -1);
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 }
 
@@ -45,7 +54,10 @@
 }
 .archive-grid .tile {
   flex: var(--arv) 1 calc(var(--row-h) * var(--arv));
-  min-width: min(100%, 15rem);
+  /* Wide enough for a headline of two lines: the cards of a row share one
+     height, so one very narrow card with a three-line headline would leave a
+     void in the others. */
+  min-width: min(100%, 17rem);
   /* A row with a single tile would otherwise stretch it across the whole
      line; it may only grow to about one and a half times its own size. */
   max-width: min(100%, calc(var(--row-h) * var(--arv) * 1.45));

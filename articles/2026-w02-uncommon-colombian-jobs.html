@@ -8,7 +8,7 @@
   <meta property="og:type" content="article">
   <meta property="og:title" content="Minutes Sellers &amp; Moto-Taxis - Book Smart">
   <meta property="og:description" content="Two uncommon Colombian jobs, described from Session 2 fieldwork: minutes sellers and moto-taxi drivers.">
-  <meta property="article:published_time" content="2026-09-15">
+  <meta property="article:published_time" content="2026-09-09">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Minutes Sellers &amp; Moto-Taxis - Book Smart">
   <meta name="twitter:description" content="Two uncommon Colombian jobs, described from Session 2 fieldwork: minutes sellers and moto-taxi drivers.">
@@ -44,13 +44,14 @@
 
   <!-- Relative paths: this file sits one level below the project root -->
   <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/issues/w02.css">
   <script defer src="../js/vendor/gsap.min.js"></script>
   <script defer src="../js/vendor/ScrollTrigger.min.js"></script>
   <script defer src="../js/data/articles.js"></script>
   <script defer src="../js/core.js"></script>
   <script defer src="../js/article.js"></script>
 </head>
-<body data-base="../">
+<body data-base="../" data-issue="w02">
   <a class="skip-link" href="#content">Skip to content</a>
   <div class="reading-progress" aria-hidden="true"></div>
 
@@ -86,8 +87,7 @@
           <p class="article-header__kicker">Uncommon Colombian Jobs</p>
           <p class="meta">
             <span>Editorial Board</span>
-            <time datetime="2026-09-15">September 15, 2026</time>
-            <span>3 min read</span>
+            <time datetime="2026-09-09">September 9, 2026</time>
           </p>
         </div>
       </header>
@@ -101,79 +101,127 @@
       <div class="article-body prose">
 
 
-        <!-- ============ PROFILE 01 ============ -->
-        <article class="job-profile wide" aria-labelledby="job-01-title">
-          <div class="job-profile__head">
-            <img class="job-profile__icon" src="../assets/img/articles/w02-icon-sombrero.png"
-                 alt="" aria-hidden="true" width="130" height="109">
-            <h2 id="job-01-title" class="job-profile__title">Minutes Sellers</h2>
+        <!-- ============ LANE 1: MINUTES SELLERS ============
+             The issue is a two-lane road: one job per lane, one lane after the
+             other, with a stretch of road between them (css/issues/w02.css).
+             A lane reads: the title, the story (photo and the students' text),
+             then the job at a glance (four sign plates and the working day as a
+             24-hour strip drawn from the hours the students wrote). -->
+        <article class="lane wide" aria-labelledby="job-01-title">
+          <header class="lane__head">
+            <span class="lane__mark">
+              <img src="../assets/img/articles/w02-icon-sombrero.png"
+                   alt="" aria-hidden="true" width="130" height="109">
+            </span>
+            <h2 id="job-01-title" class="lane__title">Minutes Sellers</h2>
+          </header>
+
+          <div class="lane__story">
+            <figure class="lane__photo" style="--photo-w: 289px" data-reveal>
+              <img src="../assets/img/articles/w02-minutero.jpg"
+                   alt="A street vendor stands behind a cart shaded by a large blue umbrella, selling bagged snacks, bottled water and pay-by-the-minute phone calls under a hand-painted sign reading 'Minutos Todo Operador.'"
+                   loading="lazy" decoding="async" width="289" height="385">
+              <figcaption>A minute seller's cart: rental phones and snacks for sale.</figcaption>
+            </figure>
+
+            <div class="lane__text">
+              <p>
+                The minute seller is an informal vendor who provides public phone calls to
+                people. They usually work in different places such as corners, restaurants
+                or they have their own shop. Moreover, their working hours are quite
+                flexible because they can work whenever they want. Nevertheless, they used
+                to work at peak hours (6 am to 8am and 5 pm to 7pm). It could be an unusual
+                job for foreigners because they normally have their own cellphones to call
+                everywhere. Besides, it is not a remarkable well-paid job, due to the low
+                cost for a minute in a call. Indeed, most mobile companies have decided to
+                devalue the price for calls, while keeping the high cost of mobile data.
+              </p>
+            </div>
           </div>
 
-          <figure class="job-profile__media">
-            <img src="../assets/img/articles/w02-minutero.jpg"
-                 alt="A street vendor stands behind a cart shaded by a large blue umbrella, selling bagged snacks, bottled water and pay-by-the-minute phone calls under a hand-painted sign reading 'Minutos Todo Operador.'"
-                 loading="lazy" decoding="async" width="289" height="385">
-            <figcaption>A minute seller's cart: rental phones and snacks for sale.</figcaption>
-          </figure>
-
-          <dl class="job-profile__stats">
+          <dl class="lane__plates">
             <div><dt>Category</dt><dd>Informal vendor</dd></div>
             <div><dt>Location</dt><dd>Corners, restaurants, or their own shop</dd></div>
             <div><dt>Hours</dt><dd>Flexible; peak 6-8 am &amp; 5-7 pm</dd></div>
             <div><dt>Pay</dt><dd>Not well paid (low cost per call)</dd></div>
           </dl>
 
-          <div class="job-profile__body">
-            <p>
-              The minute seller is an informal vendor who provides public phone calls to
-              people. They usually work in different places such as corners, restaurants
-              or they have their own shop. Moreover, their working hours are quite
-              flexible because they can work whenever they want. Nevertheless, they used
-              to work at peak hours (6 am to 8am and 5 pm to 7pm). It could be an unusual
-              job for foreigners because they normally have their own cellphones to call
-              everywhere. Besides, it is not a remarkable well-paid job, due to the low
-              cost for a minute in a call. Indeed, most mobile companies have decided to
-              devalue the price for calls, while keeping the high cost of mobile data.
-            </p>
+          <!-- The Hours plate drawn: 24 columns, one per hour, midnight on the
+               left. The tint is the flexible day, the solid marks are the peaks.
+               Decorative (aria-hidden): the same hours are in the plate above. -->
+          <div class="clock" data-clock aria-hidden="true">
+            <div class="clock__bar">
+              <span class="clock__span clock__span--flex">Flexible</span>
+              <span class="clock__span" style="--from: 7; --to: 9">6-8 am</span>
+              <span class="clock__span" style="--from: 18; --to: 20">5-7 pm</span>
+            </div>
+            <ol class="clock__ticks" role="list">
+              <li style="--at: 0">12 am</li>
+              <li style="--at: 1">6 am</li>
+              <li style="--at: 2">12 pm</li>
+              <li style="--at: 3">6 pm</li>
+              <li style="--at: 4">12 am</li>
+            </ol>
           </div>
         </article>
 
-        <!-- ============ PROFILE 02 ============ -->
-        <article class="job-profile wide job-profile--reverse" aria-labelledby="job-02-title">
-          <div class="job-profile__head">
-            <img class="job-profile__icon" src="../assets/img/articles/w02-icon-flag.png"
-                 alt="" aria-hidden="true" width="203" height="176">
-            <h2 id="job-02-title" class="job-profile__title">Moto-Taxis</h2>
+        <!-- The road between the two lanes: two edges and a dashed centre line. -->
+        <div class="road wide" aria-hidden="true" data-reveal></div>
+
+        <!-- ============ LANE 2: MOTO-TAXIS ============ -->
+        <article class="lane lane--reverse wide" aria-labelledby="job-02-title">
+          <header class="lane__head">
+            <span class="lane__mark">
+              <img src="../assets/img/articles/w02-icon-flag.png"
+                   alt="" aria-hidden="true" width="203" height="176">
+            </span>
+            <h2 id="job-02-title" class="lane__title">Moto-Taxis</h2>
+          </header>
+
+          <div class="lane__story">
+            <figure class="lane__photo" style="--photo-w: 635px" data-reveal>
+              <img src="../assets/img/articles/w02-bicitaxi.jpg"
+                   alt="A three-wheeled taxi with a covered passenger bench and a large cardboard box strapped on top, moving through city traffic alongside cars and other cyclists."
+                   loading="lazy" decoding="async" width="635" height="635">
+              <figcaption>A three-wheeled taxi carrying a passenger and cargo through traffic.</figcaption>
+            </figure>
+
+            <div class="lane__text">
+              <p>
+                The MOTO-TAXI is an informal transport job for people who need to move
+                quickly in short distances. You could find these drivers in different
+                places in Colombia, for instance in the Caribbean region and some specific
+                places in cities like Bogot&aacute;. If you want to take a ride, they are
+                usually located close to the transmilenio stations, from 6 am to 8 pm. This
+                job would be odd for foreigners because in the USA these kinds of bikes are
+                meant for going around the city. Talking about their salary, it depends on
+                how many rides they do every day, taking into account that each ride may
+                cost around 1500 to 3000 Colombian pesos. It is said this is not well paid.
+              </p>
+            </div>
           </div>
 
-          <figure class="job-profile__media job-profile__media--square">
-            <img src="../assets/img/articles/w02-bicitaxi.jpg"
-                 alt="A three-wheeled taxi with a covered passenger bench and a large cardboard box strapped on top, moving through city traffic alongside cars and other cyclists."
-                 loading="lazy" decoding="async" width="635" height="635">
-            <figcaption>A three-wheeled taxi carrying a passenger and cargo through traffic.</figcaption>
-          </figure>
-
-          <dl class="job-profile__stats">
+          <dl class="lane__plates">
             <div><dt>Category</dt><dd>Informal transport</dd></div>
             <div><dt>Location</dt><dd>Caribbean region &amp; Bogot&aacute;, near transmilenio stations</dd></div>
             <div><dt>Hours</dt><dd>6 am-8 pm</dd></div>
             <div><dt>Pay</dt><dd>~1,500-3,000 COP/ride; not well paid</dd></div>
           </dl>
 
-          <div class="job-profile__body">
-            <p>
-              The MOTO-TAXI is an informal transport job for people who need to move
-              quickly in short distances. You could find these drivers in different
-              places in Colombia, for instance in the Caribbean region and some specific
-              places in cities like Bogot&aacute;. If you want to take a ride, they are
-              usually located close to the transmilenio stations, from 6 am to 8 pm. This
-              job would be odd for foreigners because in the USA these kinds of bikes are
-              meant for going around the city. Talking about their salary, it depends on
-              how many rides they do every day, taking into account that each ride may
-              cost around 1500 to 3000 Colombian pesos. It is said this is not well paid.
-            </p>
+          <div class="clock" data-clock aria-hidden="true">
+            <div class="clock__bar">
+              <span class="clock__span" style="--from: 7; --to: 21">6 am-8 pm</span>
+            </div>
+            <ol class="clock__ticks" role="list">
+              <li style="--at: 0">12 am</li>
+              <li style="--at: 1">6 am</li>
+              <li style="--at: 2">12 pm</li>
+              <li style="--at: 3">6 pm</li>
+              <li style="--at: 4">12 am</li>
+            </ol>
           </div>
         </article>
+
         <!-- The previous / next issue and the archive. Built by js/article.js from
              the manifest, so publishing a new issue never means editing this one. -->
         <nav class="article-nav" aria-label="Elsewhere" data-article-nav>

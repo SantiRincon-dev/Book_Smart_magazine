@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!-- Source of assets/img/articles/w05-cover.png: the issue's three comic strips,
+     untouched, each in the same frame as in the article, side by side on a
+     TRANSPARENT background in the night tones, so the cover sits on the tile's
+     mat in either theme. Render it with a transparent screenshot of a 1600x1000
+     viewport (for example puppeteer's page.screenshot({ omitBackground: true })),
+     then run tools/make-thumbs.py to refresh the thumbnail. -->
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <title>Week 05 cover</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    html { background: transparent; }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      width: 1600px;
+      height: 1000px;
+      overflow: hidden;
+      background: transparent;
+    }
+    /* No film grain on a cover: it would speckle the transparent areas. */
+    body::before, body::after { content: none; }
+
+    /* The same frame as a figure in the article (css/layout/article.css). */
+    .print {
+      flex: none;
+      padding: var(--mat);
+      background-color: var(--c-surface);
+      border: var(--hairline) solid var(--c-line);
+      border-block-start: var(--rule-accent) solid var(--hue);
+      box-shadow: inset 0 1px 0 var(--c-edge);
+    }
+    .print img { display: block; height: auto; }
+
+    /* Strip 2 (tall, black and white) | strip 1 (wide, colour) | strip 3 (tall,
+       black and white): staggered heights, nothing overlaps, nothing is cropped. */
+    .print--left   { transform: translateY(46px); }
+    .print--left img   { width: 352px; }
+    .print--middle img { width: 640px; }
+    .print--right  { transform: translateY(-26px); }
+    .print--right img  { width: 430px; }
+  </style>
+</head>
+<body data-section="politics">
+  <figure class="print print--left"><img src="../assets/img/articles/w05-comic-2.png" alt=""></figure>
+  <figure class="print print--middle"><img src="../assets/img/articles/w05-comic-1.png" alt=""></figure>
+  <figure class="print print--right"><img src="../assets/img/articles/w05-comic-3.png" alt=""></figure>
+</body>
+</html>
