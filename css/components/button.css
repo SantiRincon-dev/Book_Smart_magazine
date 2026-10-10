@@ -1,0 +1,59 @@
+/* [hidden] would otherwise lose to the display below: a browser-default
+   style never outranks an author one, no matter the specificity. */
+.btn[hidden] { display: none; }
+
+/* A button is a block of text colour: solid by default (bone at night,
+   graphite by day), it empties on hover. Corners are square: structure is
+   square, only labels are round. The press is a 1px drop, so it feels
+   physical. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7em;
+  min-height: 3rem;
+  padding: 0.85rem 1.5rem;
+  font-family: var(--font-display);
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  font-stretch: var(--stretch-ui);
+  line-height: 1;
+  color: var(--c-bg);
+  background-color: var(--c-text);
+  border: var(--rule) solid var(--c-text);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--t-fast), color var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
+}
+.btn:hover {
+  background-color: transparent;
+  color: var(--c-text);
+}
+.btn:active { transform: translateY(1px); }
+
+.btn svg {
+  flex: none;
+  width: 1.25em;
+  height: 1.25em;
+  fill: currentColor;
+  transition: transform var(--t-base);
+}
+.btn:hover svg { transform: translateX(0.2em); }
+
+.btn--ghost {
+  color: var(--c-text);
+  background-color: transparent;
+  border-color: var(--c-border);
+}
+.btn--ghost:hover {
+  color: var(--c-bg);
+  background-color: var(--c-text);
+  border-color: var(--c-text);
+}
+
+.btn--icon {
+  width: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0;
+}
+.btn--icon:hover svg { transform: none; }

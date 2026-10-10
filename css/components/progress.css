@@ -1,0 +1,16 @@
+/* Reading progress (article pages): a thin line in the issue's hue across the
+   very top of the screen that fills as the reader goes down the page. js/article.js
+   gives it the article's data-section (the bar sits outside the <article>) so it
+   picks up the same --hue; it is scaled by ScrollTrigger, never by a scroll
+   listener, and only transform changes, so it costs no layout. */
+.reading-progress {
+  position: fixed;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: calc(var(--z-header) + 1);
+  height: 3px;
+  background-color: var(--hue);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}

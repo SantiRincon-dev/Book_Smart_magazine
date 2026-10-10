@@ -1,0 +1,384 @@
+/* ============================================================
+   ARTICLE PAGE: header and body.
+
+   The header is a band of SURFACE (a tone off the canvas) with the week numeral
+   at poster size in its top-right corner, set in the issue's hue (drawn from
+   data-week, so there is nothing to type twice), the headline in the sign face
+   under it, the topic and the standfirst, a hairline of credits, and the hue
+   again as one 2px line along the band's bottom edge. The section and the week
+   are pills. Nothing in it overlaps and nothing is a block of solid colour.
+
+   The body is the reading column of the .prose grid (see grid.css): a text
+   serif at a comfortable measure, with figures that leave the column on one
+   side, alternating, each a card with the hue as its top line. Every word in
+   the body is the students'; this file only gives it a place to sit.
+   ============================================================ */
+
+/* ---------- Header ---------- */
+.article-header {
+  --num: var(--fs-num);
+  position: relative;
+  padding-block: var(--space-6) var(--space-7);
+  overflow: clip;
+  background-color: var(--c-surface);
+  border-block-end: var(--rule-accent) solid var(--hue);
+  box-shadow: inset 0 1px 0 var(--c-edge);
+}
+/* The numeral sits in the top-right corner of the header's padding box, level
+   with the tag row, which is held open to exactly its height (below), so the
+   headline starts underneath it and never touches it. */
+.article-header::before {
+  content: attr(data-week);
+  position: absolute;
+  inset-block-start: var(--space-6);
+  /* the same right edge as the page container, however wide the window is */
+  inset-inline-end: max(var(--gutter), calc((100% - var(--w-max)) / 2 + var(--gutter)));
+  font-family: var(--font-display);
+  font-size: var(--num);
+  font-weight: 800;
+  font-stretch: var(--stretch-display);
+  font-variant-numeric: lining-nums;
+  line-height: 0.74;
+  letter-spacing: -0.01em;
+  color: var(--hue);
+  pointer-events: none;
+}
+
+.article-header__inner {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--space-5);
+  max-width: var(--w-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+.article-header__inner > * { grid-column: 1 / -1; }
+
+.article-header__tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: var(--space-2);
+  min-height: calc(var(--num) * 0.74);
+  padding-inline-end: calc(var(--num) * 1.5);     /* keep the tags clear of the numeral */
+}
+.article-header h1 {
+  margin-block-start: var(--space-5);
+  font-size: var(--fs-h1);
+  line-height: 0.88;
+}
+
+.article-header__kicker {
+  margin-block-start: var(--space-6);
+  font-size: var(--fs-md);
+  font-style: italic;
+  font-weight: 500;
+  line-height: var(--lh-snug);
+  color: var(--c-text-soft);
+}
+.article-header .lede {
+  margin-block-start: var(--space-4);
+  max-width: 40ch;
+  color: var(--c-text-soft);
+}
+@media (min-width: 900px) {
+  .article-header__kicker { grid-column: 1 / span 5; }
+  .article-header .lede { grid-column: 6 / span 6; margin-block-start: var(--space-5); }
+}
+
+.article-header .meta {
+  margin-block-start: var(--space-7);
+  padding-block-start: var(--space-3);
+  border-block-start: var(--rule) solid var(--c-line);
+  font-size: var(--fs-ui);
+  color: var(--c-text-muted);
+}
+
+/* The entrance, the page's one orchestrated moment, in plain CSS so it needs
+   no script: the headline wipes up from its baseline and the rest of the
+   header fades in under it. If the reader arrived through the colour curtain
+   (html.is-arriving, set by the head script), everything waits for the curtain
+   to lift first (0.8s, see js/core.js). */
+:root.is-arriving { --enter-delay: 0.8s; }
+
+.article-header h1 {
+  animation: title-rise 1s var(--ease-out) both;
+  animation-delay: var(--enter-delay, 0s);
+}
+.article-header__inner > :not(h1) {
+  animation: header-fade 0.7s var(--ease-out) both;
+  animation-delay: calc(var(--enter-delay, 0s) + 0.35s);
+}
+@keyframes title-rise {
+  /* negative insets leave room for the descenders and the tall ascenders */
+  from { clip-path: inset(0 0 100% 0); transform: translateY(0.2em); }
+  to   { clip-path: inset(-0.2em 0 -0.2em 0); }
+}
+@keyframes header-fade {
+  from { opacity: 0; transform: translateY(1rem); }
+}
+
+/* ---------- Body ---------- */
+.article-body { padding-block: var(--space-8) var(--space-9); }
+
+.article-body h2 { font-size: var(--fs-lg); }
+
+/* Plain lists inside the text. Lists that are components (role="list": the
+   tweet wall, the gallery) style themselves. */
+.article-body :is(ul, ol):not([role="list"]) {
+  display: grid;
+  gap: var(--space-2);
+  padding-inline-start: 1.25em;
+}
+.article-body li::marker { color: var(--hue); }
+
+/* In-text links: an underline in the hue that fills with a faint tint of it on
+   hover. */
+.article-body p a {
+  text-decoration-color: var(--hue);
+  text-decoration-thickness: 0.12em;
+  text-underline-offset: 0.16em;
+  transition: background-color var(--t-fast);
+}
+.article-body p a:hover {
+  background-color: color-mix(in srgb, var(--hue) 18%, transparent);
+}
+
+/* Opening drop cap: one giant letter in the sign face, in the hue. */
+.dropcap::first-letter {
+  float: left;
+  margin: 0.04em 0.08em 0 -0.02em;
+  font-family: var(--font-display);
+  font-size: 5.4em;
+  font-weight: 800;
+  font-stretch: var(--stretch-display);
+  line-height: 0.72;
+  color: var(--hue);
+}
+
+/* Pull-quotes leave the reading column to the right edge. */
+.prose > blockquote {
+  grid-column: content-start / full-end;
+  padding-inline-end: var(--gutter);
+  margin-block: var(--space-7);
+  border-block-start-color: var(--hue);
+}
+
+/* ---------- Figures ----------
+   A figure is a print in a frame: the image at its real size (never scaled up,
+   the covers are small files) on a surface, with the caption under it and the
+   issue's hue as one line across the top. It leaves the reading column on one
+   side and the next one on the other, so the page zig-zags without a single
+   overlap. */
+.prose > figure {
+  grid-column: content-start / full-end;
+  justify-self: start;
+  max-width: 100%;
+  width: auto;
+  margin-inline: 0;
+  padding: var(--mat);
+  background-color: var(--c-surface);
+  border: var(--hairline) solid var(--c-line);
+  border-block-start: var(--rule-accent) solid var(--hue);
+  box-shadow: inset 0 1px 0 var(--c-edge);
+}
+.prose > figure:nth-of-type(even) {
+  grid-column: full-start / content-end;
+  justify-self: end;
+}
+.prose > figure img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+.prose > figure figcaption {
+  padding-block-start: var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  line-height: 1.3;
+  color: var(--c-text-muted);
+}
+@media (max-width: 700px) {
+  .prose > figure,
+  .prose > figure:nth-of-type(even) {
+    grid-column: content;
+    justify-self: stretch;
+  }
+}
+
+/* ---------- Closing doors: the previous and next issue ----------
+   Generated from the manifest (js/article.js), so publishing an issue never
+   needs an edit to an older article. Each door draws its destination's hue as a
+   line across its top; the label is small, the destination is the sign face at
+   headline size, and hover washes the door with a faint tint of that hue,
+   growing from the exact point the pointer entered. */
+.prose > .article-nav {
+  grid-column: full;
+  width: 100%;
+  max-width: var(--w-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  margin-block-start: var(--space-10);
+}
+.article-nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: var(--space-4);
+}
+
+.door {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-6);
+  min-height: 14rem;
+  padding: var(--space-5);
+  overflow: hidden;
+  color: var(--c-text);
+  text-decoration: none;
+  background-color: var(--c-surface);
+  border: var(--hairline) solid var(--c-line);
+  border-block-start: var(--rule-accent) solid var(--hue);
+  box-shadow: inset 0 1px 0 var(--c-edge);
+  transition: color var(--t-fast);
+}
+.door::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: color-mix(in srgb, var(--hue) 14%, var(--c-surface));
+  clip-path: circle(0% at var(--ox, 50%) var(--oy, 50%));
+  transition: clip-path 600ms var(--ease-out);
+}
+.door:hover::before,
+.door:focus-visible::before { clip-path: circle(150% at var(--ox, 50%) var(--oy, 50%)); }
+.door:hover .door__title,
+.door:focus-visible .door__title { color: var(--hue); }
+
+.door__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  font-stretch: var(--stretch-ui);
+  color: var(--c-text-soft);
+}
+.door__top svg { flex: none; width: 1.5rem; height: 1.5rem; fill: currentColor; }
+.door__title,
+.door__week { display: block; }
+.door__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-tile);
+  font-weight: 800;
+  font-stretch: var(--stretch-display);
+  line-height: 0.94;
+  text-wrap: balance;
+  transition: color var(--t-base);
+}
+.door__week {
+  margin-block-start: var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--fs-ui);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  color: var(--c-text-muted);
+}
+
+/* ---------- Job profile feature (Week 02) ----------
+   Two profiles, each a photo in a frame beside its stats and its text,
+   alternating sides on wide screens and one column on narrow ones. It lives
+   here, not in components/, because like the drop cap and the doors it is
+   article-body layout, not a widget used across the site. */
+.job-profile {
+  display: grid;
+  gap: var(--space-5);
+}
+@media (min-width: 880px) {
+  .job-profile {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-areas:
+      "media head"
+      "media stats"
+      "media body";
+    column-gap: var(--space-8);
+    align-items: start;
+  }
+  .job-profile--reverse {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    grid-template-areas:
+      "head media"
+      "stats media"
+      "body media";
+  }
+  /* Named areas only exist from here up; on a phone the parts simply stack. */
+  .job-profile__head  { grid-area: head; }
+  .job-profile__stats { grid-area: stats; }
+  .job-profile__body  { grid-area: body; }
+  .job-profile__media { grid-area: media; }
+}
+.job-profile + .job-profile { margin-block-start: var(--space-9); }
+
+.job-profile__icon {
+  width: auto;
+  height: 4.5rem;
+  margin-block-end: var(--space-3);
+}
+.job-profile__title { font-size: var(--fs-xl); }
+
+.job-profile__media {
+  justify-self: start;
+  width: 100%;
+  max-width: 23rem;
+  margin: 0;
+  padding: var(--mat);
+  background-color: var(--c-surface);
+  border: var(--hairline) solid var(--c-line);
+  border-block-start: var(--rule-accent) solid var(--hue);
+  box-shadow: inset 0 1px 0 var(--c-edge);
+}
+.job-profile--reverse .job-profile__media { justify-self: end; }
+.job-profile__media img { width: 100%; height: auto; }
+.job-profile__media figcaption {
+  padding-block-start: var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  line-height: 1.3;
+  color: var(--c-text-muted);
+}
+
+/* The facts are set between two fine lines in the hue. */
+.job-profile__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--space-4) var(--space-5);
+  margin: 0;
+  padding-block: var(--space-4);
+  border-block: var(--hairline) solid var(--hue);
+}
+.job-profile__stats > div { display: flex; flex-direction: column; gap: var(--space-1); }
+.job-profile__stats dt {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  font-stretch: var(--stretch-ui);
+  color: var(--c-text-muted);
+}
+.job-profile__stats dd {
+  margin: 0;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.job-profile__body p { max-width: 60ch; }

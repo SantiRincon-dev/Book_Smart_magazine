@@ -1,0 +1,89 @@
+/* Modern, minimal reset. It normalises, and it sets the few things every
+   page of this magazine shares: the page colour, the film grain, the
+   selection and the focus ring. (No global smooth scroll: it would animate
+   every programmatic scroll and fight the scroll-driven motion on the home
+   page.) */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+* { margin: 0; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  background-color: var(--c-bg);       /* so overscroll never flashes the wrong edition */
+  scroll-padding-top: calc(var(--header-h) + var(--space-4));
+  scrollbar-color: var(--c-text-muted) var(--c-bg);
+  font-synthesis: none;                /* never let the browser fake a weight or a slant */
+}
+
+body {
+  min-height: 100dvh;
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--font-text);
+  font-size: var(--fs-base);
+  line-height: var(--lh-text);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;                    /* clip, not hidden: the sticky header keeps working */
+}
+
+/* Film grain: the flat tones of the canvas get a little tooth. Two fixed,
+   click-through layers holding a static tile of noise (white speckle for the
+   night, black for the day); only one of them is visible at a time. Fixed and
+   never animated, so they cost one composited layer and no repaint while the
+   page scrolls. */
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-grain);
+  pointer-events: none;
+  opacity: 0;
+}
+body::before { background-image: var(--noise-white); }
+body::after  { background-image: var(--noise-black); opacity: 0.035; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body::before { opacity: 0.045; }
+  :root:not([data-theme="light"]) body::after  { opacity: 0; }
+}
+:root[data-theme="dark"] body::before { opacity: 0.045; }
+:root[data-theme="dark"] body::after  { opacity: 0; }
+
+img, picture, svg, video { display: block; max-width: 100%; height: auto; }
+
+input, button, textarea, select { font: inherit; color: inherit; }
+
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+
+ul[role="list"], ol[role="list"] { list-style: none; padding: 0; }
+
+a {
+  color: inherit;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.2em;
+}
+
+/* The ring takes the colour of the text it sits next to, so it is legible on
+   the day canvas, on the night canvas and on every surface. */
+:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}
+
+::selection {
+  background-color: var(--c-text);
+  color: var(--c-bg);
+}
+
+/* Reduced motion: every animation and transition finishes at once, and the
+   delays that stagger the entrances are dropped, so nothing waits invisible. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

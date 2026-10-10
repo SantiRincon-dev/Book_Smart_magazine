@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<!-- =========================================================
+     ARTICLE TEMPLATE: Book Smart
+     Copy to /articles/2026-wNN-slug.html and fill in every [[ ]].
+     Keep the section comments: they are the guide for the team.
+
+     Three things in the header drive the whole look, so set them right:
+       data-section  a key of SECTIONS (js/data/articles.js):
+                     current-events | politics | education | history
+                     -> the issue's hue: the header's numeral and rule, the
+                        pills, the line over each picture, and the issue's tile
+                        on the home page. Colour is only ever a line, a pill or
+                        type, never a block: the page stays the dark (or pale)
+                        canvas.
+       data-week     the week number, two digits ("05")
+                     -> becomes the huge numeral in the header's top-right corner
+       <article data-section>  the same key again: it colours the body too
+     Then add the matching object at the TOP of ARTICLES in the manifest.
+     Nothing needs to be built: open the page by double click to check it.
+     ========================================================= -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[[TITLE]] - Book Smart</title>
+  <meta name="description" content="[[ONE-SENTENCE STANDFIRST]]">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="[[TITLE]] - Book Smart">
+  <meta property="og:description" content="[[ONE-SENTENCE STANDFIRST]]">
+  <meta property="article:published_time" content="[[YYYY-MM-DD]]">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="[[TITLE]] - Book Smart">
+  <meta name="twitter:description" content="[[ONE-SENTENCE STANDFIRST]]">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#ecece9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#18181a" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+
+  <!-- Runs before the first paint, on every page:
+       1. applies a saved light/dark choice, so nobody sees a flash of the wrong one;
+       2. if the reader just clicked an issue, puts that issue's colour over the page
+          (the arriving half of the page transition, see css/components/curtain.css)
+          and flags the page as arriving, so its entrance waits for the curtain. -->
+  <script>
+    (function (d) {
+      try {
+        var t = localStorage.getItem('magazine:theme');
+        if (t === 'light' || t === 'dark') d.dataset.theme = t;
+      } catch (e) {}
+      try {
+        var n = JSON.parse(sessionStorage.getItem('bs:nav') || 'null');
+        sessionStorage.removeItem('bs:nav');
+        if (n && n.hue && Date.now() - n.t < 6000) {
+          var c = d.appendChild(document.createElement('div'));
+          c.className = 'curtain curtain--arriving';
+          c.setAttribute('aria-hidden', 'true');
+          c.style.backgroundColor = n.hue;
+          d.classList.add('is-arriving');
+        }
+      } catch (e) {}
+    })(document.documentElement);
+  </script>
+
+  <!-- Relative paths: this file sits one level below the project root.
+       Classic scripts, in this order: no ES modules, so the page works when
+       opened by double click. -->
+  <link rel="stylesheet" href="../css/main.css">
+  <script defer src="../js/vendor/gsap.min.js"></script>
+  <script defer src="../js/vendor/ScrollTrigger.min.js"></script>
+  <script defer src="../js/data/articles.js"></script>
+  <script defer src="../js/core.js"></script>
+  <script defer src="../js/article.js"></script>
+</head>
+<body data-base="../">
+  <a class="skip-link" href="#content">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="../index.html">Book Smart</a>
+      <div class="site-header__tools">
+        <!-- Global routes only. Never add a category link here. -->
+        <nav aria-label="Main">
+          <ul class="nav" role="list">
+            <li><a class="nav__link" href="../index.html">Home</a></li>
+            <li><a class="nav__link" href="../archive.html">Archive</a></li>
+          </ul>
+        </nav>
+        <button class="btn btn--ghost btn--icon" data-theme-toggle type="button" aria-label="Switch theme"></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="content">
+    <article data-section="[[current-events|politics|education|history]]">
+
+      <!-- ============ ARTICLE HEADER ============
+           The issue's masthead, on a surface a little lighter than the page, with
+           the hue in the huge numeral and in the rule under it. Order matters:
+           pills, headline, topic, (optional) standfirst, credits. Delete the
+           <p class="lede"> if the issue has none. The section pill is a label,
+           not a link: sections are a filter state on the archive, never a
+           separate page. -->
+      <header class="article-header" data-section="[[current-events|politics|education|history]]" data-week="[[NN]]">
+        <div class="article-header__inner">
+          <p class="article-header__tags">
+            <span class="pill">[[SECTION NAME]]</span>
+            <span class="pill pill--neutral">Week [[NN]]</span>
+          </p>
+          <h1>[[TITLE]]</h1>
+          <p class="article-header__kicker">[[TOPIC, a few words]]</p>
+          <p class="lede">[[STANDFIRST: one or two sentences]]</p>
+          <p class="meta">
+            <span>[[AUTHOR]]</span>
+            <time datetime="[[YYYY-MM-DD]]">[[READABLE DATE, e.g. October 6, 2026]]</time>
+            <span>[[N]] min read</span>
+          </p>
+        </div>
+      </header>
+
+      <!-- ============ ARTICLE BODY ============
+           .prose is a content grid: every child lands in the reading column
+           by default (a text serif, about 66 characters wide). The students'
+           words go here exactly as they wrote them: do not correct them. -->
+      <div class="article-body prose">
+
+        <section>
+          <!-- .dropcap sets the first letter as a giant sign-face capital -->
+          <p class="dropcap">[[OPENING PARAGRAPH]]</p>
+          <p>[[...]]</p>
+        </section>
+
+        <h2>[[SUBHEADING]]</h2>
+        <p>[[...]]</p>
+
+        <!-- Optional: a picture. Direct figure children of .prose are framed
+             like a print: a surface with a line of the issue's hue across the
+             top, the image at its real size (never scaled up) and the caption
+             inside the frame. They alternate sides: the first leaves the column
+             to the right, the second to the left. Give the <img> its real width
+             and height. If the picture contains text, put that text in the
+             alt. -->
+        <!--
+        <figure>
+          <img src="../assets/img/articles/[[file]]" alt="[[REAL DESCRIPTION]]"
+               width="[[W]]" height="[[H]]" loading="lazy" decoding="async">
+          <figcaption>[[CAPTION]]</figcaption>
+        </figure>
+        -->
+
+        <!-- Optional: a quote lifted word for word from the students' text. -->
+        <!--
+        <blockquote>[[QUOTE]]</blockquote>
+        -->
+
+        <!-- Optional: image gallery with a click-to-zoom lightbox (pairs with the
+             <dialog class="lightbox"> at the end of <main>). -->
+        <!--
+        <ol class="gallery wide" data-gallery role="list">
+          <li>
+            <figure class="gallery__item">
+              <button class="gallery__trigger" type="button" aria-label="Enlarge image 1">
+                <img class="gallery__img" src="../assets/[[folder]]/[[file]]"
+                     alt="[[REAL DESCRIPTION OF THE IMAGE]]" loading="lazy" decoding="async">
+              </button>
+              <figcaption class="gallery__caption">[[CAPTION]]</figcaption>
+            </figure>
+          </li>
+        </ol>
+        -->
+
+        <!-- Other blocks that already exist (copy them from the issue that uses them):
+               mock social-media posts   Week 01  (css/components/tweet-card.css)
+               two job profiles          Week 02  (.job-profile in css/layout/article.css)
+               a finished ad, uncropped  Week 03  (a plain figure)
+               an infographic + polls    Week 04  (css/components/versus.css) -->
+
+        <!-- The previous / next issue and the archive. Built by js/article.js from
+             the manifest, so publishing a new issue never means editing this one.
+             Leave it as is. -->
+        <nav class="article-nav" aria-label="Elsewhere" data-article-nav>
+          <noscript>
+            <a class="door" href="../archive.html">
+              <span class="door__top">Archive</span>
+              <span class="door__title">Every issue this semester</span>
+            </a>
+          </noscript>
+        </nav>
+
+      </div>
+    </article>
+  </main>
+
+  <!-- Only needed if the page uses a gallery -->
+  <!--
+  <dialog class="lightbox" id="lightbox" aria-label="Enlarged image">
+    <img id="lightbox-img" src="" alt="">
+    <div class="lightbox__bar">
+      <button type="button" data-lightbox-prev>Previous</button>
+      <span id="lightbox-label"></span>
+      <button type="button" data-lightbox-next>Next</button>
+      <button type="button" data-lightbox-close>Close</button>
+    </div>
+  </dialog>
+  -->
+
+  <footer class="site-footer">
+    <nav class="legend" aria-label="Sections" data-legend>
+      <noscript><a class="legend__item" href="../archive.html"><span class="legend__name">Browse by section</span></a></noscript>
+    </nav>
+    <div class="container site-footer__inner">
+      <p class="site-footer__name">Book Smart</p>
+      <p class="site-footer__info">Intensive English III<br>Universidad Nacional de Colombia, Bogot&aacute;<br>Semester 2026-2</p>
+      <a class="site-footer__top" href="#top" data-top>Back to top</a>
+    </div>
+  </footer>
+</body>
+</html>

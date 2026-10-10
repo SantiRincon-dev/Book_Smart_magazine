@@ -1,0 +1,44 @@
+/* ============================================================
+   MAIN.CSS: this file contains NO styles.
+   It only declares the order of the cascade. It is the index of the
+   project: to add a component, create its file and add one line in
+   section 3.
+
+   The layers make the order explicit: a rule in a later layer wins over
+   a rule in an earlier one whatever its specificity, so selectors never
+   have to fight each other.
+   ============================================================ */
+
+@layer reset, base, layout, components, pages, utilities;
+
+/* 1. Foundations. fonts.css is generated (tools/make-fonts.py) and holds both
+      typefaces as base64, so the site works from a double click. Tokens come
+      first: every other file reads them. */
+@import url("fonts.css");
+@import url("base/tokens.css");
+@import url("base/reset.css") layer(reset);
+@import url("base/typography.css") layer(base);
+
+/* 2. Page structure */
+@import url("layout/grid.css") layer(layout);
+@import url("layout/header.css") layer(layout);
+@import url("layout/footer.css") layer(layout);
+
+/* 3. Reusable components */
+@import url("components/button.css") layer(components);
+@import url("components/pill.css") layer(components);
+@import url("components/tile.css") layer(components);
+@import url("components/filters.css") layer(components);
+@import url("components/progress.css") layer(components);
+@import url("components/curtain.css") layer(components);
+@import url("components/tweet-card.css") layer(components);
+@import url("components/versus.css") layer(components);
+@import url("components/gallery.css") layer(components);
+
+/* 4. Pages: what only one kind of page needs */
+@import url("layout/article.css") layer(pages);
+@import url("pages/home.css") layer(pages);
+@import url("pages/archive.css") layer(pages);
+
+/* 5. Utilities (last, so they can win the cascade) */
+@import url("utils/helpers.css") layer(utilities);

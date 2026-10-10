@@ -1,0 +1,76 @@
+/* ============================================================
+   ARCHIVE
+   The same tile as the shelf, laid out as a justified contact sheet: every
+   cover in a row gets a width in proportion to its real shape, so rows come
+   out at nearly one height with no cropping and the issues stay in order
+   (newest first, or whichever sort is chosen).
+   ============================================================ */
+
+.archive-head {
+  padding-block: var(--space-7) var(--space-6);
+}
+.archive-head__title {
+  font-size: var(--fs-hero);
+  line-height: 0.8;
+}
+
+.layout-archive {
+  display: grid;
+  gap: var(--space-7);
+  align-items: start;
+}
+@media (min-width: 960px) {
+  .layout-archive { grid-template-columns: 15rem minmax(0, 1fr); }
+  .layout-archive__sidebar {
+    position: sticky;
+    top: calc(var(--header-h) + var(--space-5));
+  }
+}
+
+.layout-archive__results-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-block-end: var(--space-6);
+}
+
+.archive-grid {
+  --row-h: 17rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;                /* the cards of a row share one height */
+  gap: var(--space-8) var(--space-6);
+}
+.archive-grid .tile {
+  flex: var(--arv) 1 calc(var(--row-h) * var(--arv));
+  min-width: min(100%, 15rem);
+  /* A row with a single tile would otherwise stretch it across the whole
+     line; it may only grow to about one and a half times its own size. */
+  max-width: min(100%, calc(var(--row-h) * var(--arv) * 1.45));
+}
+.archive-grid .tile__img {
+  height: auto;
+  aspect-ratio: var(--arv);
+}
+/* On a narrower page the rows are a little lower, so two tiles still fit side by side. */
+@media (max-width: 1200px) {
+  .archive-grid { --row-h: 14rem; column-gap: var(--space-5); }
+}
+/* On a phone every issue is a card of the full width: a card is a visible
+   surface now, so a narrow one with a gap beside it would look like a mistake. */
+@media (max-width: 40rem) {
+  .archive-grid { row-gap: var(--space-6); }
+  .archive-grid .tile {
+    flex: 1 1 100%;
+    max-width: none;
+  }
+}
+/* A filler that soaks up the free space of the last row, so its tiles keep
+   their own proportions instead of stretching to fill the line. */
+.archive-grid::after {
+  content: "";
+  flex: 999 1 0;
+}
+.archive-grid > .empty-state { flex: 1 1 100%; }

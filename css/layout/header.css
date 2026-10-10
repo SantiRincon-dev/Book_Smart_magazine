@@ -1,0 +1,65 @@
+/* The header is a thin, SOLID bar: giant type scrolls cleanly under it
+   instead of ghosting through. Two links, so there is no hamburger: the
+   whole bar fits at 390px. */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header);
+  background-color: var(--c-bg);
+  border-block-end: var(--rule) solid var(--c-line);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  height: var(--header-h);
+}
+
+/* The wordmark: the same condensed display face as everything loud. */
+.brand {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 800;
+  font-stretch: 70%;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--c-text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-header__tools {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+/* The underline draws in from the left on hover and stays on the current page. */
+.nav__link {
+  padding-block: var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--fs-ui);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  line-height: 1;
+  color: var(--c-text);
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat;
+  transition: background-size var(--t-base);
+}
+.nav__link:hover,
+.nav__link[aria-current="page"] { background-size: 100% 2px; }
+
+@media (max-width: 420px) {
+  .site-header__tools { gap: var(--space-3); }
+  .nav { gap: var(--space-4); }
+  .brand { font-size: 1.5rem; }
+}

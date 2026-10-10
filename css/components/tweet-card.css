@@ -1,0 +1,171 @@
+/* ============================================================
+   TWEET CARD
+   A hand-built, accessible mock-up of a social-media post: real markup and
+   real text, not a screenshot, so it is readable by search and by a screen
+   reader. A card is a surface of the magazine's own edition (day or night)
+   with the issue's hue as one accent line on top; the display face carries the
+   interface parts and the text serif carries what the students wrote.
+
+   The wall is a CSS multi-column layout: cards of different heights stack
+   without gaps. The DOM order is 1 to 10; only the visual flow is in columns.
+   ============================================================ */
+
+.tweet-grid {
+  columns: 3 17rem;
+  column-gap: var(--space-5);
+}
+.tweet-grid > li {
+  break-inside: avoid;
+  margin-block-end: var(--space-5);
+}
+
+.tweet-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-5);
+  color: var(--c-text);
+  background-color: var(--c-surface);
+  border: var(--hairline) solid var(--c-line);
+  border-block-start: var(--rule-accent) solid var(--hue);
+  box-shadow: inset 0 1px 0 var(--c-edge);
+}
+
+.tweet-card__head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* The avatars imitate the other product's interface, so they are round like
+   the pills: the labels of the magazine. The initials are decorative
+   (aria-hidden); the tones are deep enough for bone initials (4.7:1 or more). */
+.tweet-card__avatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background-image: linear-gradient(135deg, var(--tw-a, var(--c-literature)), var(--tw-b, var(--c-culture)));
+  color: var(--hueso);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  font-stretch: var(--stretch-ui);
+  line-height: 1;
+}
+
+.tweet-card__id {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  font-family: var(--font-display);
+  font-stretch: var(--stretch-ui);
+  line-height: 1.3;
+}
+.tweet-card__name {
+  font-weight: 700;
+  overflow-wrap: anywhere;      /* a long display name wraps; it is never cut off */
+}
+.tweet-card__handle {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--c-text-muted);
+}
+
+.tweet-card__more {
+  flex-shrink: 0;
+  margin-inline-start: auto;
+  color: var(--c-text-muted);
+}
+.tweet-card__more svg { width: 1.25rem; height: 1.25rem; fill: currentColor; }
+
+.tweet-card__text {
+  font-size: var(--fs-md);
+  font-weight: 500;
+  line-height: var(--lh-snug);
+  overflow-wrap: break-word;
+}
+.tweet-card__hashtag {
+  font-family: var(--font-display);
+  font-size: 0.8em;
+  font-weight: 700;
+  font-stretch: var(--stretch-ui);
+  color: var(--hue);
+}
+
+.tweet-card__time {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  font-stretch: var(--stretch-ui);
+  color: var(--c-text-muted);
+}
+
+.tweet-card__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  padding-block: var(--space-3);
+  border-block: var(--hairline) solid var(--c-line);
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  font-stretch: var(--stretch-ui);
+  color: var(--c-text-muted);
+}
+.tweet-card__stats strong { color: var(--c-text); font-weight: 700; }
+
+.tweet-card__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.tweet-card__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--c-text-muted);
+  transition: background-color var(--t-fast), color var(--t-fast);
+}
+.tweet-card__action svg {
+  width: 1.4rem;
+  height: 1.4rem;
+  fill: currentColor;
+}
+
+button.tweet-card__action[data-action="retweet"]:hover { color: var(--c-repost); background-color: color-mix(in srgb, var(--c-repost) 16%, transparent); }
+button.tweet-card__action[data-action="retweet"][aria-pressed="true"] { color: var(--c-repost); }
+
+button.tweet-card__action[data-action="like"]:hover { color: var(--c-like); background-color: color-mix(in srgb, var(--c-like) 16%, transparent); }
+/* The heart symbol holds two paths, an outline and a solid. These two custom
+   properties (inherited into the <use> shadow tree) decide which one shows. */
+button.tweet-card__action[data-action="like"][aria-pressed="true"] {
+  --heart-line: 0;
+  --heart-fill: 1;
+  color: var(--c-like);
+}
+
+button.tweet-card__action[data-action="share"]:hover { color: var(--c-share); background-color: color-mix(in srgb, var(--c-share) 16%, transparent); }
+
+@keyframes tweet-pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+button.tweet-card__action.is-toggled svg { animation: tweet-pop 300ms var(--ease-out); }
+
+.tweet-card__toast {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  color: var(--c-text-muted);
+  opacity: 0;
+  transition: opacity var(--t-fast);
+}
+.tweet-card__toast:not(:empty) { opacity: 1; }

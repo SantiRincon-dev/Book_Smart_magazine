@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!-- Source of assets/img/articles/w01-cover.png: three of the real posts of the
+     Week 01 article, copied from it by a script, drawn in the site's night tones
+     on a TRANSPARENT background, so the cover sits on the tile's mat in either theme.
+     Render it with a transparent screenshot of a 1600x1000 viewport (for example
+     puppeteer's page.screenshot({ omitBackground: true })), then run
+     tools/make-thumbs.py to refresh the thumbnail. -->
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <title>Week 01 cover</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    html { font-size: 22px; background: transparent; }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      width: 1600px;
+      height: 1000px;
+      padding-inline: 64px;
+      overflow: hidden;
+      background: transparent;
+    }
+    /* No film grain on a cover: it would speckle the transparent areas. */
+    body::before, body::after { content: none; }
+    .tweet-card { flex: 0 0 21rem; }
+    /* On a cover nothing may be cut off: show the whole display name. */
+    .tweet-card__name { overflow: visible; white-space: normal; text-overflow: clip; }
+  </style>
+</head>
+<body data-section="education">
+<svg aria-hidden="true" style="position:absolute; width:0; height:0; overflow:hidden;">
+  <symbol id="icon-more" viewBox="0 0 256 256"><path d="M140,128a12,12,0,1,1-12-12A12,12,0,0,1,140,128Zm56-12a12,12,0,1,0,12,12A12,12,0,0,0,196,116ZM60,116a12,12,0,1,0,12,12A12,12,0,0,0,60,116Z"/></symbol>
+</svg>
+<article class="tweet-card" style="position:relative;top:56px" data-tweet-id="w01-01">
+              <header class="tweet-card__head">
+                <span class="tweet-card__avatar" aria-hidden="true" style="--tw-a: var(--c-literature); --tw-b: var(--c-opinion);">PP</span>
+                <span class="tweet-card__id">
+                  <span class="tweet-card__name">Paulo Paz</span>
+                  <span class="tweet-card__handle">@ppaz</span>
+                </span>
+                <span class="tweet-card__more"><svg><use href="#icon-more"/></svg></span>
+              </header>
+              <p class="tweet-card__text">
+                <span class="tweet-card__hashtag">#IWasTodayYearsOld</span>
+                When i was younger, i thought that the wall of bricks in a building was the foundation, yet it was just a facade.
+              </p>
+              <p class="tweet-card__time"><time datetime="2015-03-21T17:35">5:35 PM · Mar 21, 2015</time></p>
+              <p class="tweet-card__stats">
+                <span><strong data-stat="retweet">57</strong> Retweets</span>
+                <span><strong>380</strong> Quote Tweets</span>
+                <span><strong data-stat="like">4.4K</strong> Likes</span>
+              </p>
+</article>
+<article class="tweet-card" style="position:relative;top:-70px" data-tweet-id="w01-05">
+              <header class="tweet-card__head">
+                <span class="tweet-card__avatar" aria-hidden="true" style="--tw-a: var(--c-culture); --tw-b: var(--c-specials);">LU</span>
+                <span class="tweet-card__id">
+                  <span class="tweet-card__name">Luigi_01</span>
+                  <span class="tweet-card__handle">@luigi154jk</span>
+                </span>
+                <span class="tweet-card__more"><svg><use href="#icon-more"/></svg></span>
+              </header>
+              <p class="tweet-card__text">
+                <span class="tweet-card__hashtag">#IWasTodayYearsOld</span>
+                When i realized that it is not likely that it snows in Colombia &lsquo;cause we&rsquo;re in the equator line.
+              </p>
+              <p class="tweet-card__time"><time datetime="2021-06-01T12:00">12:00 PM · Jun 1, 2021</time></p>
+              <p class="tweet-card__stats">
+                <span><strong data-stat="retweet">17</strong> Retweets</span>
+                <span><strong>4</strong> Quote Tweets</span>
+                <span><strong data-stat="like">73</strong> Likes</span>
+              </p>
+</article>
+<article class="tweet-card" style="position:relative;top:92px" data-tweet-id="w01-07">
+              <header class="tweet-card__head">
+                <span class="tweet-card__avatar" aria-hidden="true" style="--tw-a: var(--c-focus); --tw-b: var(--c-literature);">AT</span>
+                <span class="tweet-card__id">
+                  <span class="tweet-card__name">Another Tweet more</span>
+                  <span class="tweet-card__handle">@NothingMan</span>
+                </span>
+                <span class="tweet-card__more"><svg><use href="#icon-more"/></svg></span>
+              </header>
+              <p class="tweet-card__text">
+                <span class="tweet-card__hashtag">#IWasTodayYearsOld</span>
+                when I realized that money didn&rsquo;t appear magically from the ATM
+              </p>
+              <p class="tweet-card__time"><time datetime="2022-10-12T16:47">4:47 PM · Oct 12, 2022</time></p>
+              <p class="tweet-card__stats">
+                <span><strong data-stat="retweet">1K</strong> Retweets</span>
+                <span><strong>1.5K</strong> Quote Tweets</span>
+                <span><strong data-stat="like">236.5K</strong> Likes</span>
+              </p>
+</article>
+</body>
+</html>

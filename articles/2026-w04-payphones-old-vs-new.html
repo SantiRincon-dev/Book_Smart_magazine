@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payphones &amp; Old vs. New - Book Smart</title>
+  <meta name="description" content="A newspaper-style infographic on public payphones and seven old-vs-new matchups to vote on, made for Session 4.">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Payphones &amp; Old vs. New - Book Smart">
+  <meta property="og:description" content="A newspaper-style infographic on public payphones and seven old-vs-new matchups to vote on, made for Session 4.">
+  <meta property="article:published_time" content="2026-09-29">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Payphones &amp; Old vs. New - Book Smart">
+  <meta name="twitter:description" content="A newspaper-style infographic on public payphones and seven old-vs-new matchups to vote on, made for Session 4.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#ecece9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#18181a" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+
+  <!-- Runs before the first paint, on every page:
+       1. applies a saved light/dark choice, so nobody sees a flash of the wrong one;
+       2. if the reader just clicked an issue, puts that issue's colour over the page
+          (the arriving half of the page transition, see css/components/curtain.css)
+          and flags the page as arriving, so its entrance waits for the curtain. -->
+  <script>
+    (function (d) {
+      try {
+        var t = localStorage.getItem('magazine:theme');
+        if (t === 'light' || t === 'dark') d.dataset.theme = t;
+      } catch (e) {}
+      try {
+        var n = JSON.parse(sessionStorage.getItem('bs:nav') || 'null');
+        sessionStorage.removeItem('bs:nav');
+        if (n && n.hue && Date.now() - n.t < 6000) {
+          var c = d.appendChild(document.createElement('div'));
+          c.className = 'curtain curtain--arriving';
+          c.setAttribute('aria-hidden', 'true');
+          c.style.backgroundColor = n.hue;
+          d.classList.add('is-arriving');
+        }
+      } catch (e) {}
+    })(document.documentElement);
+  </script>
+
+  <!-- Relative paths: this file sits one level below the project root -->
+  <link rel="stylesheet" href="../css/main.css">
+  <script defer src="../js/vendor/gsap.min.js"></script>
+  <script defer src="../js/vendor/ScrollTrigger.min.js"></script>
+  <script defer src="../js/data/articles.js"></script>
+  <script defer src="../js/core.js"></script>
+  <script defer src="../js/article.js"></script>
+</head>
+<body data-base="../">
+  <a class="skip-link" href="#content">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="../index.html">Book Smart</a>
+      <div class="site-header__tools">
+        <nav aria-label="Main">
+          <ul class="nav" role="list">
+            <li><a class="nav__link" href="../index.html">Home</a></li>
+            <li><a class="nav__link" href="../archive.html">Archive</a></li>
+          </ul>
+        </nav>
+        <button class="btn btn--ghost btn--icon" data-theme-toggle type="button" aria-label="Switch theme"></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="content">
+    <article data-section="history">
+
+      <!-- ============ ARTICLE HEADER ============
+           The issue's masthead. data-section picks its hue (the numeral, the
+           rule and the pills), data-week draws the big numeral in the top-right
+           corner (so it is typed once). -->
+      <header class="article-header" data-section="history" data-week="04">
+        <div class="article-header__inner">
+          <p class="article-header__tags">
+            <span class="pill">History</span>
+            <span class="pill pill--neutral">Week 04</span>
+          </p>
+          <h1>Payphones &amp; Old vs. New</h1>
+          <p class="article-header__kicker">Infographic &amp; Vote</p>
+          <p class="meta">
+            <span>Editorial Board</span>
+            <time datetime="2026-09-29">September 29, 2026</time>
+            <span>2 min read</span>
+          </p>
+        </div>
+      </header>
+
+      <!-- ============ ARTICLE BODY ============
+           Session 4 is images only: the finished work from the two task
+           folders, with no prose written around it. The only text here is
+           interface (headings, vote buttons, counters). 
+           -->
+      <div class="article-body prose">
+
+        <!-- ---------- TASK 1: the infographic ----------
+             Its own text is baked into the picture, so the alt carries all
+             of it word for word (README rule), including the source's own
+             spelling: "assited", "an specific", "dicrease". -->
+        <h2 id="task-1">Task 1</h2>
+        <figure class="wide natural">
+          <img src="../assets/img/articles/w04-payphones-infographic.png"
+               alt="Newspaper-style black-and-white infographic dated September 23, 2026, titled 'Public payphones'. Section 'What it used to be': It was a coin operated machine located in public spaces, which assited many people along the second half of 20th century. Normally, it was protected by a booth (a little structure that covered the phone); they were meant to protect the user from the rain. Section 'How was it?': People used to make a line in order to use it. You would step into the booth. You would pick up the phone. You would insert the corresponding coin into the device. You would dial the number using the rotary dial. The call would be connected through an specific telephone network. Beside it: In Bogotá, first public payphones were installed in 1956 and they used to run on approximately 2 to 5 centavo coins. Section 'Payphone passing away': In the 1990s, public payphones were the most popular choice throughout the world. For instance, when you were walking outside and you need to make a call, the payphone was there to save the day! However, the mobile phone technology quickly evolved making them more affordable and portable than public payphones. As a result, payphones started to dicrease their units because of high maintenance cost. Furthermore, people were always vandalizing them. To top it off, in the past 25 years we have been witnesses of their fall. The photos show a person with their head inside a payphone hood on a pole, a payphone hood on a white wall with three people below it, and a wreath of flowers beside a payphone."
+               loading="lazy" decoding="async" width="800" height="1392">
+          <figcaption>Infographic: public payphones.</figcaption>
+        </figure>
+
+        <!-- ---------- TASK 2: old vs new, and you vote ----------
+             .versus re-types everything inside it (see versus.css). Each
+             card is one screenshot plus one button per option; the labels
+             come from the words inside each image. Buttons ship disabled
+             and versusPoll.js switches them on. -->
+        <section class="versus wide" data-versus aria-labelledby="task-2">
+          <div class="versus__head">
+            <div>
+              <h2 id="task-2">Task 2</h2>
+              <p class="versus__note">Votes are saved only in this browser. There is no server, so nobody else sees them.</p>
+            </div>
+            <div class="versus__tools">
+              <span class="versus__all" data-versus-total>0 votes cast</span>
+              <button class="btn versus__reset" type="button" data-versus-reset data-armed="false">
+                <span data-reset-label>Reset votes</span>
+              </button>
+            </div>
+          </div>
+          <noscript><p class="versus__note">Voting needs JavaScript.</p></noscript>
+
+          <div class="versus-grid">
+
+            <article class="versus-card" data-poll="snape">
+              <header class="versus-card__head">
+                <span class="versus-card__num" aria-hidden="true">01</span>
+                <h3 class="versus-card__title" id="poll-snape">Snape</h3>
+                <span class="versus-card__total" data-total>0 votes</span>
+              </header>
+              <figure class="versus-card__media">
+                <img src="../assets/img/articles/w04-vs-snape.png"
+                     alt="Under the title 'Different Severus Snape generation', two photos side by side: on the left a man in a long black robe with his arms open in a candlelit hall, on the right a man in a black hooded outfit in a dark forest."
+                     loading="lazy" decoding="async" width="420" height="307">
+              </figure>
+              <div class="versus-card__options" role="group" aria-labelledby="poll-snape">
+                <button class="vote" type="button" data-option="left" disabled>
+                  <span class="vote__label">Left</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+                <button class="vote" type="button" data-option="right" disabled>
+                  <span class="vote__label">Right</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+              </div>
+              <p class="visually-hidden" role="status" data-status></p>
+            </article>
+
+            <article class="versus-card" data-poll="halo">
+              <header class="versus-card__head">
+                <span class="versus-card__num" aria-hidden="true">02</span>
+                <h3 class="versus-card__title" id="poll-halo">Halo</h3>
+                <span class="versus-card__total" data-total>0 votes</span>
+              </header>
+              <figure class="versus-card__media">
+                <img src="../assets/img/articles/w04-vs-halo.png"
+                     alt="Under the title 'Do you prefer to stay old school or take advantage of the new era?', three Halo screenshots stacked, each a soldier aiming a rifle and labeled 'Halo Combat Evolved 2001', 'Halo CE Anniversary 2011' and 'Halo Campaign Evolved 2026'."
+                     loading="lazy" decoding="async" width="475" height="372">
+              </figure>
+              <div class="versus-card__options" role="group" aria-labelledby="poll-halo">
+                <button class="vote" type="button" data-option="2001" disabled>
+                  <span class="vote__label">2001</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+                <button class="vote" type="button" data-option="2011" disabled>
+                  <span class="vote__label">2011</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+                <button class="vote" type="button" data-option="2026" disabled>
+                  <span class="vote__label">2026</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+              </div>
+              <p class="visually-hidden" role="status" data-status></p>
+            </article>
+
+            <article class="versus-card" data-poll="blade-runner">
+              <header class="versus-card__head">
+                <span class="versus-card__num" aria-hidden="true">03</span>
+                <h3 class="versus-card__title" id="poll-blade-runner">Blade Runner</h3>
+                <span class="versus-card__total" data-total>0 votes</span>
+              </header>
+              <figure class="versus-card__media">
+                <img src="../assets/img/articles/w04-vs-blade-runner.png"
+                     alt="Under the title 'Blade Runner movies', two movie posters facing off across a 'VS' burst: the 'Blade Runner 2049' poster with the names Ryan Gosling and Harrison Ford on the left, and the 'Blade Runner' poster with the name Harrison Ford on the right."
+                     loading="lazy" decoding="async" width="467" height="372">
+              </figure>
+              <div class="versus-card__options" role="group" aria-labelledby="poll-blade-runner">
+                <button class="vote" type="button" data-option="2049" disabled>
+                  <span class="vote__label">Blade Runner 2049</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+                <button class="vote" type="button" data-option="original" disabled>
+                  <span class="vote__label">Blade Runner</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+              </div>
+              <p class="visually-hidden" role="status" data-status></p>
+            </article>
+
+            <article class="versus-card" data-poll="counter-strike">
+              <header class="versus-card__head">
+                <span class="versus-card__num" aria-hidden="true">04</span>
+                <h3 class="versus-card__title" id="poll-counter-strike">Counter-Strike</h3>
+                <span class="versus-card__total" data-total>0 votes</span>
+              </header>
+              <figure class="versus-card__media">
+                <img src="../assets/img/articles/w04-vs-counter-strike.png"
+                     alt="Under the title 'Counter Strike sequel', two first-person screenshots of the same warehouse split by a 'VS' burst: 'CS:GO' on the left, with a hand holding a dark bottle, and 'Counter-Strike 2' on the right, with a hand holding a green glass bottle."
+                     loading="lazy" decoding="async" width="483" height="381">
+              </figure>
+              <div class="versus-card__options" role="group" aria-labelledby="poll-counter-strike">
+                <button class="vote" type="button" data-option="csgo" disabled>
+                  <span class="vote__label">CS:GO</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+                <button class="vote" type="button" data-option="cs2" disabled>
+                  <span class="vote__label">Counter-Strike 2</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+              </div>
+              <p class="visually-hidden" role="status" data-status></p>
+            </article>
+
+            <article class="versus-card" data-poll="modem-wifi">
+              <header class="versus-card__head">
+                <span class="versus-card__num" aria-hidden="true">05</span>
+                <h3 class="versus-card__title" id="poll-modem-wifi">Modem vs WiFi</h3>
+                <span class="versus-card__total" data-total>0 votes</span>
+              </header>
+              <figure class="versus-card__media">
+                <img src="../assets/img/articles/w04-vs-modem-wifi.png"
+                     alt="Under the title 'Modem USB', three views of a white Comcel USB modem; below it a 'VS' burst; and under the title 'WiFi', a black wireless router with two antennas."
+                     loading="lazy" decoding="async" width="436" height="667">
+              </figure>
+              <div class="versus-card__options" role="group" aria-labelledby="poll-modem-wifi">
+                <button class="vote" type="button" data-option="modem" disabled>
+                  <span class="vote__label">Modem USB</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+                <button class="vote" type="button" data-option="wifi" disabled>
+                  <span class="vote__label">WiFi</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+              </div>
+              <p class="visually-hidden" role="status" data-status></p>
+            </article>
+
+            <article class="versus-card" data-poll="cameras">
+              <header class="versus-card__head">
+                <span class="versus-card__num" aria-hidden="true">06</span>
+                <h3 class="versus-card__title" id="poll-cameras">Cameras</h3>
+                <span class="versus-card__total" data-total>0 votes</span>
+              </header>
+              <figure class="versus-card__media">
+                <img src="../assets/img/articles/w04-vs-cameras.png"
+                     alt="Under the title 'Film camera vs. digital camera', an old film movie camera on a wooden tripod facing a 'VS' burst and a modern black digital camera, with the line 'Wait for it, or see it now?' at the bottom."
+                     loading="lazy" decoding="async" width="470" height="562">
+              </figure>
+              <div class="versus-card__options" role="group" aria-labelledby="poll-cameras">
+                <button class="vote" type="button" data-option="film" disabled>
+                  <span class="vote__label">Film camera</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+                <button class="vote" type="button" data-option="digital" disabled>
+                  <span class="vote__label">Digital camera</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+              </div>
+              <p class="visually-hidden" role="status" data-status></p>
+            </article>
+
+            <article class="versus-card" data-poll="buses">
+              <header class="versus-card__head">
+                <span class="versus-card__num" aria-hidden="true">07</span>
+                <h3 class="versus-card__title" id="poll-buses">Buses</h3>
+                <span class="versus-card__total" data-total>0 votes</span>
+              </header>
+              <figure class="versus-card__media">
+                <img src="../assets/img/articles/w04-vs-buses.png"
+                     alt="Under the title 'Clasic buseta vs Transmilenio', a classic red-and-cream buseta above a 'VS' burst and a red articulated Transmilenio bus, with the line 'Old ride or fast ride?' at the bottom."
+                     loading="lazy" decoding="async" width="482" height="642">
+              </figure>
+              <div class="versus-card__options" role="group" aria-labelledby="poll-buses">
+                <button class="vote" type="button" data-option="buseta" disabled>
+                  <span class="vote__label">Buseta</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+                <button class="vote" type="button" data-option="transmilenio" disabled>
+                  <span class="vote__label">Transmilenio</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+              </div>
+              <p class="visually-hidden" role="status" data-status></p>
+            </article>
+
+          </div>
+        </section>
+        <!-- The previous / next issue and the archive. Built by js/article.js from
+             the manifest, so publishing a new issue never means editing this one. -->
+        <nav class="article-nav" aria-label="Elsewhere" data-article-nav>
+          <noscript>
+            <a class="door" href="../archive.html">
+              <span class="door__top">Archive</span>
+              <span class="door__title">Every issue this semester</span>
+            </a>
+          </noscript>
+        </nav>
+
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="legend" aria-label="Sections" data-legend>
+      <noscript><a class="legend__item" href="../archive.html"><span class="legend__name">Browse by section</span></a></noscript>
+    </nav>
+    <div class="container site-footer__inner">
+      <p class="site-footer__name">Book Smart</p>
+      <p class="site-footer__info">Intensive English III<br>Universidad Nacional de Colombia, Bogot&aacute;<br>Semester 2026-2</p>
+      <a class="site-footer__top" href="#top" data-top>Back to top</a>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,256 @@
+/* ============================================================
+   TOKENS: the single source of truth for the design system.
+   Golden rule: no other CSS file writes a colour, a font size or
+   a spacing value by hand. Everything comes from here.
+
+   BOOK SMART, the colour in one breath: a gallery after hours.
+   The page is a deep charcoal canvas (a stone-grey alabaster by day)
+   and the content sits on surfaces only a tone or two away from it, so
+   depth comes from tone, never from heavy borders. Colour is rationed:
+   each section owns ONE muted, mature hue (terracotta, sage, indigo,
+   ochre) and spends it only where it means something: the week numeral,
+   a fine line, a category pill, a hover tint. There is no pure black and
+   no pure white anywhere: the night text is bone, the day text is graphite.
+
+   Typography: the SIGN (heavy condensed Anybody) and the BOOK (Newsreader).
+
+   Two editions of the same page: day and night. Both follow the system,
+   unless the reader pressed the toggle (data-theme). Every text colour
+   below was measured: at least 4.5:1 (WCAG AA) against the canvas and
+   against both surfaces in both editions; the border of a control, at
+   least 3:1.
+   ============================================================ */
+
+:root {
+  /* ---------- 1. THE MATERIALS ----------
+     Raw inks: the only place a hex code is allowed to live. Components read
+     the semantic tokens in section 2, never these. */
+
+  /* Night: charcoal (never black) and bone (never white). */
+  --carbon:        #18181a;   /* canvas at night; text by day            */
+  --carbon-1:      #202023;   /* a surface: a card, a band               */
+  --carbon-2:      #29292d;   /* a surface raised, hovered or nested     */
+  --carbon-3:      #36363c;   /* hairlines                               */
+  --carbon-border: #74747c;   /* the border of a control (3.1:1 or more) */
+  --hueso:         #e9e5da;   /* text at night: bone, parchment          */
+  --hueso-soft:    #cbc7bc;
+  --hueso-muted:   #a29e94;
+
+  /* Day: alabaster stone (never white) and graphite. */
+  --alabastro:        #ecece9;   /* canvas by day                        */
+  --alabastro-1:      #f6f6f3;   /* a surface                            */
+  --alabastro-2:      #e1e1dd;   /* a surface raised, hovered or nested  */
+  --alabastro-3:      #cdcdc8;   /* hairlines                            */
+  --alabastro-border: #7a7a82;   /* the border of a control              */
+  --grafito-soft:     #35353b;
+  --grafito-muted:    #5a5a62;
+
+  /* The four section hues. Each has a deep tone for the day edition and a
+     light tone for the night edition: the same colour, re-tuned so its text
+     stays legible on its own background (5:1 or more on the canvas). */
+  --terracota-day: #94412c;   --terracota-night: #d28a70;   /* Politics       */
+  --salvia-day:    #44603f;   --salvia-night:    #9db79a;   /* History        */
+  --indigo-day:    #3a4a96;   --indigo-night:    #9aa3dc;   /* Education      */
+  --ocre-day:      #725311;   --ocre-night:      #cca35c;   /* Current Events */
+
+  color-scheme: light dark;
+
+  /* ---------- 2. SEMANTIC COLOUR (day | night) ---------- */
+  --c-bg:         light-dark(var(--alabastro),        var(--carbon));
+  --c-surface:    light-dark(var(--alabastro-1),      var(--carbon-1));   /* cards, bands      */
+  --c-surface-2:  light-dark(var(--alabastro-2),      var(--carbon-2));   /* raised, hover     */
+  --c-line:       light-dark(var(--alabastro-3),      var(--carbon-3));   /* hairlines         */
+  --c-border:     light-dark(var(--alabastro-border), var(--carbon-border)); /* controls       */
+  --c-text:       light-dark(var(--carbon),           var(--hueso));
+  --c-text-soft:  light-dark(var(--grafito-soft),     var(--hueso-soft));
+  --c-text-muted: light-dark(var(--grafito-muted),    var(--hueso-muted));
+  /* The 1px highlight that catches the top edge of a surface. */
+  --c-edge:       light-dark(rgb(255 255 255 / 0.7),  rgb(255 255 255 / 0.05));
+
+  /* The colour of "no section in particular": what a tile, a pill or a door
+     falls back to if its data-section key is mistyped (a quiet grey), instead
+     of silently vanishing. Real sections override it at the bottom.
+     There is no derived token such as "--hue-tint" on purpose: a custom
+     property is resolved where it is DECLARED, so a tint declared here would
+     never see a section's own --hue. Components write the recipe themselves:
+       pill / tint:  color-mix(in srgb, var(--hue) 13%, var(--c-surface))
+       hairline:     color-mix(in srgb, var(--hue) 42%, transparent)        */
+  --hue: var(--c-text-muted);
+
+  /* Interface states (tweet reactions, the armed reset button). */
+  --c-like:   light-dark(var(--terracota-day), var(--terracota-night));
+  --c-repost: light-dark(var(--salvia-day),    var(--salvia-night));
+  --c-share:  light-dark(var(--indigo-day),    var(--indigo-night));
+
+  /* Legacy names: Week 01's mock-tweet avatars read these inline. They are
+     deep, muted avatar tones (bone initials on top, 4.7:1 or more), the same
+     in both editions; they are decorative, not sections. */
+  --c-literature: #4a55a8;
+  --c-opinion:    #9a4a33;
+  --c-culture:    #4f6b4d;
+  --c-specials:   #3a3a40;
+  --c-focus:      #2a2a2f;
+
+  /* ---------- 3. TYPOGRAPHY ----------
+     Anybody     the sign: a variable face whose width axis runs from a
+                 62% condensed cut (masthead, titles, numerals) to a
+                 normal 100% cut (small interface labels)
+     Newsreader  the book: reading text, decks, captions
+     Both are embedded in css/fonts.css. */
+  --font-display: "Anybody", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-text:    "Newsreader", Georgia, "Times New Roman", serif;
+  --stretch-display: 62%;
+  --stretch-ui:      100%;
+
+  /* Fluid scale (clamp: minimum, preferred, maximum). */
+  --fs-pill:  0.8125rem;                                       /* 13px     category pills    */
+  --fs-sm:    clamp(0.875rem, 0.84rem + 0.15vw, 0.9375rem);   /* 14-15px  credits, captions */
+  --fs-ui:    0.9375rem;                                       /* 15px     labels, buttons   */
+  --fs-base:  clamp(1.125rem, 1.04rem + 0.4vw, 1.3125rem);     /* 18-21px  reading text      */
+  --fs-deck:  clamp(1rem, 0.96rem + 0.2vw, 1.125rem);          /* 16-18px  tile decks        */
+  --fs-md:    clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem);        /* 20-26px  decks             */
+  --fs-tile:  clamp(2.25rem, 1.6rem + 1.6vw, 3rem);            /* 36-48px  tile titles       */
+  --fs-lg:    clamp(2.5rem, 1.2rem + 4.4vw, 5rem);             /* 40-80px  section headings  */
+  --fs-xl:    clamp(3rem, 1rem + 6.4vw, 7rem);                 /* 48-112px big headings      */
+  --fs-h1:    clamp(3.5rem, 0.5rem + 10.4vw, 12rem);           /* 56-192px article headline  */
+  --fs-num:   clamp(7rem, 1rem + 22vw, 21rem);                 /* week numeral               */
+  --fs-hero:  clamp(5rem, 1rem + 17vw, 17rem);                 /* page titles                */
+
+  --lh-display: 0.9;
+  --lh-snug:    1.35;
+  --lh-text:    1.62;
+
+  /* ---------- 4. SPACING (4px scale, never invent a value) ---------- */
+  --space-1:  0.25rem;   /*   4px */
+  --space-2:  0.5rem;    /*   8px */
+  --space-3:  0.75rem;   /*  12px */
+  --space-4:  1rem;      /*  16px */
+  --space-5:  1.5rem;    /*  24px */
+  --space-6:  2rem;      /*  32px */
+  --space-7:  3rem;      /*  48px */
+  --space-8:  4rem;      /*  64px */
+  --space-9:  6rem;      /*  96px */
+  --space-10: 8rem;      /* 128px */
+
+  /* ---------- 5. LAYOUT ---------- */
+  --header-h:  4rem;                          /* 64px, the sticky header */
+  --w-content: 66ch;                          /* reading measure */
+  --w-wide:    1180px;                        /* wide figures inside an article */
+  --w-max:     1680px;                        /* site-wide maximum container */
+  --gutter:    clamp(1rem, 4vw, 3.5rem);
+  --mat:       0.75rem;                       /* the padding of a framed picture */
+
+  /* ---------- 6. SHAPE ----------
+     One rule, documented: STRUCTURE is square (surfaces, cards, fields,
+     buttons) and LABELS are round (category pills, filter chips, and the
+     avatars of the mock tweets). Lines are fine: 1px for dividers and the
+     border of a control, 2px only for the accent line a section draws on top
+     of its card or under its header. */
+  --rule:        1px;
+  --rule-accent: 2px;
+  --hairline:    1px;
+  --radius-pill: 999px;
+
+  /* ---------- 7. MOTION ---------- */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --t-fast: 160ms var(--ease-out);
+  --t-base: 320ms var(--ease-out);
+  --t-slow: 700ms var(--ease-out);
+
+  /* ---------- 8. LAYERS (the only z-indexes in the project) ---------- */
+  --z-header:  100;
+  --z-overlay: 400;
+  --z-grain:   800;
+  --z-curtain: 900;
+  --z-skip:    1000;
+
+  /* ---------- 9. GRAIN ----------
+     Two tiles of SVG noise: white speckle for the night, black for the day.
+     Drawn once, tiled, never animated (see reset.css). */
+  --noise-white: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.1 -0.35'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  --noise-black: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n' x='0' y='0' width='100%25' height='100%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.1 -0.35'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"]  { color-scheme: dark; }
+/* Paper is always the day edition, whatever the screen was showing: bone text
+   on white paper would be invisible. (Here, not in utils/helpers.css: this file
+   is outside the cascade layers, so a layered rule could never beat it.) */
+@media print { :root, :root[data-theme] { color-scheme: light; } }
+
+/* ============================================================
+   SECTION SCOPE
+   Anything that carries data-section (tiles, article pages, doors, pills,
+   the footer legend, the filter chips) receives that section's colour as
+   --hue. A fifth section is one pair of raw tones above, one line here and
+   one line in SECTIONS (js/data/articles.js).
+   ============================================================ */
+[data-section="current-events"] { --hue: light-dark(var(--ocre-day),      var(--ocre-night)); }
+[data-section="politics"]       { --hue: light-dark(var(--terracota-day), var(--terracota-night)); }
+[data-section="education"]      { --hue: light-dark(var(--indigo-day),    var(--indigo-night)); }
+[data-section="history"]        { --hue: light-dark(var(--salvia-day),    var(--salvia-night)); }
+
+/* A browser without light-dark() (older than 2024) would drop every colour
+   above, so the same tokens are spelled out once more for it, by reference to
+   the same raw materials: day by default, night when the system or the toggle
+   says so. It comes AFTER the rules it replaces, so it wins where it applies. */
+@supports not (color: light-dark(red, blue)) {
+  :root {
+    --c-bg: var(--alabastro);
+    --c-surface: var(--alabastro-1);
+    --c-surface-2: var(--alabastro-2);
+    --c-line: var(--alabastro-3);
+    --c-border: var(--alabastro-border);
+    --c-text: var(--carbon);
+    --c-text-soft: var(--grafito-soft);
+    --c-text-muted: var(--grafito-muted);
+    --c-edge: rgb(255 255 255 / 0.7);
+    --c-like: var(--terracota-day);
+    --c-repost: var(--salvia-day);
+    --c-share: var(--indigo-day);
+  }
+  [data-section="current-events"] { --hue: var(--ocre-day); }
+  [data-section="politics"]       { --hue: var(--terracota-day); }
+  [data-section="education"]      { --hue: var(--indigo-day); }
+  [data-section="history"]        { --hue: var(--salvia-day); }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --c-bg: var(--carbon);
+      --c-surface: var(--carbon-1);
+      --c-surface-2: var(--carbon-2);
+      --c-line: var(--carbon-3);
+      --c-border: var(--carbon-border);
+      --c-text: var(--hueso);
+      --c-text-soft: var(--hueso-soft);
+      --c-text-muted: var(--hueso-muted);
+      --c-edge: rgb(255 255 255 / 0.05);
+      --c-like: var(--terracota-night);
+      --c-repost: var(--salvia-night);
+      --c-share: var(--indigo-night);
+    }
+    :root:not([data-theme="light"]) [data-section="current-events"] { --hue: var(--ocre-night); }
+    :root:not([data-theme="light"]) [data-section="politics"]       { --hue: var(--terracota-night); }
+    :root:not([data-theme="light"]) [data-section="education"]      { --hue: var(--indigo-night); }
+    :root:not([data-theme="light"]) [data-section="history"]        { --hue: var(--salvia-night); }
+  }
+  :root[data-theme="dark"] {
+    --c-bg: var(--carbon);
+    --c-surface: var(--carbon-1);
+    --c-surface-2: var(--carbon-2);
+    --c-line: var(--carbon-3);
+    --c-border: var(--carbon-border);
+    --c-text: var(--hueso);
+    --c-text-soft: var(--hueso-soft);
+    --c-text-muted: var(--hueso-muted);
+    --c-edge: rgb(255 255 255 / 0.05);
+    --c-like: var(--terracota-night);
+    --c-repost: var(--salvia-night);
+    --c-share: var(--indigo-night);
+  }
+  :root[data-theme="dark"] [data-section="current-events"] { --hue: var(--ocre-night); }
+  :root[data-theme="dark"] [data-section="politics"]       { --hue: var(--terracota-night); }
+  :root[data-theme="dark"] [data-section="education"]      { --hue: var(--indigo-night); }
+  :root[data-theme="dark"] [data-section="history"]        { --hue: var(--salvia-night); }
+}

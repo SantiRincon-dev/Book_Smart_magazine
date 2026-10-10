@@ -1,0 +1,85 @@
+/* The footer closes the page on a surface, with the series legend on top: four
+   columns, one per section, each drawing its hue as a fine line across its top
+   and as the section's name in type, never as a block of colour. Each is a link
+   to the archive filtered by that section. They are generated from SECTIONS
+   (js/core.js), so the footer can never name a category the manifest does not
+   have. */
+.site-footer {
+  margin-block-start: var(--space-9);
+  background-color: var(--c-surface);
+  border-block-start: var(--rule) solid var(--c-line);
+  box-shadow: inset 0 1px 0 var(--c-edge);
+}
+
+.legend {
+  display: flex;
+  min-height: 6.5rem;
+}
+.legend__item {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-width: 0;
+  padding: var(--space-4) var(--space-5);
+  color: var(--hue);
+  text-decoration: none;
+  border-block-start: var(--rule-accent) solid var(--hue);
+  border-inline-end: var(--hairline) solid var(--c-line);
+  transition: flex-grow var(--t-slow), background-color var(--t-base);
+}
+.legend__item:last-child { border-inline-end: 0; }
+.legend__name {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1rem + 1.6vw, 2.25rem);
+  font-weight: 800;
+  font-stretch: var(--stretch-display);
+  line-height: 0.95;
+}
+.legend__count {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  color: var(--c-text-muted);
+}
+
+@media (hover: hover) {
+  .legend__item:hover,
+  .legend__item:focus-visible {
+    flex-grow: 1.7;
+    background-color: color-mix(in srgb, var(--hue) 9%, var(--c-surface));
+  }
+}
+@media (max-width: 700px) {
+  .legend { flex-wrap: wrap; }
+  .legend__item { flex: 1 1 50%; min-height: 6rem; }
+}
+
+.site-footer__inner {
+  display: grid;
+  gap: var(--space-5) var(--space-7);
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  align-items: end;
+  padding-block: var(--space-7) var(--space-8);
+}
+.site-footer__name {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 800;
+  font-stretch: var(--stretch-display);
+  line-height: var(--lh-display);
+}
+.site-footer__info { color: var(--c-text-soft); }
+.site-footer__top {
+  justify-self: start;
+  font-family: var(--font-display);
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  font-stretch: var(--stretch-ui);
+  text-decoration-thickness: 2px;
+}
+@media (min-width: 900px) {
+  .site-footer__top { justify-self: end; }
+}

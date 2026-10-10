@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>I Was Today Years Old - Book Smart</title>
+  <meta name="description" content="Ten small collapses of certainty, collected from the corner of the internet where everyone finds out everything ten years late.">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="I Was Today Years Old - Book Smart">
+  <meta property="og:description" content="Ten small collapses of certainty, collected from the corner of the internet where everyone finds out everything ten years late.">
+  <meta property="article:published_time" content="2026-09-08">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="I Was Today Years Old - Book Smart">
+  <meta name="twitter:description" content="Ten small collapses of certainty, collected from the corner of the internet where everyone finds out everything ten years late.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#ecece9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#18181a" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+
+  <!-- Runs before the first paint, on every page:
+       1. applies a saved light/dark choice, so nobody sees a flash of the wrong one;
+       2. if the reader just clicked an issue, puts that issue's colour over the page
+          (the arriving half of the page transition, see css/components/curtain.css)
+          and flags the page as arriving, so its entrance waits for the curtain. -->
+  <script>
+    (function (d) {
+      try {
+        var t = localStorage.getItem('magazine:theme');
+        if (t === 'light' || t === 'dark') d.dataset.theme = t;
+      } catch (e) {}
+      try {
+        var n = JSON.parse(sessionStorage.getItem('bs:nav') || 'null');
+        sessionStorage.removeItem('bs:nav');
+        if (n && n.hue && Date.now() - n.t < 6000) {
+          var c = d.appendChild(document.createElement('div'));
+          c.className = 'curtain curtain--arriving';
+          c.setAttribute('aria-hidden', 'true');
+          c.style.backgroundColor = n.hue;
+          d.classList.add('is-arriving');
+        }
+      } catch (e) {}
+    })(document.documentElement);
+  </script>
+
+  <!-- Relative paths: this file sits one level below the project root -->
+  <link rel="stylesheet" href="../css/main.css">
+  <script defer src="../js/vendor/gsap.min.js"></script>
+  <script defer src="../js/vendor/ScrollTrigger.min.js"></script>
+  <script defer src="../js/data/articles.js"></script>
+  <script defer src="../js/core.js"></script>
+  <script defer src="../js/article.js"></script>
+</head>
+<body data-base="../">
+  <a class="skip-link" href="#content">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="../index.html">Book Smart</a>
+      <div class="site-header__tools">
+        <nav aria-label="Main">
+          <ul class="nav" role="list">
+            <li><a class="nav__link" href="../index.html">Home</a></li>
+            <li><a class="nav__link" href="../archive.html">Archive</a></li>
+          </ul>
+        </nav>
+        <button class="btn btn--ghost btn--icon" data-theme-toggle type="button" aria-label="Switch theme"></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="content">
+    <article data-section="education">
+
+      <!-- ============ ARTICLE HEADER ============
+           The issue's masthead. data-section picks its hue (the numeral, the
+           rule and the pills), data-week draws the big numeral in the top-right
+           corner (so it is typed once). -->
+      <header class="article-header" data-section="education" data-week="01">
+        <div class="article-header__inner">
+          <p class="article-header__tags">
+            <span class="pill">Education</span>
+            <span class="pill pill--neutral">Week 01</span>
+          </p>
+          <h1>I Was Today Years Old</h1>
+          <p class="article-header__kicker">Internet &amp; Everyday Wonder</p>
+          <p class="lede">Ten small collapses of certainty, collected from the corner of the internet where everyone finds out everything ten years late.</p>
+          <p class="meta">
+            <span>Editorial Board</span>
+            <time datetime="2026-09-08">September 8, 2026</time>
+            <span>5 min read</span>
+          </p>
+        </div>
+      </header>
+
+      <!-- ============ ARTICLE BODY ============
+           .prose is a content grid: every child lands in the 68ch reading
+           column by default, and anything marked .wide or .full-bleed
+           breaks out to the full page width without leaving the flow. 
+           -->
+      <div class="article-body prose">
+
+        <section>
+          <p class="dropcap">
+            To begin with, we all used to believe in what we call nowadays a lie they especially
+            came from our parents and some others from our own creativity. there are hilarious examples,
+            such as Santa Claus, fairies or something related to our daily life. That is why, we want to
+            review some of them with you.
+          </p>
+        </section>
+
+        <h2 id="the-wall">Ten Small Collapses</h2>
+
+        <p class="disclaimer">
+          Fictional content. These posts were written by the editorial board to
+          illustrate the piece. None of the accounts are real.
+        </p>
+
+        <!-- ============ MOCK TWEET GRID ============
+             Real markup, not screenshots: every word here is live text, so
+             it is readable by search and by a screen reader. Icons are
+             drawn once as <symbol>s below and reused with <use>, the same
+             "define once, reuse everywhere" rule the rest of the project
+             follows for SECTIONS. -->
+        <svg aria-hidden="true" style="position:absolute; width:0; height:0; overflow:hidden;">
+          <!-- Phosphor icons (MIT). The heart holds an outline and a solid path;
+               custom properties decide which one shows (see tweet-card.css). -->
+          <symbol id="icon-reply" viewBox="0 0 256 256"><path d="M128,24A104,104,0,0,0,36.18,176.88L24.83,210.93a16,16,0,0,0,20.24,20.24l34.05-11.35A104,104,0,1,0,128,24Zm0,192a87.87,87.87,0,0,1-44.06-11.81,8,8,0,0,0-6.54-.67L40,216,52.47,178.6a8,8,0,0,0-.66-6.54A88,88,0,1,1,128,216Z"/></symbol>
+          <symbol id="icon-retweet" viewBox="0 0 256 256"><path d="M24,128A72.08,72.08,0,0,1,96,56H204.69L194.34,45.66a8,8,0,0,1,11.32-11.32l24,24a8,8,0,0,1,0,11.32l-24,24a8,8,0,0,1-11.32-11.32L204.69,72H96a56.06,56.06,0,0,0-56,56,8,8,0,0,1-16,0Zm200-8a8,8,0,0,0-8,8,56.06,56.06,0,0,1-56,56H51.31l10.35-10.34a8,8,0,0,0-11.32-11.32l-24,24a8,8,0,0,0,0,11.32l24,24a8,8,0,0,0,11.32-11.32L51.31,200H160a72.08,72.08,0,0,0,72-72A8,8,0,0,0,224,120Z"/></symbol>
+          <symbol id="icon-heart" viewBox="0 0 256 256">
+            <path d="M178,40c-20.65,0-38.73,8.88-50,23.89C116.73,48.88,98.65,40,78,40a62.07,62.07,0,0,0-62,62c0,70,103.79,126.66,108.21,129a8,8,0,0,0,7.58,0C136.21,228.66,240,172,240,102A62.07,62.07,0,0,0,178,40ZM128,214.8C109.74,204.16,32,155.69,32,102A46.06,46.06,0,0,1,78,56c19.45,0,35.78,10.36,42.6,27a8,8,0,0,0,14.8,0c6.82-16.67,23.15-27,42.6-27a46.06,46.06,0,0,1,46,46C224,155.61,146.24,204.15,128,214.8Z" style="opacity: var(--heart-line, 1)"/>
+            <path d="M240,102c0,70-103.79,126.66-108.21,129a8,8,0,0,1-7.58,0C119.79,228.66,16,172,16,102A62.07,62.07,0,0,1,78,40c20.65,0,38.73,8.88,50,23.89C139.27,48.88,157.35,40,178,40A62.07,62.07,0,0,1,240,102Z" style="opacity: var(--heart-fill, 0)"/>
+          </symbol>
+          <symbol id="icon-share" viewBox="0 0 256 256"><path d="M176,160a39.89,39.89,0,0,0-28.62,12.09l-46.1-29.63a39.8,39.8,0,0,0,0-28.92l46.1-29.63a40,40,0,1,0-8.66-13.45l-46.1,29.63a40,40,0,1,0,0,55.82l46.1,29.63A40,40,0,1,0,176,160Zm0-128a24,24,0,1,1-24,24A24,24,0,0,1,176,32ZM64,152a24,24,0,1,1,24-24A24,24,0,0,1,64,152Zm112,72a24,24,0,1,1,24-24A24,24,0,0,1,176,224Z"/></symbol>
+          <symbol id="icon-more" viewBox="0 0 256 256"><path d="M140,128a12,12,0,1,1-12-12A12,12,0,0,1,140,128Zm56-12a12,12,0,1,0,12,12A12,12,0,0,0,196,116ZM60,116a12,12,0,1,0,12,12A12,12,0,0,0,60,116Z"/></symbol>
+        </svg>
+
+        <ol class="tweet-grid wide" data-tweet-grid role="list">
+
+          <!-- 1 -->
+          <li>
+            <article class="tweet-card" data-tweet-id="w01-01">
+              <header class="tweet-card__head">
+                <span class="tweet-card__avatar" aria-hidden="true" style="--tw-a: var(--c-literature); --tw-b: var(--c-opinion);">PP</span>
+                <span class="tweet-card__id">
+                  <span class="tweet-card__name">Paulo Paz</span>
+                  <span class="tweet-card__handle">@ppaz</span>
+                </span>
+                <span class="tweet-card__more"><svg><use href="#icon-more"/></svg></span>
+              </header>
+              <p class="tweet-card__text">
+                <span class="tweet-card__hashtag">#IWasTodayYearsOld</span>
+                When i was younger, i thought that the wall of bricks in a building was the foundation, yet it was just a facade.
+              </p>
+              <p class="tweet-card__time"><time datetime="2015-03-21T17:35">5:35 PM · Mar 21, 2015</time></p>
+              <p class="tweet-card__stats">
+                <span><strong data-stat="retweet">57</strong> Retweets</span>
+                <span><strong>380</strong> Quote Tweets</span>
+                <span><strong data-stat="like">4.4K</strong> Likes</span>
+              </p>
+              <div class="tweet-card__actions">
+                <span class="tweet-card__action" aria-hidden="true"><svg><use href="#icon-reply"/></svg></span>
+                <button class="tweet-card__action" type="button" data-action="retweet" data-raw="57" aria-pressed="false" aria-label="Repost this post">
+                  <svg><use href="#icon-retweet"/></svg>
+                </button>
+                <button class="tweet-card__action" type="button" data-action="like" data-raw="4400" aria-pressed="false" aria-label="Like this post">
+                  <svg><use href="#icon-heart"/></svg>
+                </button>
+                <button class="tweet-card__action" type="button" data-action="share" aria-label="Copy this post's text">
+                  <svg><use href="#icon-share"/></svg>
+                </button>
+                <span class="tweet-card__toast" data-share-status aria-live="polite"></span>
+              </div>
+            </article>
+          </li>
+
+          <!-- 2 -->
+          <li>
+            <article class="tweet-card" data-tweet-id="w01-02">
+              <header class="tweet-card__head">
+                <span class="tweet-card__avatar" aria-hidden="true" style="--tw-a: var(--c-culture); --tw-b: var(--c-focus);">SS</span>
+                <span class="tweet-card__id">
+                  <span class="tweet-card__name">Santiago Serna</span>
+                  <span class="tweet-card__handle">@sserna</span>
+                </span>
+                <span class="tweet-card__more"><svg><use href="#icon-more"/></svg></span>
+              </header>
+              <p class="tweet-card__text">
+                <span class="tweet-card__hashtag">#IWasTodayYearsOld</span>
+                I realized that Santa claus wasn&rsquo;t the person who gave me the gifts on christmas when i saw my parents put them under the christmas tree.
+              </p>
+              <p class="tweet-card__time"><time datetime="2008-10-15T03:06">3:06 AM · Oct 15, 2008</time></p>
+              <p class="tweet-card__stats">
+                <span><strong data-stat="retweet">643</strong> Retweets</span>
+                <span><strong>380</strong> Quote Tweets</span>
+                <span><strong data-stat="like">2.2K</strong> Likes</span>
+              </p>
+              <div class="tweet-card__actions">
+                <span class="tweet-card__action" aria-hidden="true"><svg><use href="#icon-reply"/></svg></span>
+                <button class="tweet-card__action" type="button" data-action="retweet" data-raw="643" aria-pressed="false" aria-label="Repost this post">
+                  <svg><use href="#icon-retweet"/></svg>
+                </button>
+                <button class="tweet-card__action" type="button" data-action="like" data-raw="2200" aria-pressed="false" aria-label="Like this post">
+                  <svg><use href="#icon-heart"/></svg>
+                </button>
+                <button class="tweet-card__action" type="button" data-action="share" aria-label="Copy this post's text">
+                  <svg><use href="#icon-share"/></svg>
+                </button>
+                <span class="tweet-card__toast" data-share-status aria-live="polite"></span>
+              </div>
+            </article>
+          </li>
+
+          <!-- 3 -->
+          <li>
+            <article class="tweet-card" data-tweet-id="w01-03">
+              <header class="tweet-card__head">
+                <span class="tweet-card__avatar" aria-hidden="true" style="--tw-a: var(--c-specials); --tw-b: var(--c-opinion);">SG</span>
+                <span class="tweet-card__id">
+                  <span class="tweet-card__name">Saul_G</span>
+                  <span class="tweet-card__handle">@Goodman1</span>
+                </span>
+                <span class="tweet-card__more"><svg><use href="#icon-more"/></svg></span>
+              </header>
+              <p class="tweet-card__text">
+                <span class="tweet-card__hashtag">#IWasTodayYearsOld</span>
+                When i found out that fruits require a lot of time to get ripe. 😭😭😭
+              </p>
+              <p class="tweet-card__time"><time datetime="2025-03-15T12:06">12:06 PM · Mar 15, 2025</time></p>
+              <p class="tweet-card__stats">
+                <span><strong data-stat="retweet">53.4K</strong> Retweets</span>
+                <span><strong>22.2K</strong> Quote Tweets</span>
+                <span><strong data-stat="like">110.7K</strong> Likes</span>
+              </p>
+              <div class="tweet-card__actions">
+                <span class="tweet-card__action" aria-hidden="true"><svg><use href="#icon-reply"/></svg></span>
+                <button class="tweet-card__action" type="button" data-action="retweet" data-raw="53400" aria-pressed="false" aria-label="Repost this post">
+                  <svg><use href="#icon-retweet"/></svg>
+                </button>
+                <button class="tweet-card__action" type="button" data-action="like" data-raw="110700" aria-pressed="false" aria-label="Like this post">
+                  <svg><use href="#icon-heart"/></svg>
+                </button>
+                <button class="tweet-card__action" type="button" data-action="share" aria-label="Copy this post's text">
+                  <svg><use href="#icon-share"/></svg>
+                </button>
+                <span class="tweet-card__toast" data-share-status aria-live="polite"></span>
+              </div>
+            </article>
+          </li>
+
+          <!-- 4 -->
+          <li>
+            <article class="tweet-card" data-tweet-id="w01-04">
+              <header class="tweet-card__head">
+                <span class="tweet-card__avatar" aria-hidden="true" style="--tw-a: var(--c-focus); --tw-b: var(--c-literature);">AT</span>
+                <span class="tweet-card__id">
+                  <span class="tweet-card__name">Another Tweet more</span>
+                  <span class="tweet-card__handle">@NothingMan</span>
+                </span>
+                <span class="tweet-card__more"><svg><use href="#icon-more"/></svg></span>
+              </header>
+              <p class="tweet-card__text">
+                <span class="tweet-card__hashtag">#IWasTodayYearsOld</span>
+                when I realized that getting into the university was not about having partys every day
+              </p>
+              <p class="tweet-card__time"><time datetime="2021-06-16T13:56">1:56 PM · Jun 16, 2021</time></p>
+              <p class="tweet-card__stats">
+                <span><strong data-stat="retweet">36</strong> Retweets</span>
+                <span><strong>58</strong> Quote Tweets</span>
+                <span><strong data-stat="like">669</strong> Likes</span>
+              </p>
+              <div class="tweet-card__actions">
+                <span class="tweet-card__action" aria-hidden="true"><svg><use href="#icon-reply"/></svg></span>
+                <button class="tweet-card__action" type="button" data-action="retweet" data-raw="36" aria-pressed="false" aria-label="Repost this post">
+                  <svg><use href="#icon-retweet"/></svg>
+                </button>
+                <button class="tweet-card__action" type="button" data-action="like" data-raw="669" aria-pressed="false" aria-label="Like this post">
+                  <svg><use href="#icon-heart"/></svg>
+                </button>
+                <button class="tweet-card__action" type="button" data-action="share" aria-label="Copy this post's text">
+                  <svg><use href="#icon-share"/></svg>
+                </button>
+                <span class="tweet-card__toast" data-share-status aria-live="polite"></span>
+              </div>
+            </article>
+          </li>
+
+          <!-- 5 -->
+          <li>
+            <article class="tweet-card" data-tweet-id="w01-05">
+              <header class="tweet-card__head">
+                <span class="tweet-card__avatar" aria-hidden="true" style="--tw-a: var(--c-culture); --tw-b: var(--c-specials);">LU</span>
+                <span class="tweet-card__id">
+                  <span class="tweet-card__name">Luigi_01</span>
+                  <span class="tweet-card__handle">@luigi154jk</span>
+                </span>
+                <span class="tweet-card__more"><svg><use href="#icon-more"/></svg></span>
+              </header>
+              <p class="tweet-card__text">
+                <span class="tweet-card__hashtag">#IWasTodayYearsOld</span>
+                When i realized that it is not likely that it snows in Colombia &lsquo;cause we&rsquo;re in the equator line.
+              </p>
+              <p class="tweet-card__time"><time datetime="2021-06-01T12:00">12:00 PM · Jun 1, 2021</time></p>
+              <p class="tweet-card__stats">
+                <span><strong data-stat="retweet">17</strong> Retweets</span>
+                <span><strong>4</strong> Quote Tweets</span>
+                <span><strong data-stat="like">73</strong> Likes</span>
+              </p>
+              <div class="tweet-card__actions">
+                <span class="tweet-card__action" aria-hidden="true"><svg><use href="#icon-reply"/></svg></span>
+                <button class="tweet-card__action" type="button" data-action="retweet" data-raw="17" aria-pressed="false" aria-label="Repost this post">
+                  <svg><use href="#icon-retweet"/></svg>
+                </button>
+                <button class="tweet-card__action" type="button" data-action="like" data-raw="73" aria-pressed="false" aria-label="Like this post">
+                  <svg><use href="#icon-heart"/></svg>
+                </button>
+                <button class="tweet-card__action" type="button" data-action="share" aria-label="Copy this post's text">
+                  <svg><use href="#icon-share"/></svg>
+                </button>
+                <span class="tweet-card__toast" data-share-status aria-live="polite"></span>
+              </div>
+            </article>
+          </li>
+
+          <!-- 6 -->
+          <li>
+            <article class="tweet-card" data-tweet-id="w01-06">
+              <header class="tweet-card__head">
+                <span class="tweet-card__avatar" aria-hidden="true" style="--tw-a: var(--c-opinion); --tw-b: var(--c-specials);">SM</span>
+                <span class="tweet-card__id">
+                  <span class="tweet-card__name">Santiago</span>
+                  <span class="tweet-card__handle">@Messi</span>
+                </span>
+                <span class="tweet-card__more"><svg><use href="#icon-more"/></svg></span>
+              </header>
+              <p class="tweet-card__text">
+                <span class="tweet-card__hashtag">#IWasTodayYearsOld</span>
+                when I found out that when a couple gets married and says &ldquo;yes, I do&rdquo;, the woman doesn&rsquo;t magically gets pregnant.
+              </p>
+              <p class="tweet-card__time"><time datetime="2026-09-02T12:00">12:00 PM · Sep 2, 2026</time></p>
+              <p class="tweet-card__stats">
+                <span><strong data-stat="retweet">7</strong> Retweets</span>
+                <span><strong>56</strong> Quote Tweets</span>
+                <span><strong data-stat="like">8.6K</strong> Likes</span>
+              </p>
+              <div class="tweet-card__actions">
+                <span class="tweet-card__action" aria-hidden="true"><svg><use href="#icon-reply"/></svg></span>
+                <button class="tweet-card__action" type="button" data-action="retweet" data-raw="7" aria-pressed="false" aria-label="Repost this post">
+                  <svg><use href="#icon-retweet"/></svg>
+                </button>
+                <button class="tweet-card__action" type="button" data-action="like" data-raw="8600" aria-pressed="false" aria-label="Like this post">
+                  <svg><use href="#icon-heart"/></svg>
+                </button>
+                <button class="tweet-card__action" type="button" data-action="share" aria-label="Copy this post's text">
+                  <svg><use href="#icon-share"/></svg>
+                </button>
+                <span class="tweet-card__toast" data-share-status aria-live="polite"></span>
+              </div>
+            </article>
+          </li>
+
+          <!-- 7 -->
+          <li>
+            <article class="tweet-card" data-tweet-id="w01-07">
+              <header class="tweet-card__head">
+                <span class="tweet-card__avatar" aria-hidden="true" style="--tw-a: var(--c-focus); --tw-b: var(--c-literature);">AT</span>
+                <span class="tweet-card__id">
+                  <span class="tweet-card__name">Another Tweet more</span>
+                  <span class="tweet-card__handle">@NothingMan</span>
+                </span>
+                <span class="tweet-card__more"><svg><use href="#icon-more"/></svg></span>
+              </header>
+              <p class="tweet-card__text">
+                <span class="tweet-card__hashtag">#IWasTodayYearsOld</span>
+                when I realized that money didn&rsquo;t appear magically from the ATM
+              </p>
+              <p class="tweet-card__time"><time datetime="2022-10-12T16:47">4:47 PM · Oct 12, 2022</time></p>
+              <p class="tweet-card__stats">
+                <span><strong data-stat="retweet">1K</strong> Retweets</span>
+                <span><strong>1.5K</strong> Quote Tweets</span>
+                <span><strong data-stat="like">236.5K</strong> Likes</span>
+              </p>
+              <div class="tweet-card__actions">
+                <span class="tweet-card__action" aria-hidden="true"><svg><use href="#icon-reply"/></svg></span>
+                <button class="tweet-card__action" type="button" data-action="retweet" data-raw="1000" aria-pressed="false" aria-label="Repost this post">
+                  <svg><use href="#icon-retweet"/></svg>
+                </button>
+                <button class="tweet-card__action" type="button" data-action="like" data-raw="236500" aria-pressed="false" aria-label="Like this post">
+                  <svg><use href="#icon-heart"/></svg>
+                </button>
+                <button class="tweet-card__action" type="button" data-action="share" aria-label="Copy this post's text">
+                  <svg><use href="#icon-share"/></svg>
+                </button>
+                <span class="tweet-card__toast" data-share-status aria-live="polite"></span>
+              </div>
+            </article>
+          </li>
+
+          <!-- 8 -->
+          <li>
+            <article class="tweet-card" data-tweet-id="w01-08">
+              <header class="tweet-card__head">
+                <span class="tweet-card__avatar" aria-hidden="true" style="--tw-a: var(--c-literature); --tw-b: var(--c-culture);">WW</span>
+                <span class="tweet-card__id">
+                  <span class="tweet-card__name">WWEfan</span>
+                  <span class="tweet-card__handle">@WWE</span>
+                </span>
+                <span class="tweet-card__more"><svg><use href="#icon-more"/></svg></span>
+              </header>
+              <p class="tweet-card__text">
+                <span class="tweet-card__hashtag">#IWasTodayYesterdayOld</span>
+                I found out that fights in WWE were fake and all the show was scripted.
+              </p>
+              <p class="tweet-card__time"><time datetime="2008-10-15T03:06">3:06 AM · Oct 15, 2008</time></p>
+              <p class="tweet-card__stats">
+                <span><strong data-stat="retweet">643</strong> Retweets</span>
+                <span><strong>380</strong> Quote Tweets</span>
+                <span><strong data-stat="like">2.2K</strong> Likes</span>
+              </p>
+              <div class="tweet-card__actions">
+                <span class="tweet-card__action" aria-hidden="true"><svg><use href="#icon-reply"/></svg></span>
+                <button class="tweet-card__action" type="button" data-action="retweet" data-raw="643" aria-pressed="false" aria-label="Repost this post">
+                  <svg><use href="#icon-retweet"/></svg>
+                </button>
+                <button class="tweet-card__action" type="button" data-action="like" data-raw="2200" aria-pressed="false" aria-label="Like this post">
+                  <svg><use href="#icon-heart"/></svg>
+                </button>
+                <button class="tweet-card__action" type="button" data-action="share" aria-label="Copy this post's text">
+                  <svg><use href="#icon-share"/></svg>
+                </button>
+                <span class="tweet-card__toast" data-share-status aria-live="polite"></span>
+              </div>
+            </article>
+          </li>
+
+          <!-- 9 -->
+          <li>
+            <article class="tweet-card" data-tweet-id="w01-09">
+              <header class="tweet-card__head">
+                <span class="tweet-card__avatar" aria-hidden="true" style="--tw-a: var(--c-focus); --tw-b: var(--c-opinion);">PS</span>
+                <span class="tweet-card__id">
+                  <span class="tweet-card__name">Paulo Serna</span>
+                  <span class="tweet-card__handle">@CivilLove</span>
+                </span>
+                <span class="tweet-card__more"><svg><use href="#icon-more"/></svg></span>
+              </header>
+              <p class="tweet-card__text">
+                <span class="tweet-card__hashtag">#IWasTodayYearsOld</span>
+                When I found out that people in Spain who study architecture design building AND aesthetics.
+              </p>
+              <p class="tweet-card__time"><time datetime="2017-05-06T16:00">4:00 PM · May 6, 2017</time></p>
+              <p class="tweet-card__stats">
+                <span><strong data-stat="retweet">230</strong> Retweets</span>
+                <span><strong>50</strong> Quote Tweets</span>
+                <span><strong data-stat="like">420</strong> Likes</span>
+              </p>
+              <div class="tweet-card__actions">
+                <span class="tweet-card__action" aria-hidden="true"><svg><use href="#icon-reply"/></svg></span>
+                <button class="tweet-card__action" type="button" data-action="retweet" data-raw="230" aria-pressed="false" aria-label="Repost this post">
+                  <svg><use href="#icon-retweet"/></svg>
+                </button>
+                <button class="tweet-card__action" type="button" data-action="like" data-raw="420" aria-pressed="false" aria-label="Like this post">
+                  <svg><use href="#icon-heart"/></svg>
+                </button>
+                <button class="tweet-card__action" type="button" data-action="share" aria-label="Copy this post's text">
+                  <svg><use href="#icon-share"/></svg>
+                </button>
+                <span class="tweet-card__toast" data-share-status aria-live="polite"></span>
+              </div>
+            </article>
+          </li>
+
+          <!-- 10 (identical to 6: image (9) in the sesión 1 folder is the
+               same screenshot as image (5)/(6), reproduced faithfully
+               rather than invented) -->
+          <li>
+            <article class="tweet-card" data-tweet-id="w01-10">
+              <header class="tweet-card__head">
+                <span class="tweet-card__avatar" aria-hidden="true" style="--tw-a: var(--c-opinion); --tw-b: var(--c-specials);">SM</span>
+                <span class="tweet-card__id">
+                  <span class="tweet-card__name">Santiago</span>
+                  <span class="tweet-card__handle">@Messi</span>
+                </span>
+                <span class="tweet-card__more"><svg><use href="#icon-more"/></svg></span>
+              </header>
+              <p class="tweet-card__text">
+                <span class="tweet-card__hashtag">#IWasTodayYearsOld</span>
+                when I found out that when a couple gets married and says &ldquo;yes, I do&rdquo;, the woman doesn&rsquo;t magically gets pregnant.
+              </p>
+              <p class="tweet-card__time"><time datetime="2026-09-02T12:00">12:00 PM · Sep 2, 2026</time></p>
+              <p class="tweet-card__stats">
+                <span><strong data-stat="retweet">7</strong> Retweets</span>
+                <span><strong>56</strong> Quote Tweets</span>
+                <span><strong data-stat="like">8.6K</strong> Likes</span>
+              </p>
+              <div class="tweet-card__actions">
+                <span class="tweet-card__action" aria-hidden="true"><svg><use href="#icon-reply"/></svg></span>
+                <button class="tweet-card__action" type="button" data-action="retweet" data-raw="7" aria-pressed="false" aria-label="Repost this post">
+                  <svg><use href="#icon-retweet"/></svg>
+                </button>
+                <button class="tweet-card__action" type="button" data-action="like" data-raw="8600" aria-pressed="false" aria-label="Like this post">
+                  <svg><use href="#icon-heart"/></svg>
+                </button>
+                <button class="tweet-card__action" type="button" data-action="share" aria-label="Copy this post's text">
+                  <svg><use href="#icon-share"/></svg>
+                </button>
+                <span class="tweet-card__toast" data-share-status aria-live="polite"></span>
+              </div>
+            </article>
+          </li>
+
+        </ol>
+        <!-- The previous / next issue and the archive. Built by js/article.js from
+             the manifest, so publishing a new issue never means editing this one. -->
+        <nav class="article-nav" aria-label="Elsewhere" data-article-nav>
+          <noscript>
+            <a class="door" href="../archive.html">
+              <span class="door__top">Archive</span>
+              <span class="door__title">Every issue this semester</span>
+            </a>
+          </noscript>
+        </nav>
+
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <nav class="legend" aria-label="Sections" data-legend>
+      <noscript><a class="legend__item" href="../archive.html"><span class="legend__name">Browse by section</span></a></noscript>
+    </nav>
+    <div class="container site-footer__inner">
+      <p class="site-footer__name">Book Smart</p>
+      <p class="site-footer__info">Intensive English III<br>Universidad Nacional de Colombia, Bogot&aacute;<br>Semester 2026-2</p>
+      <a class="site-footer__top" href="#top" data-top>Back to top</a>
+    </div>
+  </footer>
+</body>
+</html>

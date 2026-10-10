@@ -1,0 +1,131 @@
+/* ============================================================
+   TILE
+   One issue, always the same parts in the same order: the week numeral set in
+   the section's colour with the section's name as a pill, the cover on a quiet
+   mat, the title, the deck, the credits. The home shelf and the archive both
+   build it (createTile() in js/core.js), so every work reads as one numbered
+   series.
+
+   It is a card made of TONE, not of borders: a surface a couple of tones
+   lighter than the canvas (in both themes), a hairline, a 1px highlight on
+   its top edge, and ONE accent line in the section's hue across the top.
+   Colour is rationed: the numeral, the pill, that line, the title's
+   underline and a faint tint on hover. Nothing is a block of solid colour.
+
+   The context decides the size, never the tile:
+     .shelf     fixes the cover's HEIGHT; its width follows its proportions
+     .archive   fixes the row; each cover gets its width by proportion
+   --ar is the cover's true width/height; --arv is the same ratio held between
+   0.75 and 1.9, so a very tall infographic or a very wide ad is cropped a
+   little instead of making a sliver or a banner.
+   ============================================================ */
+
+.tile {
+  --ar: 1.33;
+  --arv: 1.33;
+  position: relative;                /* anchors the title's stretched link */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: var(--space-4);
+  background-color: var(--c-surface);
+  border: var(--hairline) solid var(--c-line);
+  border-block-start: var(--rule-accent) solid var(--hue);
+  box-shadow: inset 0 1px 0 var(--c-edge);
+  transition: background-color var(--t-base), border-color var(--t-base);
+}
+
+/* ---------- Week numeral + section ---------- */
+.tile__mark {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+.tile__no {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 2.2rem + 1.4vw, 4rem);
+  font-weight: 800;
+  font-stretch: var(--stretch-display);
+  font-variant-numeric: lining-nums;
+  line-height: 0.86;
+  color: var(--hue);
+  transition: transform var(--t-base);
+}
+
+/* ---------- The cover on its mat ---------- */
+.tile__mat {
+  margin: 0;
+  padding: var(--space-2);
+  background-color: var(--c-surface-2);
+}
+.tile__img {
+  display: block;
+  width: 100%;
+  height: var(--h, 20rem);
+  object-fit: cover;
+  object-position: var(--pos, center);
+  transition: transform 700ms var(--ease-out);
+}
+
+/* ---------- Title, deck, credits ---------- */
+.tile__title {
+  max-width: 11em;
+  font-size: var(--fs-tile);
+  line-height: 0.94;
+}
+.tile__title a {
+  padding-block-end: 0.04em;
+  color: inherit;
+  text-decoration: none;
+  /* A line in the section's hue drawn under the title, line by line, as the
+     tile is hovered. */
+  background: linear-gradient(var(--hue), var(--hue)) 0 100% / 0 0.07em no-repeat;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  transition: background-size var(--t-slow);
+}
+/* Stretched link: the whole tile is one click target, so a work is never
+   linked twice. */
+.tile__title a::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.tile__title a:focus-visible { outline: none; }
+.tile:has(.tile__title a:focus-visible) {
+  outline: 3px solid currentColor;
+  outline-offset: 6px;
+}
+
+.tile__deck {
+  max-width: 38ch;
+  font-size: var(--fs-deck);
+  line-height: 1.45;
+  color: var(--c-text-soft);
+}
+.tile__credits {
+  gap: var(--space-1) var(--space-3);
+  /* Tiles in a row share one height (the shelf and the archive stretch them),
+     so the credits sit on the same line at the foot of every card. */
+  margin-block-start: auto;
+  color: var(--c-text-muted);
+}
+
+/* ---------- Hover (pointer devices only) ----------
+   The card takes a faint tint of its section and its hairline warms toward the
+   hue (the top accent line stays as it is). The cover steps BACK inside its mat
+   (scale below 1) instead of zooming in: the covers are small, low-resolution
+   files and enlarging them only blurs them. The numeral lifts, the title's line
+   runs. */
+@media (hover: hover) {
+  .tile:hover {
+    background-color: color-mix(in srgb, var(--hue) 7%, var(--c-surface));
+    border-inline-color: color-mix(in srgb, var(--hue) 55%, var(--c-line));
+    border-block-end-color: color-mix(in srgb, var(--hue) 55%, var(--c-line));
+  }
+  .tile:hover .tile__img { transform: scale(0.955); }
+  .tile:hover .tile__no { transform: translateY(-0.25rem); }
+  .tile:hover .tile__title a { background-size: 100% 0.07em; }
+}

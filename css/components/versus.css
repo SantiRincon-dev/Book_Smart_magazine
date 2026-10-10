@@ -1,0 +1,189 @@
+/* ============================================================
+   VERSUS
+   The interactive old-vs-new matchups of Week 04, Task 2: each card is a
+   screenshot plus one vote button per option, with a live percentage bar
+   under every button. Behaviour lives in js/article.js.
+
+   The screenshots carry their own white background and are only 420-480px
+   wide: they sit on a quiet mat and are never scaled past their real size
+   (width:auto + max-width:100%), which would only blur them. The leader of a
+   matchup takes the section's hue (hairline, tint and numbers, not a solid
+   fill) and the bars are 3px lines of it. The bars grow with transform, not
+   width, so they cost no layout.
+   ============================================================ */
+
+/* ---------- Section head: title, note, page-wide tools ---------- */
+.versus__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-block-end: var(--space-4);
+  margin-block-end: var(--space-6);
+  border-block-end: var(--rule-accent) solid var(--hue);
+}
+.versus__note {
+  max-width: 52ch;
+  margin-block-start: var(--space-2);
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+}
+.versus__tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+}
+.versus__all {
+  font-family: var(--font-display);
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  font-stretch: var(--stretch-ui);
+  font-variant-numeric: tabular-nums;
+}
+.versus__reset {
+  min-height: 2.5rem;
+  padding: var(--space-2) var(--space-4);
+  color: var(--c-text);
+  background-color: transparent;
+  border-color: var(--c-border);
+}
+.versus__reset:hover { color: var(--c-bg); background-color: var(--c-text); border-color: var(--c-text); }
+/* Armed: the second click will erase the votes. */
+.versus__reset[data-armed="true"],
+.versus__reset[data-armed="true"]:hover {
+  color: var(--c-like);
+  background-color: color-mix(in srgb, var(--c-like) 14%, var(--c-bg));
+  border-color: var(--c-like);
+}
+
+/* ---------- The wall of matchup cards ----------
+   The screenshots have very different heights, so the cards stack in columns
+   (CSS multi-column) instead of rows: no gaps under the short ones. The DOM
+   order is the column order, so the keyboard follows what the eye does. */
+.versus-grid {
+  columns: 3 21rem;
+  column-gap: var(--space-6);
+}
+
+.versus-card {
+  display: flex;
+  flex-direction: column;
+  margin-block-end: var(--space-6);
+  break-inside: avoid;
+  background-color: var(--c-surface);
+  border: var(--hairline) solid var(--c-line);
+  border-block-start: var(--rule-accent) solid var(--hue);
+  box-shadow: inset 0 1px 0 var(--c-edge);
+}
+
+.versus-card__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+}
+/* The seven polls are independent, not a sequence: no numbers. */
+.versus-card__num { display: none; }
+.versus-card__title {
+  font-size: 2.25rem;
+  line-height: 0.95;
+}
+.versus-card__total {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  font-variant-numeric: tabular-nums;
+  color: var(--c-text-muted);
+}
+
+.versus-card__media {
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: var(--mat);
+  background-color: var(--c-surface-2);
+}
+.versus-card__media img { width: auto; max-width: 100%; height: auto; }
+
+/* ---------- Vote buttons ---------- */
+.versus-card__options {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+  padding: var(--space-4);
+}
+
+.vote {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  overflow: hidden;
+  /* the bottom padding leaves room for the percentage bar */
+  padding: var(--space-3) var(--space-3) calc(var(--space-3) + 0.5rem);
+  text-align: left;
+  color: var(--c-text);
+  background-color: transparent;
+  border: var(--rule) solid var(--c-border);
+  transition: background-color var(--t-fast), border-color var(--t-fast), box-shadow var(--t-fast), transform var(--t-fast);
+}
+.vote:disabled { cursor: not-allowed; opacity: 0.55; }
+.vote:not(:disabled):hover {
+  background-color: var(--c-surface-2);
+  border-color: var(--c-text-muted);
+}
+.vote:not(:disabled):active { transform: translateY(1px); }
+
+.vote__label {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-stretch: var(--stretch-ui);
+  line-height: 1.25;
+}
+.vote__stats {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  font-variant-numeric: tabular-nums;
+  color: var(--c-text-muted);
+}
+
+/* The bar sits under the text, a 3px line of the hue. --p (0 to 1) is set by
+   js/article.js. */
+.vote::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  height: 3px;
+  background-color: var(--hue);
+  transform: scaleX(var(--p, 0));
+  transform-origin: 0 50%;
+  transition: transform 600ms var(--ease-out);
+}
+
+/* The current leader takes the section's hue: its hairline thickens (an inset
+   ring, so nothing shifts), a faint tint fills it and the numbers turn to the
+   hue. A tie has no leader. */
+.vote.is-leading,
+.vote.is-leading:not(:disabled):hover {
+  background-color: color-mix(in srgb, var(--hue) 13%, var(--c-surface));
+  border-color: var(--hue);
+  box-shadow: inset 0 0 0 1px var(--hue);
+}
+.vote.is-leading .vote__stats { color: var(--hue); }
+
+.vote.is-pop { animation: vote-pop 260ms var(--ease-out); }
+@keyframes vote-pop {
+  40% { transform: scale(1.05); }
+}

@@ -1,0 +1,59 @@
+/* Utilities. Few and deliberate: this is not a utility framework. */
+
+[hidden] { display: none !important; }
+
+/* The light/dark toggle reveals the new edition with a growing circle
+   (js/core.js). While it runs, the browser's default cross-fade is off. */
+.theme-transition::view-transition-old(root),
+.theme-transition::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+.visually-hidden:not(:focus):not(:active) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Skip link: the first tabbable element on every page. It slides in with a
+   transform, never by animating its position. */
+.skip-link {
+  position: absolute;
+  inset-block-start: var(--space-4);
+  inset-inline-start: var(--space-4);
+  z-index: var(--z-skip);
+  padding: var(--space-3) var(--space-5);
+  font-family: var(--font-display);
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  font-stretch: var(--stretch-ui);
+  color: var(--c-bg);
+  background-color: var(--c-text);
+  text-decoration: none;
+  transform: translateY(-250%);
+  transition: transform var(--t-fast);
+}
+.skip-link:focus { transform: none; }
+
+/* ============================================================
+   PRINT
+   A magazine gets printed. Chrome, controls and tinted surfaces go; the
+   reading column becomes the whole page, in black on white (always the day
+   edition: see the print rule in base/tokens.css).
+   ============================================================ */
+@media print {
+  .site-header, .site-footer, .reading-progress, .skip-link, .btn, .filters,
+  .article-nav, .gallery, .tweet-card__actions, .lightbox, .curtain { display: none !important; }
+
+  body { color: #000; background: #fff; }
+  .article-header { color: #000; background: none; border-block-end: 2px solid #000; }
+  .article-header::before { display: none; }
+  a { color: #000; text-decoration: underline; }
+
+  .prose { display: block; }
+  .tweet-grid { columns: 2; }
+}

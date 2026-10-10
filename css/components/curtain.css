@@ -1,0 +1,28 @@
+/* ============================================================
+   CURTAIN: the page transition.
+   Clicking an issue (a tile, or a link at the end of an article) grows a
+   wash of that issue's colour out of the thing you clicked until it covers
+   the screen, then the next page opens with the same wash on top and lifts
+   it away upwards. The wash is the section hue stirred into the page's own
+   canvas (30%), so it is a tint, never a solid block of colour. It is done
+   with GSAP and sessionStorage, not the browser's View Transitions API,
+   because that API needs a real server origin and this site runs from a
+   double click (file://).
+   Scripts: js/core.js. Inline in every <head>: the arrival half.
+   ============================================================ */
+.curtain {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-curtain);
+  pointer-events: none;
+}
+
+/* Safety net: if the script that lifts the curtain never runs (a blocked or
+   failed script), the curtain dissolves on its own instead of trapping the
+   reader behind a coloured screen. js/core.js cancels this animation. */
+.curtain--arriving {
+  animation: curtain-safety 400ms 2600ms both;
+}
+@keyframes curtain-safety {
+  to { opacity: 0; visibility: hidden; }
+}

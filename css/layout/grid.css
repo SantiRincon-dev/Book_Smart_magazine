@@ -1,0 +1,56 @@
+/* ============================================================
+   LAYOUT: the Grid vs Flexbox decision for the project.
+
+   GRID  -> page structure and collections (two dimensions)
+   FLEX  -> the inside of a component, on a single line or column
+   ============================================================ */
+
+/* --- Base container --- */
+.container {
+  width: 100%;
+  max-width: var(--w-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* --- The "content grid" used by the article body ---
+   Key trick of the project: the article is a grid with named lanes. Every
+   child lands in the reading lane by default; a figure can ask for .wide or
+   .full-bleed and leave the column without leaving the HTML flow and without
+   negative margins. */
+.prose {
+  display: grid;
+  grid-template-columns:
+    [full-start] minmax(var(--gutter), 1fr)
+    [content-start] min(var(--w-content), 100% - (var(--gutter) * 2)) [content-end]
+    minmax(var(--gutter), 1fr) [full-end];
+}
+.prose > *           { grid-column: content; }
+.prose > .full-bleed { grid-column: full; }
+.prose > .wide       { grid-column: full; width: min(var(--w-wide), 100% - (var(--gutter) * 2)); margin-inline: auto; }
+
+/* Vertical rhythm is owned by the parent, not by each child */
+.prose > * + *       { margin-block-start: var(--space-5); }
+.prose > h2          { margin-block-start: var(--space-9); }
+.prose > .full-bleed,
+.prose > .wide       { margin-block: var(--space-7); }
+
+/* --- FLEX: one-dimensional patterns --- */
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.split {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
