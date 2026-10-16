@@ -69,9 +69,11 @@
   <script defer src="../js/vendor/ScrollTrigger.min.js"></script>
   <script defer src="../js/data/articles.js"></script>
   <script defer src="../js/core.js"></script>
-  <!-- Only an issue with SHARED counters (votes, ticks, likes: Weeks 01, 04, 06)
+  <!-- Only an issue with SHARED counters (votes, ticks, likes: Weeks 01, 04, 06, 07)
        also loads firebase-config.js (before core.js) and live.js (after it),
-       as those issues do. Any other issue leaves them out. -->
+       as those issues do. Any other issue leaves them out. An issue with polls
+       must also give its [data-versus] a data-versus-key of its own (Week 07 uses
+       "top5"), or it would take back the votes of Week 04: see the README. -->
   <script defer src="../js/article.js"></script>
 </head>
 <body data-base="../">
@@ -182,7 +184,10 @@
                figure
                a numbered list           Week 06  (ol.cliches in css/layout/article.css)
                a row of small pictures   Week 06  (figure.stills in css/layout/article.css)
-               under one caption -->
+               under one caption
+               a ranked list of picks    Week 07  (li.pick, number as text, in css/issues/w07.css;
+               with a picture each,      an animated GIF goes in a <picture> whose reduced-motion
+               and a poll per list       source is a still frame; the polls are Week 04's cards) -->
 
         <!-- When you publish, also update the two fallbacks on index.html that
              name the newest issue for visitors without JavaScript (the hero

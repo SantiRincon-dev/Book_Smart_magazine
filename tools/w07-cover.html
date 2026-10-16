@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!-- Source of assets/img/articles/w07-cover.png: one still from each of the four
+     lists of the issue, never enlarged, each in the same frame as a figure in
+     the article, in two columns on a TRANSPARENT background in the night tones,
+     so the cover sits on the tile's mat in either theme. Render it with a
+     transparent screenshot of a 1100x1000 viewport (for example
+     Page.captureScreenshot with a transparent default background in the
+     DevTools protocol, or puppeteer's page.screenshot({ omitBackground: true })),
+     then run tools/make-thumbs.py to refresh the thumbnail.
+
+     The four stills: the two landscapes on the left, Taxi driver (Movies, number
+     1) and Star wars (Soundtrack, number 1; its first frame), and the two
+     portraits on the right, Lord of the Rings (Series, number 3: the number-one
+     picture of that list, Godfather, is only 165 px wide and would have to be
+     enlarged) and Seven (Plot-twist, number 1). -->
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <title>Week 07 cover</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    html { background: transparent; }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      width: 1100px;
+      height: 1000px;
+      overflow: hidden;
+      background: transparent;
+    }
+    /* No film grain on a cover: it would speckle the transparent areas. */
+    body::before, body::after { content: none; }
+
+    .col { display: flex; flex-direction: column; gap: 24px; }
+    .col--tall { transform: translateY(-36px); }     /* a gentle step between the columns */
+
+    /* The same frame as a figure in the article (css/layout/article.css). */
+    .print {
+      margin: 0;
+      padding: var(--mat);
+      background-color: var(--c-surface);
+      border: var(--hairline) solid var(--c-line);
+      border-block-start: var(--rule-accent) solid var(--hue);
+      box-shadow: inset 0 1px 0 var(--c-edge);
+    }
+    .print img { display: block; height: auto; }
+
+    /* Nothing overlaps, nothing is cropped, nothing is enlarged. */
+    .print--taxi  img { width: 520px; }      /* the file is 1600 px wide */
+    .print--wars  img { width: 520px; }      /* the file is 540 px wide */
+    .print--rings img { width: 300px; }      /* the file is 387 px wide */
+    .print--seven img { width: 270px; }      /* the file is 1000 px wide */
+  </style>
+</head>
+<body data-section="education">
+  <div class="col col--wide">
+    <figure class="print print--taxi"><img src="../assets/img/articles/w07-movies-1-taxi-driver.webp" alt=""></figure>
+    <figure class="print print--wars"><img src="../assets/img/articles/w07-soundtrack-1-star-wars-still.webp" alt=""></figure>
+  </div>
+  <div class="col col--tall">
+    <figure class="print print--rings"><img src="../assets/img/articles/w07-series-3-lord-of-the-rings.jpg" alt=""></figure>
+    <figure class="print print--seven"><img src="../assets/img/articles/w07-twist-1-seven.webp" alt=""></figure>
+  </div>
+</body>
+</html>

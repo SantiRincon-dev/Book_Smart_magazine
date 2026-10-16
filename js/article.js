@@ -213,6 +213,12 @@
      front page splits them); the totals are shared by the whole page.
      Markup contract (see the Week 04 article):
        [data-versus]       a block of matchups (any number of them)
+       [data-versus-key]   optional, on [data-versus]: gives the page's polls their
+                           OWN storage key and live tracker. Week 04 leaves it out and
+                           keeps the original ones; any other issue with polls (Week 07:
+                           "top5") must set it, because the tracker takes back every vote
+                           this browser sent that the page does not want counted: sharing
+                           Week 04's would withdraw its votes just by opening the issue.
        [data-poll="id"]    one matchup card
        [data-option="id"]  a vote button; holds [data-count], [data-share], .vote__label
        [data-total]        the card's own "N votes" label
@@ -226,7 +232,8 @@
   function initPolls() {
     var roots = $$('[data-versus]');
     if (!roots.length) return;
-    var KEY = 'magazine:versusChoice';
+    var scope = roots[0].getAttribute('data-versus-key');
+    var KEY = 'magazine:versusChoice' + (scope ? ':' + scope : '');
 
     var cards = $$('[data-poll]');
     var allTotal = $('[data-versus-total]');
@@ -252,7 +259,7 @@
 
     var choice = load();
     var everyone = null;             // { "poll__option": n }, once the real numbers arrive
-    var tracker = BS.live && BS.live.track('versus', 'poll_votes');
+    var tracker = BS.live && BS.live.track('versus' + (scope ? '-' + scope : ''), 'poll_votes');
     function liveIds() {
       return Object.keys(choice).map(function (poll) { return poll + '__' + choice[poll]; });
     }

@@ -157,14 +157,19 @@ previous / next links at the end of every article all update themselves.
 **Never** edit `archive.html` to publish, and edit `index.html` only for the one
 manual touch-point: the hero button's `href` and the `<noscript>` link on the
 home page name the newest issue for visitors without JavaScript (with
-JavaScript the button is filled from the manifest). Today both point at Week 06.
+JavaScript the button is filled from the manifest). Today both point at Week 07.
 
 Blocks an issue can reuse (copy them from the issue that has them): mock posts
 (Week 01), job profiles (Week 02), a plain framed figure (Week 03 and, for
 comic strips, Week 05: one figure per strip, and since the words of a strip are
 lettered inside the picture, its `alt` carries all of them), an infographic and
 polls (Week 04), a numbered list, `ol.cliches`, and a row of small pictures
-under one caption, `figure.stills` (both Week 06).
+under one caption, `figure.stills` (both Week 06), and a ranked list of picks,
+`li.pick` (the number is real text, `--rank` sets its size), which Week 07 sets
+in four shapes (`ol.chart--stair`, `--shelves`, `--tracks`, `--zigzag`; in the
+first two every picture sits in one equal 3:2 frame, contained, never cropped)
+with a five-option poll per list. An animated GIF goes in a `<picture>` whose
+`prefers-reduced-motion` source is a still frame (Week 07 does this for its six).
 
 Optional but recommended, once the cover image is in `assets/img/articles/`:
 
@@ -201,11 +206,12 @@ add or delete lines freely) and, if you like, change the `label`. An empty
 
 ## Live counters (Firebase)
 
-Three things are shared between every reader, in real time: the **old-vs-new
-votes** (Week 04), the **tick-list of clichés** (Week 06) and the **likes and
+Four things are shared between every reader, in real time: the **old-vs-new
+votes** (Week 04), the **tick-list of clichés** (Week 06), the **likes and
 reposts** of the mock tweets (Week 01; the fictional numbers inside each card
 are the students' and are never touched, the small numbers beside the heart and
-the arrows are the real ones). Nothing else on the site talks to a server.
+the arrows are the real ones) and the **"your number one" votes** of the four
+top 5s (Week 07). Nothing else on the site talks to a server.
 
 How it works, in three files:
 
@@ -232,8 +238,16 @@ The data is a set of counter documents `{ count: n }`, moved only with
 | --- | --- | --- |
 | `cliches_stats` | `1` to `10` | readers who ticked that cliché |
 | `cliches_stats` | `_readers` | readers who ticked at least one (the denominator of the percentages) |
-| `poll_votes` | `<poll>__<option>`, e.g. `snape__left` | votes for one option of a matchup |
+| `poll_votes` | `<poll>__<option>`, e.g. `snape__left` | votes for one option of a matchup (Week 04), or the pick "number one" of a list, e.g. `top-movies__taxi-driver` (Week 07: polls `top-movies`, `top-series`, `top-soundtrack`, `top-plot-twist`) |
 | `tweet_reactions` | `<tweet>__like` or `<tweet>__retweet` | readers who pressed it |
+
+Two issues have polls, so each keeps its own storage key and its own tracker:
+Week 04's `[data-versus]` has no `data-versus-key` (it keeps
+`magazine:versusChoice`), Week 07's has `data-versus-key="top5"` (it uses
+`magazine:versusChoice:top5`). Any new issue with polls MUST set its own key:
+the tracker takes back every vote this browser sent that the open page does not
+want counted, so two pages sharing one would withdraw each other's votes just by
+being opened.
 
 ### Setting it up (once)
 
@@ -341,7 +355,7 @@ revista/
 │   └── article.js              Progress, reveals, doors, tweets, polls, lightbox
 ├── firestore.rules             Security rules to publish in the Firebase console
 ├── docs/article-template.html  Copied for every new assignment
-└── tools/                      One-off generators (fonts, thumbnails, W01 cover)
+└── tools/                      One-off generators (fonts, thumbnails, W01, W05 and W07 covers)
 ```
 
 ## Tools
@@ -354,6 +368,7 @@ Only needed when you change something they generate. They need Python 3.
 | `tools/make-thumbs.py` | WebP thumbnails of the covers (see above; it keeps a cover's transparency when it has some). Needs `pillow`. |
 | `tools/w01-cover.html` | The source of Week 01's cover: three real posts from the article, drawn in the night tones on a transparent background so the cover sits on the tile's mat in either edition. Screenshot it at 1600x1000 with a transparent background, then run `make-thumbs.py`. |
 | `tools/w05-cover.html` | The source of Week 05's cover: the three comic strips, untouched, each in the frame it has in the article, side by side on a transparent background. Same two steps as the Week 01 cover. |
+| `tools/w07-cover.html` | The source of Week 07's cover: four of the issue's own stills (one per list), never enlarged, side by side on a transparent background. Same two steps as the Week 01 cover. |
 
 ## Credits and licences
 

@@ -1,0 +1,398 @@
+/* ============================================================
+   WEEK 07: THE COUNTDOWN   (Education, indigo)
+   Four top 5s. A top 5 is a ranking, so the number is the architecture: every
+   pick has its number as real text, in the hue, and the number shrinks with
+   the place (1 is the biggest; --rank, set on each item, drives it). The
+   pictures cannot say who won: the winner of Series is the smallest file of
+   the issue (165 px), so the size of a picture never means a place. In
+   Soundtrack and Plot-twist a picture sits at its own size or a little under,
+   never over and never cropped.
+
+   Each list is a different shape:
+   - MOVIES, "the staircase": five equal frames, each one step further along
+     and one step down, the number beside it shrinking as it goes.
+   - SERIES, "the bookcase": two planks, 3 + 2, the same five equal frames
+     standing on the plank, their number and title on the plank in front.
+   - SOUNDTRACK, "the tracklist": equal rows, the number in a column, a big
+     title, and the picture on a square sleeve, like an album's back cover.
+   - PLOT-TWIST, "the zigzag": the picture changes sides at every pick, so the
+     page itself takes a turn.
+   The pictures of Movies and Series were of very different shapes and sizes (a
+   5296 px still next to a 165 px GIF, widescreen next to a poster) and looked
+   uneven side by side, so in those two lists EVERY picture sits in the same
+   frame: 3:2, the same width, the whole picture visible (nothing is cropped),
+   on a darker mat; a small one fills it, a poster stands in the middle. Their
+   size no longer says anything: the number does.
+   Then the ballots (a card per list, the standard vote cards of Week 04) and
+   the riddle (a native <details>, no script). The vote cards come after the
+   lists and never beside them: the lists are for reading, the ballots for
+   answering.
+
+   What stays as in every issue: the standard header (numeral, rule, title
+   entrance), the scroll reveals (every pick is data-reveal), the doors.
+   Scoped by [data-issue="w07"] on <body>. Every rule lives in @layer pages,
+   which beats the layout layer, so what .prose > .wide places (the width, the
+   margins) is set again here wherever a list needs it.
+   ============================================================ */
+
+@layer pages {
+
+/* ---------- The chapter heads: a hue rule as wide as the list under it ---------- */
+[data-issue="w07"] .prose > h2.wide {
+  margin-block: var(--space-10) 0;
+  padding-block-start: var(--space-4);
+  border-block-start: var(--rule-accent) solid var(--hue);
+}
+[data-issue="w07"] .prose > h2.wide + .wide { margin-block-start: var(--space-6); }
+
+/* ---------- A pick: the number, the title, the picture ---------- */
+[data-issue="w07"] .pick {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* The number and the title are ONE heading, "1 Taxi driver". */
+[data-issue="w07"] .pick__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: var(--space-5);
+  margin: 0;
+  font-size: inherit;
+}
+[data-issue="w07"] .pick__rank {
+  flex: none;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: var(--stretch-display);
+  font-variant-numeric: lining-nums;
+  line-height: 0.8;
+  color: var(--hue);
+  /* 1 is the biggest; every place after it is a little smaller. */
+  font-size: calc(var(--n1) * (1.15 - 0.15 * var(--rank)));
+}
+[data-issue="w07"] .pick__title {
+  min-width: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: var(--stretch-display);
+  line-height: var(--lh-display);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+
+/* The picture sits in the same frame as a figure of every other issue: a
+   surface, a hue line across the top. It is as wide as its picture and no
+   wider: the picture is never scaled past the size of its file (--w, in the
+   HTML), nor past the cap its list gives it (--fit-w, --fit-h), and it keeps
+   its proportions (--ar). */
+[data-issue="w07"] .pick__media {
+  --fit-w: 9999px;
+  --fit-h: 9999px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0;
+  padding: var(--mat);
+  background-color: var(--c-surface);
+  border: var(--hairline) solid var(--c-line);
+  border-block-start: var(--rule-accent) solid var(--hue);
+  box-shadow: inset 0 1px 0 var(--c-edge);
+}
+[data-issue="w07"] .pick__media picture { display: block; }
+[data-issue="w07"] .pick__media img {
+  display: block;
+  width: min(var(--w), var(--fit-w), calc(var(--fit-h) * var(--ar)));
+  max-width: 100%;
+  height: auto;
+}
+
+/* ---------- EQUAL FRAMES: Movies and Series ----------
+   One frame for all ten pictures: 3:2, --frame-w wide, the picture contained in it
+   (object-fit: contain: nothing is cropped) on a darker mat. A small picture fills
+   it (the four GIFs were re-sampled to the frame's size, at most 1.64x, with
+   Lanczos and a touch of sharpening, which is much cleaner than a browser's
+   enlargement); a poster stands in the middle with mat on both sides. */
+[data-issue="w07"] .chart--stair,
+[data-issue="w07"] .chart--shelves { --frame-w: 356px; }
+[data-issue="w07"] .chart--stair .pick__media,
+[data-issue="w07"] .plank .pick__media {
+  width: var(--frame-w);
+  max-width: 100%;
+  padding: var(--space-2);
+}
+[data-issue="w07"] .chart--stair .pick__media img,
+[data-issue="w07"] .plank .pick__media img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  background-color: var(--c-surface-2);
+}
+
+/* ---------- 1. MOVIES: the staircase ---------- */
+[data-issue="w07"] .chart--stair {
+  --n1: clamp(7rem, 15vw, 13rem);
+  --head-w: 20rem;
+  --row-w: calc(var(--frame-w) + var(--space-6) + var(--head-w));
+  display: grid;
+  gap: var(--space-7);
+  padding: 0;
+}
+[data-issue="w07"] .chart--stair .pick {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+[data-issue="w07"] .chart--stair .pick__head { flex-direction: column; align-items: flex-start; row-gap: var(--space-3); }
+[data-issue="w07"] .chart--stair .pick__title { font-size: clamp(2rem, 1.3rem + 1.9vw, 3.25rem); }
+@media (min-width: 62rem) {
+  /* Each row sits one step further along than the one above: the step is what
+     the page has left over (its width minus a row's), in four equal parts, so
+     the last row ends exactly at the right edge. */
+  [data-issue="w07"] .chart--stair .pick {
+    display: grid;
+    grid-template-columns: var(--frame-w) minmax(0, var(--head-w));
+    column-gap: var(--space-6);
+    align-items: center;
+    margin-inline-start: calc((var(--rank) - 1) * (100% - var(--row-w)) / 4);
+  }
+  [data-issue="w07"] .chart--stair .pick__media { grid-column: 1; grid-row: 1; }
+  [data-issue="w07"] .chart--stair .pick__head  { grid-column: 2; grid-row: 1; }
+}
+
+/* ---------- 2. SERIES: the bookcase ---------- */
+[data-issue="w07"] .chart--shelves {
+  --n1: clamp(3.5rem, 6vw, 5.5rem);
+  display: grid;
+  gap: var(--space-9);
+}
+/* A plank: three columns, so the second plank's two frames are as wide as the first's three. */
+[data-issue="w07"] .plank {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, var(--frame-w)));
+  column-gap: var(--space-7);
+  row-gap: var(--space-7);
+  align-items: end;
+  margin: 0;
+  padding: 0;
+  border-block-end: var(--rule-accent) solid var(--hue);
+}
+/* The heading comes first in the page (so a screen reader gets "1 Godfather"
+   and then its picture) and is drawn under the picture, on the plank. */
+[data-issue="w07"] .plank > .pick {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--space-3);
+  max-width: 100%;
+  padding-block-end: var(--space-4);
+}
+/* Every label is as tall as number 1's, with its line at the bottom, so the five
+   frames stand on the same line whatever size their number is. */
+[data-issue="w07"] .plank .pick__head {
+  column-gap: var(--space-3);
+  min-height: calc(var(--n1) * 0.8);
+  align-content: flex-end;
+}
+[data-issue="w07"] .plank .pick__title { font-size: clamp(1.5rem, 1.2rem + 0.8vw, 2rem); }
+
+/* ---------- 3. SOUNDTRACK: the tracklist ---------- */
+[data-issue="w07"] .chart--tracks {
+  --n1: clamp(5rem, 11vw, 9rem);
+  --rank-col: clamp(4rem, 9vw, 7.5rem);
+  --sleeve: clamp(9rem, 20vw, 14rem);
+  padding: 0;
+  border-block-end: var(--hairline) solid var(--c-line);
+}
+[data-issue="w07"] .chart--tracks .pick {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--sleeve);
+  align-items: center;
+  column-gap: var(--space-6);
+  padding-block: var(--space-5);
+  border-block-start: var(--hairline) solid var(--c-line);
+}
+[data-issue="w07"] .chart--tracks .pick__head {
+  flex-wrap: nowrap;
+  align-items: center;
+  column-gap: var(--space-5);
+}
+[data-issue="w07"] .chart--tracks .pick__rank { flex: 0 0 var(--rank-col); }
+[data-issue="w07"] .chart--tracks .pick__title { font-size: var(--fs-lg); }
+/* The sleeve: a square, the picture contained in it, never cropped. */
+[data-issue="w07"] .chart--tracks .pick__media {
+  --fit-w: calc(var(--sleeve) - var(--space-3) * 2);
+  --fit-h: calc(var(--sleeve) - var(--space-3) * 2);
+  display: grid;
+  place-items: center;
+  width: var(--sleeve);
+  height: var(--sleeve);
+  padding: var(--space-3);
+  justify-self: end;
+  background-color: var(--c-surface-2);
+}
+
+/* ---------- 4. PLOT-TWIST: the zigzag ---------- */
+[data-issue="w07"] .chart--zigzag {
+  --n1: clamp(8rem, 15vw, 13rem);
+  display: grid;
+  gap: var(--space-9);
+  padding: 0;
+}
+[data-issue="w07"] .chart--zigzag .pick {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+[data-issue="w07"] .chart--zigzag .pick__head { flex-direction: column; align-items: flex-start; row-gap: var(--space-3); }
+[data-issue="w07"] .chart--zigzag .pick__title { font-size: var(--fs-lg); }
+[data-issue="w07"] .chart--zigzag .pick__media { --fit-h: 34rem; }
+@media (min-width: 56rem) {
+  [data-issue="w07"] .chart--zigzag .pick {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    align-items: center;
+    column-gap: var(--space-8);
+  }
+  [data-issue="w07"] .chart--zigzag .pick__media { grid-column: 1; grid-row: 1; }
+  [data-issue="w07"] .chart--zigzag .pick__head  { grid-column: 2; grid-row: 1; }
+  /* Every second pick is the first one's mirror image: the picture goes to the
+     right, and the text turns to face it. */
+  [data-issue="w07"] .chart--zigzag .pick:nth-child(even) { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  [data-issue="w07"] .chart--zigzag .pick:nth-child(even) .pick__media { grid-column: 2; justify-self: end; }
+  [data-issue="w07"] .chart--zigzag .pick:nth-child(even) .pick__head  { grid-column: 1; align-items: flex-end; text-align: end; }
+}
+
+/* ---------- YOUR TURN: the ballots ---------- */
+[data-issue="w07"] .ballots { margin-block-end: 0; }
+[data-issue="w07"] .ballots__intro {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 60ch;
+  margin-block-end: var(--space-6);
+}
+[data-issue="w07"] .ballots__intro p { margin: 0; font-size: var(--fs-md); line-height: var(--lh-snug); }
+[data-issue="w07"] .ballots__intro .ballots__total {
+  font-family: var(--font-display);
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  font-stretch: var(--stretch-ui);
+  font-variant-numeric: tabular-nums;
+  color: var(--c-text-muted);
+}
+[data-issue="w07"] .ballots__intro .ballots__note { font-size: var(--fs-sm); color: var(--c-text-muted); }
+[data-issue="w07"] .ballots__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+@media (min-width: 56rem) {
+  [data-issue="w07"] .ballots__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+[data-issue="w07"] .ballots .versus-card { margin: 0; }
+/* Five options, stacked: each one a row with the author's place, the title and the count. */
+[data-issue="w07"] .ballots .versus-card__options {
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+}
+[data-issue="w07"] .ballots .vote {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--space-3);
+}
+[data-issue="w07"] .ballots .vote__rank {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-stretch: var(--stretch-display);
+  font-variant-numeric: lining-nums;
+  line-height: 1;
+  color: var(--c-text-muted);
+}
+[data-issue="w07"] .ballots .vote__stats { width: auto; gap: var(--space-4); }
+[data-issue="w07"] .ballots .vote.is-leading .vote__rank { color: var(--hue); }
+
+/* ---------- TASK 2: Who am I? ---------- */
+[data-issue="w07"] .riddle {
+  display: grid;
+  gap: var(--space-6);
+  padding-inline-start: var(--space-5);
+  border-inline-start: var(--rule-accent) solid var(--hue);
+}
+[data-issue="w07"] .riddle + .riddle { margin-block-start: var(--space-8); }
+[data-issue="w07"] .riddle h3 {
+  margin: 0;
+  font-size: var(--fs-tile);
+  line-height: var(--lh-display);
+}
+[data-issue="w07"] .riddle__text {
+  margin: 0;
+  font-size: var(--fs-md);
+  line-height: var(--lh-text);
+}
+/* "Show the answer": a ghost button that is a native <summary>, so it is
+   keyboard-operable with no script; the label turns into "Hide the answer". */
+[data-issue="w07"] .riddle__answer { display: grid; justify-items: start; gap: var(--space-5); }
+[data-issue="w07"] .riddle__answer > summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 3rem;
+  padding: 0.85rem 1.5rem;
+  font-family: var(--font-display);
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  font-stretch: var(--stretch-ui);
+  line-height: 1;
+  color: var(--c-text);
+  background-color: transparent;
+  border: var(--rule) solid var(--c-border);
+  cursor: pointer;
+  list-style: none;
+  transition: background-color var(--t-fast), color var(--t-fast), border-color var(--t-fast);
+}
+[data-issue="w07"] .riddle__answer > summary::-webkit-details-marker { display: none; }
+[data-issue="w07"] .riddle__answer > summary:hover {
+  color: var(--c-bg);
+  background-color: var(--c-text);
+  border-color: var(--c-text);
+}
+[data-issue="w07"] .riddle__answer > summary:focus-visible { outline: 2px solid var(--c-text); outline-offset: 3px; }
+[data-issue="w07"] .riddle__hide { display: none; }
+[data-issue="w07"] .riddle__answer[open] .riddle__show { display: none; }
+[data-issue="w07"] .riddle__answer[open] .riddle__hide { display: inline; }
+[data-issue="w07"] .riddle__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  font-weight: 800;
+  font-stretch: var(--stretch-display);
+  line-height: var(--lh-display);
+  color: var(--hue);
+  animation: riddle-in 600ms var(--ease-out) both;
+}
+@keyframes riddle-in {
+  from { opacity: 0; transform: translateY(0.3em); }
+}
+
+/* ---------- Small screens: everything is one column ---------- */
+@media (max-width: 55.99rem) {
+  /* Once the planks wrap, each picture stands on a plank of its own instead of
+     all sharing the last line. */
+  [data-issue="w07"] .plank {
+    grid-template-columns: repeat(2, minmax(0, var(--frame-w)));
+    border-block-end: 0;
+  }
+  [data-issue="w07"] .plank > .pick { border-block-end: var(--rule-accent) solid var(--hue); }
+}
+@media (max-width: 40rem) {
+  [data-issue="w07"] .chart--tracks .pick {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: var(--space-4);
+  }
+  [data-issue="w07"] .chart--tracks .pick__media { justify-self: start; }
+  [data-issue="w07"] .plank { grid-template-columns: minmax(0, var(--frame-w)); row-gap: var(--space-6); }
+  [data-issue="w07"] .riddle { padding-inline-start: var(--space-4); }
+}
+
+} /* @layer pages */

@@ -110,6 +110,28 @@
    */
   var ARTICLES = [
     {
+      id:      '2026-w07-our-top-5s',
+      week:    7,
+      title:   'Our Top 5s',
+      kicker:  'Four Top 5s',
+      section: 'education',
+      author:  'Editorial Board',
+      date:    '2026-10-14',
+      readingTime: 3,
+      tags:    ['film-critique', 'pop-culture', 'opinion', 'interactive'],
+      keywords: ['top 5', 'movies', 'series', 'soundtrack', 'plot twist', 'who am i', 'anne hathaway', 'bruce willis',
+                 'taxi driver', 'requiem for a dream', 'interstellar', 'apocalypse now', 'pulp fiction',
+                 'godfather', 'harry potter', 'lord of the rings', 'jurassic park', 'terminator',
+                 'star wars', 'rocky', 'halo', 'pirates of the caribbean',
+                 'seven', 'twelve monkeys', 'the sixth sense', 'fight club', 'parasite'],
+      excerpt: 'Four top 5s about movies and series (standalone movies, series, soundtracks and plot twists), a vote for your own number one in each, and two Who am I? riddles.',
+      cover:   'assets/img/articles/w07-cover.png',   // four of the issue's own stills (tools/w07-cover.html)
+      thumb:   'assets/img/articles/thumbs/w07-cover.webp',
+      coverW:  1100, coverH: 1000,
+      coverAlt:'Four stills in two columns: a man in sunglasses at the wheel of a yellow taxi and a man bowing his head in the blue light of a lightsaber on the left; a burning eye above a dark tower and the Se7en poster with two faces on the right.',
+      url:     'articles/2026-w07-our-top-5s.html'
+    },
+    {
       id:      '2026-w06-movie-cliches',
       week:    6,
       title:   'Movie Clichés',
@@ -221,12 +243,12 @@
 
     // ---- Template for the next assignment: copy, uncomment, fill in ----
     // {
-    //   id: '2026-w07-slug', week: 7, title: '', kicker: '',
+    //   id: '2026-w08-slug', week: 8, title: '', kicker: '',
     //   section: 'politics',       // a key of SECTIONS above
-    //   author: '', date: '2026-10-14', readingTime: 4,
+    //   author: '', date: '2026-10-21', readingTime: 4,
     //   tags: ['opinion', 'humor'],   // keys of TAGS above: three to five
     //   excerpt: '', cover: '', coverAlt: '',
-    //   url: 'articles/2026-w07-slug.html'
+    //   url: 'articles/2026-w08-slug.html'
     //   // optional: thumb, coverW, coverH, coverPosition (see the list above)
     // }
   ];
