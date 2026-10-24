@@ -57,13 +57,14 @@
     'visual-essay':        { label: 'Visual Essay' },
     comics:                { label: 'Comics' },
     literature:            { label: 'Literature' },
-    interactive:           { label: 'Interactive' },     // the reader can vote, tick or like
+    interactive:           { label: 'Interactive' },     // the reader can vote, tick, like or press play
     // What it looks at
     'film-critique':       { label: 'Film Critique' },
     'media-critique':      { label: 'Media Critique' },
     publicity:             { label: 'Publicity' },
     culture:               { label: 'Culture' },
     'pop-culture':         { label: 'Pop Culture' },
+    music:                 { label: 'Music' },
     'internet-culture':    { label: 'Internet Culture' },
     'urban-life':          { label: 'Urban Life' },
     labor:                 { label: 'Labor' },
@@ -109,6 +110,35 @@
    *                                       that is much taller than its frame
    */
   var ARTICLES = [
+    {
+      id:      '2026-w08-book-smart-recommends',
+      week:    8,
+      title:   'Book Smart Recommends',
+      kicker:  'Heart Songs & Our Playlist',
+      section: 'history',
+      author:  'Editorial Board',
+      date:    '2026-10-21',
+      readingTime: 3,
+      tags:    ['music', 'confessions', 'pop-culture', 'interactive'],
+      keywords: ['music', 'songs', 'playlist', 'heart songs', 'lyrics', 'one more time', 'daft punk', 'sun a shine',
+                 'elkin robinson', 'beautiful day', 'u2', 'if we have each other', 'alec benjamin',
+                 'smalltown boy', 'bronski beat', 'amerika', 'rammstein', 'love me not', 'ravyn lenae',
+                 'everybody wants to rule the world', 'tears for fears', 'freed from desire', 'gala',
+                 'la isla bonita', 'madonna', 'hips dont lie', 'shakira', 'creole vibration', 'come round',
+                 'change', 'wiser', 'death of me', 'madilyn bailey', 'cheezy street', 'louie zong',
+                 'attention', 'charlie puth', 'perfect', 'ed sheeran', 'we dont talk anymore', 'selena gomez',
+                 'snowman', 'sia', 'lovely', 'billie eilish', 'khalid', 'die with a smile', 'bruno mars',
+                 'lady gaga', 'there is nothing holding me back', 'shawn mendes', 'famous last words',
+                 'my chemical romance', 'billie jean', 'michael jackson', 'radio ga ga', 'queen',
+                 'we are young', 'fun', 'janelle monae', 'the reason', 'hoobastank', 'losing my religion', 'rem',
+                 'stairway to heaven', 'led zeppelin', 'what ive done', 'linkin park', 'hey jude', 'the beatles'],
+      excerpt: 'Four songs chosen for their lyrics, each with the verse we love and why, and Book Smart Recommends, a playlist of 33 songs you can play right here.',
+      cover:   'assets/img/articles/w08-cover.png',   // the playlist's own cover (session 8, task 2)
+      thumb:   'assets/img/articles/thumbs/w08-cover.webp',
+      coverW:  911, coverH: 882,
+      coverAlt:'A neon-line drawing on a dark blue background. In the middle, a pair of headphones with a heart and sound waves inside; thin lines join it to seven small icons around it: a synthesizer keyboard, a music note, an electric guitar on fire, a vinyl record, a spiky star, an acoustic guitar with a flower and a palm tree with a music note. Below it, the words Book Smart.',
+      url:     'articles/2026-w08-book-smart-recommends.html'
+    },
     {
       id:      '2026-w07-our-top-5s',
       week:    7,
@@ -243,9 +273,9 @@
 
     // ---- Template for the next assignment: copy, uncomment, fill in ----
     // {
-    //   id: '2026-w08-slug', week: 8, title: '', kicker: '',
+    //   id: '2026-w09-slug', week: 9, title: '', kicker: '',
     //   section: 'politics',       // a key of SECTIONS above
-    //   author: '', date: '2026-10-21', readingTime: 4,
+    //   author: '', date: '2026-10-28', readingTime: 4,
     //   tags: ['opinion', 'humor'],   // keys of TAGS above: three to five
     //   excerpt: '', cover: '', coverAlt: '',
     //   url: 'articles/2026-w08-slug.html'

@@ -47,7 +47,8 @@
    ============================================================ */
 @media print {
   .site-header, .site-footer, .reading-progress, .skip-link, .btn, .filters,
-  .article-nav, .gallery, .tweet-card__actions, .lightbox, .curtain { display: none !important; }
+  .article-nav, .gallery, .tweet-card__actions, .lightbox, .curtain,
+  .dock, .deck, .track__wave, .track__time, .eq { display: none !important; }
 
   body { color: #000; background: #fff; }
   .article-header { color: #000; background: none; border-block-end: 2px solid #000; }

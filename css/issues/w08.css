@@ -1,0 +1,442 @@
+/* ============================================================
+   WEEK 08: BOOK SMART RECOMMENDS   (History, sage)
+   Four songs chosen for their lyrics, and a playlist of 33. The page is the
+   sleeve of a record with the music playing: notes on the left, the disc on
+   the right, and the controls always within reach (the player: js/player.js,
+   css/components/player.css).
+
+   - HEART SONGS: four "sleeves". Each is a square print of the song's cover in
+     a frame, its player under it, and beside them who chose it, the song, the
+     lyric the student pasted and why. The print and its player stay in view
+     while you read the lyric (position: sticky); every second sleeve is the
+     first one's mirror image. The four covers were found pictures of different
+     shapes and sizes (347 to 720 px, from 1:1 to 1.21:1), so they all sit in the
+     SAME square frame with the whole picture visible, never cropped and never
+     enlarged: their size says nothing, the song does.
+   - THE PLAYLIST: its cover and its buttons on one side (also sticky), the 33
+     songs on the other in one list, numbered 1 to 33 as the students wrote it.
+     A row is a big button (number, title, artist), the song's own waveform and
+     its length. The row that sounds takes a tint of the hue, a line along its
+     edge and four dancing bars where its number was. The waveforms appear when
+     the list is wide enough for them to be worth drawing (a container query),
+     and always on the song that sounds.
+
+   What stays as in every issue: the standard header (numeral, rule, title
+   entrance), the scroll reveals (the covers and the text of a sleeve are
+   data-reveal), the doors. Scoped by [data-issue="w08"] on <body>. Every rule
+   lives in @layer pages, which beats the layout layer, so what .prose > .wide
+   places (the width, the margins) is set again here wherever the page needs it.
+   ============================================================ */
+
+@layer pages {
+
+/* ---------- The chapter heads: a hue rule as wide as the part under it ---------- */
+[data-issue="w08"] .prose > h2.wide {
+  margin-block: var(--space-10) 0;
+  padding-block-start: var(--space-4);
+  border-block-start: var(--rule-accent) solid var(--hue);
+}
+[data-issue="w08"] .prose > h2.wide + .wide { margin-block-start: var(--space-6); }
+
+/* The playlist's link, when it is switched on (see the comment in the HTML). */
+[data-issue="w08"] .actions { margin-block-start: var(--space-6); }
+[data-issue="w08"] .actions .btn:hover { background-color: transparent; }
+
+/* ---------- A framed print: the cover of a sleeve and the playlist's own ----------
+   The same card for all five: a surface, the hue as a line across its top, and
+   inside it a square mat (darker) holding the whole picture. None of the five
+   files is smaller than the mat, so none is ever enlarged. */
+[data-issue="w08"] {
+  --sleeve-w: 22rem;
+}
+[data-issue="w08"] .sleeve__side,
+[data-issue="w08"] .playlist__cover {
+  width: min(var(--sleeve-w), 100%);
+  padding: var(--mat);
+  background-color: var(--c-surface);
+  border: var(--hairline) solid var(--c-line);
+  border-block-start: var(--rule-accent) solid var(--hue);
+  box-shadow: inset 0 1px 0 var(--c-edge);
+}
+[data-issue="w08"] .sleeve__art,
+[data-issue="w08"] .playlist__cover { margin: 0; }
+[data-issue="w08"] .sleeve__art img,
+[data-issue="w08"] .playlist__cover img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: contain;
+  background-color: var(--c-surface-2);
+}
+
+/* ---------- 1. HEART SONGS: the sleeves ---------- */
+[data-issue="w08"] .sleeves { display: grid; }
+[data-issue="w08"] .sleeve {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--space-6);
+  align-items: start;
+  padding-block: var(--space-8);
+  border-block-end: var(--hairline) solid var(--c-line);
+}
+[data-issue="w08"] .sleeve:first-child { padding-block-start: var(--space-4); }
+[data-issue="w08"] .sleeve:last-child { border-block-end: 0; }
+
+[data-issue="w08"] .sleeve__side {
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+}
+[data-issue="w08"] .sleeve__body {
+  display: grid;
+  gap: var(--space-5);
+  align-content: start;
+  min-width: 0;
+}
+
+/* "Chosen by Paulo Paz", and the bars that dance when its song plays. */
+[data-issue="w08"] .sleeve__chosen {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-ui);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  line-height: 1.25;
+  color: var(--c-text-muted);
+}
+[data-issue="w08"] .sleeve__who { color: var(--c-text); font-weight: 700; }
+[data-issue="w08"] .sleeve__chosen .eq { visibility: hidden; }
+[data-issue="w08"] .sleeve:not([data-state="idle"]):not([data-state="error"]) .sleeve__chosen .eq { visibility: visible; }
+
+/* The song and, under it, who made it. */
+[data-issue="w08"] .sleeve__title {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: inherit;
+}
+[data-issue="w08"] .sleeve__song {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-weight: 800;
+  font-stretch: var(--stretch-display);
+  line-height: var(--lh-display);
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+[data-issue="w08"] .sleeve__credit {
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  line-height: var(--lh-snug);
+  color: var(--c-text-soft);
+}
+[data-issue="w08"] .sleeve__by { color: var(--c-text-muted); }
+[data-issue="w08"] .sleeve__artist { color: var(--c-text); }
+
+/* The lyric the student pasted: the book face in italics behind a line of the
+   hue, set the way they typed it (a line is a line, a blank line is a pause). */
+[data-issue="w08"] .lyrics {
+  margin: 0;
+  padding-block: 0;
+  padding-inline-start: var(--space-5);
+  border-block-start: 0;
+  border-inline-start: var(--rule-accent) solid var(--hue);
+  font-family: var(--font-text);
+  font-size: var(--fs-md);
+  font-weight: 500;
+  font-style: italic;
+  font-stretch: normal;
+  line-height: var(--lh-snug);
+  text-wrap: pretty;
+  max-width: 46ch;
+}
+[data-issue="w08"] .lyrics p { margin: 0; }
+[data-issue="w08"] .lyrics p + p { margin-block-start: var(--space-4); }
+
+[data-issue="w08"] .sleeve__thoughts {
+  display: grid;
+  gap: var(--space-2);
+  max-width: var(--w-content);
+}
+[data-issue="w08"] .sleeve__label {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  font-stretch: var(--stretch-ui);
+  line-height: 1.25;
+  color: var(--hue);
+}
+[data-issue="w08"] .sleeve__text { margin: 0; }
+
+@media (min-width: 56rem) {
+  [data-issue="w08"] .sleeve {
+    grid-template-columns: var(--sleeve-w) minmax(0, 1fr);
+    column-gap: var(--space-8);
+  }
+  /* The print and its player stay under the header while the lyric is read. */
+  [data-issue="w08"] .sleeve__side {
+    position: sticky;
+    inset-block-start: calc(var(--header-h) + var(--space-5));
+  }
+  /* Every second sleeve is the first one's mirror image. */
+  [data-issue="w08"] .sleeve:nth-child(even) { grid-template-columns: minmax(0, 1fr) var(--sleeve-w); }
+  [data-issue="w08"] .sleeve:nth-child(even) .sleeve__side { grid-column: 2; grid-row: 1; justify-self: end; }
+  [data-issue="w08"] .sleeve:nth-child(even) .sleeve__body { grid-column: 1; grid-row: 1; }
+}
+
+/* ---------- 2. THE PLAYLIST ---------- */
+[data-issue="w08"] .playlist {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--space-7);
+  align-items: start;
+}
+[data-issue="w08"] .playlist__side {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+  justify-items: start;
+}
+[data-issue="w08"] .playlist__name {
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-tile);
+  font-weight: 800;
+  font-stretch: var(--stretch-display);
+  line-height: var(--lh-display);
+  text-wrap: balance;
+}
+[data-issue="w08"] .playlist__meta {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-ui);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  font-variant-numeric: tabular-nums;
+  color: var(--c-text-muted);
+}
+[data-issue="w08"] .playlist__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-block-start: var(--space-3);
+}
+/* The script switches "Play all" on: without it (no script, or a browser that
+   cannot play MP3) a dead button would only mislead. */
+[data-issue="w08"] [data-play-all]:disabled { display: none; }
+
+/* A tablet: the cover on the left and its name and buttons beside it, instead of
+   under it with the rest of the width empty. */
+@media (min-width: 38rem) and (max-width: 55.99rem) {
+  [data-issue="w08"] .playlist__side {
+    grid-template-columns: var(--sleeve-w) minmax(0, 1fr);
+    column-gap: var(--space-6);
+  }
+  [data-issue="w08"] .playlist__cover { grid-row: 1 / span 4; }
+  [data-issue="w08"] .playlist__side > :not(.playlist__cover) { grid-column: 2; }
+  [data-issue="w08"] .playlist__name { margin-block-start: 0; }
+}
+
+@media (min-width: 56rem) {
+  [data-issue="w08"] .playlist {
+    grid-template-columns: var(--sleeve-w) minmax(0, 1fr);
+    column-gap: var(--space-8);
+  }
+  [data-issue="w08"] .playlist__side {
+    position: sticky;
+    inset-block-start: calc(var(--header-h) + var(--space-5));
+  }
+}
+
+/* ---------- The list and a song of it ----------
+   One list, 1 to 33, under the same line of the hue as the cover's card beside
+   it. The list is a container, so the row decides what to show from the room
+   the list really has, not from the window: beside the sticky cover there is
+   much less of it than the window suggests. */
+[data-issue="w08"] .tracks {
+  container-type: inline-size;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border-block-start: var(--rule-accent) solid var(--hue);
+}
+[data-issue="w08"] .track {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "main time"
+    "wave wave";
+  align-items: center;
+  column-gap: var(--space-4);
+  border-block-end: var(--hairline) solid var(--c-line);
+  transition: background-color var(--t-fast);
+}
+[data-issue="w08"] .track__main {
+  grid-area: main;
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--space-3);
+  width: 100%;
+  min-height: 4rem;
+  padding: var(--space-3) var(--space-2);
+  text-align: start;
+  color: var(--c-text);
+}
+/* A button that has not been switched on yet (no script) must still read as text. */
+[data-issue="w08"] .track__main:disabled { color: var(--c-text); cursor: default; }
+[data-issue="w08"] .track__main:focus-visible { outline-offset: -3px; }
+
+/* The cell where a row's number lives: the number at rest, the play / pause icon
+   under the pointer or the keyboard's focus, and the dancing bars while it plays. */
+[data-issue="w08"] .track__lead {
+  position: relative;
+  display: grid;
+  place-items: center;
+  height: 2.75rem;
+}
+[data-issue="w08"] .track__lead > * { grid-area: 1 / 1; }
+[data-issue="w08"] .track__no {
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  font-stretch: var(--stretch-display);
+  font-variant-numeric: lining-nums;
+  color: var(--c-text-muted);
+}
+[data-issue="w08"] .track__icon { display: none; color: var(--c-text); }
+[data-issue="w08"] .track__icon svg { width: 1.375rem; height: 1.375rem; fill: currentColor; }
+[data-issue="w08"] .track__lead .eq { display: none; }
+
+[data-issue="w08"] .track__text {
+  display: grid;
+  gap: 0.125rem;
+  min-width: 0;
+}
+[data-issue="w08"] .track__song {
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  font-weight: 700;
+  font-stretch: var(--stretch-ui);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+[data-issue="w08"] .track__credit {
+  font-size: var(--fs-sm);
+  line-height: 1.3;
+  color: var(--c-text-soft);
+}
+[data-issue="w08"] .track__by { color: var(--c-text-muted); }
+
+[data-issue="w08"] .track__wave {
+  grid-area: wave;
+  display: none;
+  margin-block: 0 var(--space-3);
+  margin-inline: var(--space-2);
+}
+/* A song that is not playing shows its shape in a quieter tone: it is a preview
+   (and a shortcut for the pointer). The one that sounds is the slider, and has
+   the full 3:1 of a control (below). */
+[data-issue="w08"] .track__wave .wave__base { color: color-mix(in srgb, var(--c-border) 60%, var(--c-bg)); }
+[data-issue="w08"] .track__time {
+  grid-area: time;
+  min-width: 11ch;
+  padding-inline-end: var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  font-variant-numeric: tabular-nums;
+  text-align: end;
+  white-space: nowrap;
+  color: var(--c-text-muted);
+}
+[data-issue="w08"] .track__note {
+  grid-area: wave;
+  display: none;
+  padding: 0 var(--space-2) var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  color: var(--c-text-soft);
+}
+/* No script: the browser's own player under the song. */
+[data-issue="w08"] .track noscript { grid-column: 1 / -1; display: block; padding: 0 var(--space-2) var(--space-3); }
+[data-issue="w08"] .track audio { width: 100%; }
+
+/* The row that sounds, or is paused: a tint of the hue and a line along its
+   edge (an inset shadow, so nothing shifts). Its number is replaced by the
+   dancing bars while it plays, and turns to the hue while it is paused. */
+[data-issue="w08"] .track:is([data-state="playing"], [data-state="paused"], [data-state="loading"]) {
+  background-color: color-mix(in srgb, var(--hue) 8%, var(--c-bg));
+  box-shadow: inset 2px 0 0 var(--hue);
+}
+[data-issue="w08"] .track[data-state="paused"] .track__no { color: var(--hue); }
+[data-issue="w08"] .track[data-state="playing"] .track__no,
+[data-issue="w08"] .track[data-state="loading"] .track__no { display: none; }
+[data-issue="w08"] .track[data-state="playing"] .eq,
+[data-issue="w08"] .track[data-state="loading"] .eq { display: inline-flex; }
+[data-issue="w08"] .track:not([data-state="idle"]):not([data-state="error"]) .track__time { color: var(--c-text-soft); }
+[data-issue="w08"] .track:not([data-state="idle"]):not([data-state="error"]) .track__wave { display: block; }
+[data-issue="w08"] .track:not([data-state="idle"]):not([data-state="error"]) .track__wave .wave__base { color: var(--c-border); }
+
+/* Its file did not load: say so instead of a waveform. */
+[data-issue="w08"] .track[data-state="error"] .track__note { display: block; }
+[data-issue="w08"] .track[data-state="error"] .track__time,
+[data-issue="w08"] .track[data-state="error"] .track__wave { display: none; }
+
+/* Without motion the dancing bars would be a still picture that looks the same
+   playing or paused: the icon of what a press does takes their place instead. */
+@media (prefers-reduced-motion: reduce) {
+  [data-issue="w08"] .track[data-state="playing"] .eq,
+  [data-issue="w08"] .track[data-state="loading"] .eq { display: none; }
+  [data-issue="w08"] .track:not([data-state="idle"]):not([data-state="error"]) .track__no { display: none; }
+  [data-issue="w08"] .track:not([data-state="idle"]):not([data-state="error"]) .track__icon { display: block; color: var(--hue); }
+}
+
+/* Under the pointer, and on the keyboard's focus: the icon of what a press
+   does. These come after the states above, so they win over the dancing bars. */
+@media (hover: hover) {
+  [data-issue="w08"] .track:hover { background-color: var(--c-surface); }
+  [data-issue="w08"] .track:is([data-state="playing"], [data-state="paused"], [data-state="loading"]):hover { background-color: color-mix(in srgb, var(--hue) 8%, var(--c-bg)); }
+  [data-issue="w08"] .track__main:not(:disabled):hover .track__no { display: none; }
+  [data-issue="w08"] .track__main:not(:disabled):hover .track__icon { display: block; color: var(--c-text); }
+  [data-issue="w08"] .track__main:not(:disabled):hover .eq { display: none; }
+}
+[data-issue="w08"] .track__main:focus-visible .track__no { display: none; }
+[data-issue="w08"] .track__main:focus-visible .track__icon { display: block; color: var(--c-text); }
+[data-issue="w08"] .track__main:focus-visible .eq { display: none; }
+
+/* Room for the waveform beside the title: it is drawn on every row. */
+@container (min-width: 38rem) {
+  [data-issue="w08"] .track {
+    grid-template-columns: minmax(0, 1fr) minmax(8rem, 15rem) auto;
+    grid-template-areas: "main wave time";
+  }
+  [data-issue="w08"] .track__wave { display: block; margin-block: 0; margin-inline: 0; }
+  [data-issue="w08"] .track__note { grid-area: wave / wave / wave / time; padding: 0; }
+  [data-issue="w08"] .track noscript { grid-column: 1 / -1; }
+}
+
+/* ---------- Small screens ---------- */
+@media (max-width: 40rem) {
+  [data-issue="w08"] .lyrics { padding-inline-start: var(--space-4); }
+}
+
+/* ---------- Print: the sleeves and the list as plain pages ---------- */
+@media print {
+  [data-issue="w08"] .sleeve__side,
+  [data-issue="w08"] .playlist__side { position: static; }
+  [data-issue="w08"] .sleeve { break-inside: avoid; }
+  [data-issue="w08"] .track { break-inside: avoid; }
+}
+
+} /* @layer pages */

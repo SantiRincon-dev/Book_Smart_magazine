@@ -34,6 +34,7 @@
 @import url("components/tweet-card.css") layer(components);
 @import url("components/versus.css") layer(components);
 @import url("components/gallery.css") layer(components);
+@import url("components/player.css") layer(components);
 
 /* 4. Pages: what only one kind of page needs */
 @import url("layout/article.css") layer(pages);

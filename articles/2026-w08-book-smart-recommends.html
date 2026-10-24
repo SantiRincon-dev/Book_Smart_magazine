@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Smart Recommends - Book Smart</title>
+  <meta name="description" content="Four songs chosen for their lyrics, each with the verse we love and why, and Book Smart Recommends, a playlist of 33 songs you can play right here, made for Session 8.">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Book Smart Recommends - Book Smart">
+  <meta property="og:description" content="Four songs chosen for their lyrics, each with the verse we love and why, and Book Smart Recommends, a playlist of 33 songs you can play right here, made for Session 8.">
+  <meta property="article:published_time" content="2026-10-21">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Book Smart Recommends - Book Smart">
+  <meta name="twitter:description" content="Four songs chosen for their lyrics, each with the verse we love and why, and Book Smart Recommends, a playlist of 33 songs you can play right here, made for Session 8.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#ecece9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#18181a" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+
+  <!-- Runs before the first paint, on every page:
+       1. applies a saved light/dark choice, so nobody sees a flash of the wrong one;
+       2. if the reader just clicked an issue, puts that issue's colour over the page
+          (the arriving half of the page transition, see css/components/curtain.css)
+          and flags the page as arriving, so its entrance waits for the curtain. -->
+  <script>
+    (function (d) {
+      try {
+        var t = localStorage.getItem('magazine:theme');
+        if (t === 'light' || t === 'dark') d.dataset.theme = t;
+      } catch (e) {}
+      try {
+        var n = JSON.parse(sessionStorage.getItem('bs:nav') || 'null');
+        sessionStorage.removeItem('bs:nav');
+        if (n && n.hue && Date.now() - n.t < 6000) {
+          var c = d.appendChild(document.createElement('div'));
+          c.className = 'curtain curtain--arriving';
+          c.setAttribute('aria-hidden', 'true');
+          c.style.backgroundColor = n.hue;
+          d.classList.add('is-arriving');
+        }
+      } catch (e) {}
+    })(document.documentElement);
+  </script>
+
+  <!-- Relative paths: this file sits one level below the project root -->
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/issues/w08.css">
+  <script defer src="../js/vendor/gsap.min.js"></script>
+  <script defer src="../js/vendor/ScrollTrigger.min.js"></script>
+  <script defer src="../js/data/articles.js"></script>
+  <script defer src="../js/data/audio.js"></script>
+  <script defer src="../js/core.js"></script>
+  <script defer src="../js/article.js"></script>
+  <script defer src="../js/player.js"></script>
+</head>
+<body data-base="../" data-issue="w08">
+  <a class="skip-link" href="#content">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="../index.html">Book Smart</a>
+      <div class="site-header__tools">
+        <nav aria-label="Main">
+          <ul class="nav" role="list">
+            <li><a class="nav__link" href="../index.html">Home</a></li>
+            <li><a class="nav__link" href="../archive.html">Archive</a></li>
+          </ul>
+        </nav>
+        <button class="btn btn--ghost btn--icon" data-theme-toggle type="button" aria-label="Switch theme"></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="content">
+    <article data-section="history">
+
+      <!-- ============ ARTICLE HEADER ============
+           The issue's masthead (see docs/article-template.html). -->
+      <header class="article-header" data-section="history" data-week="08">
+        <div class="article-header__inner">
+          <p class="article-header__tags">
+            <span class="pill">History</span>
+            <span class="pill pill--neutral">Week 08</span>
+          </p>
+          <h1>Book Smart Recommends</h1>
+          <p class="article-header__kicker">Heart Songs &amp; Our Playlist</p>
+          <p class="lede">Four songs chosen for their lyrics, and the playlist that gathers them with the rest of our favorites.</p>
+          <p class="meta">
+            <span>Editorial Board</span>
+            <time datetime="2026-10-21">October 21, 2026</time>
+          </p>
+        </div>
+      </header>
+
+      <!-- ============ ARTICLE BODY ============
+           Everything the students wrote is reproduced from "task 1/solution.txt" and
+           "task 2/task 2 solution.txt" in sesión 8, word for word: the introduction, the
+           four Heart Songs (the name, the song, the lyric the student pasted and their
+           thoughts) and the lines of the playlist ("Title by Artist", with the spelling
+           they typed). Only the typesetting of an apostrophe is polished. The numbers,
+           the labels ("Chosen by", "Thoughts"), the picture descriptions, the times
+           and the buttons are interface.
+
+           THIS ISSUE SHARES NOTHING LIVE: it loads neither firebase-config.js nor live.js.
+           The songs are played from assets/audio/ by js/player.js (the length and the
+           waveform of each one are in js/data/audio.js, made by tools/make-peaks.cjs).
+
+           THE PLAYLIST LINK: the assignment asks for it and it is not in the students'
+           files yet. The two "Open the playlist" buttons below (one under the
+           introduction, one beside the playlist) are hidden. To switch them on, paste
+           the playlist's address into the href of BOTH and delete their hidden
+           attribute (the one on <p class="actions"> and the one on the <a>). -->
+      <div class="article-body prose">
+
+        <section>
+          <p class="dropcap">Music is one of the traditional seven arts and probably the most common of them. Artists make an effort to create songs so that listeners can connect with the lyrics and the rhythm. There are not going to be two people with the same playlist because of its variety. In the next section, you will find how music impacts us and you might find out your new favorite song.</p>
+        </section>
+        <p class="actions" hidden>
+          <a class="btn" href="" target="_blank" rel="noopener noreferrer" data-external>Open the playlist<span class="visually-hidden"> (opens in a new tab)</span></a>
+        </p>
+
+        <!-- ---------- 1. HEART SONGS: four sleeves (the picture and its player stay in view while you read) ---------- -->
+        <h2 class="wide" id="heart-songs">Heart Songs</h2>
+
+        <div class="sleeves wide">
+
+        <article class="sleeve" data-track="one-more-time" aria-labelledby="song-one-more-time">
+          <div class="sleeve__side">
+            <figure class="sleeve__art" data-reveal>
+              <img src="../assets/img/articles/w08-heart-one-more-time.webp"
+                   alt="The cover of Daft Punk&rsquo;s One More Time: the words DAFT PUNK ONE MORE TIME glow in neon letters over a black background, with bands of red, orange, yellow, green and purple light fanning out beneath them."
+                   loading="lazy" decoding="async" width="347" height="286">
+            </figure>
+            <div class="deck" data-deck>
+              <noscript><audio controls preload="none" src="../assets/audio/one-more-time.mp3"></audio></noscript>
+            </div>
+          </div>
+          <div class="sleeve__body" data-reveal>
+            <p class="sleeve__chosen">Chosen by <span class="sleeve__who">Paulo Paz</span></p>
+            <h3 class="sleeve__title" id="song-one-more-time"><span class="sleeve__song" data-song>One more time</span> <span class="sleeve__credit"><span class="sleeve__by">by</span> <span class="sleeve__artist" data-artist>Daft Punk</span></span></h3>
+            <blockquote class="lyrics">
+          <p>&ldquo;One more time<br>
+          One more time<br>
+          One more time, we&rsquo;re gonna celebrate<br>
+          Oh yeah, alright, don&rsquo;t stop the dancing<br>
+          One more time, we&rsquo;re gonna celebrate<br>
+          Oh yeah, alright, don&rsquo;t stop the dancing&rdquo;</p>
+            </blockquote>
+            <div class="sleeve__thoughts">
+              <p class="sleeve__label">Thoughts</p>
+              <p class="sleeve__text">This song reminds me of my mom because she listens to this tune a lot even nowadays. Yet, the moment when I was hooked on it was when I watched its videoclip. It was basically an animation clip where the people were celebrating and dancing while a secret invasion started and they did not notice. Finally, I ended up liking the song and I currently have that song on my playlist and I always remember the videoclip while I am listening to it.</p>
+            </div>
+          </div>
+        </article>
+        <article class="sleeve" data-track="sun-a-shine" aria-labelledby="song-sun-a-shine">
+          <div class="sleeve__side">
+            <figure class="sleeve__art" data-reveal>
+              <img src="../assets/img/articles/w08-heart-sun-a-shine.webp"
+                   alt="The cover of Sun-a-Shine by Elkin Robinson: a man in a bucket hat and glasses lifts his face to the sun in front of two palm fronds, against a turquoise sky. His name is lettered in large pink letters across the top, the title in orange script below it, and a round orange sticker at the right reads Old Providence, New Roots."
+                   loading="lazy" decoding="async" width="720" height="674">
+            </figure>
+            <div class="deck" data-deck>
+              <noscript><audio controls preload="none" src="../assets/audio/sun-a-shine.mp3"></audio></noscript>
+            </div>
+          </div>
+          <div class="sleeve__body" data-reveal>
+            <p class="sleeve__chosen">Chosen by <span class="sleeve__who">Jeancarlo</span></p>
+            <h3 class="sleeve__title" id="song-sun-a-shine"><span class="sleeve__song" data-song>Sun a shine</span> <span class="sleeve__credit"><span class="sleeve__by">by</span> <span class="sleeve__artist" data-artist>Elkin Robinson</span></span></h3>
+            <blockquote class="lyrics">
+          <p>Let&rsquo;s get up fine fine fine fine fine<br>
+          It&rsquo;s time to see the sunshine<br>
+          It&rsquo;s a new day today, gonna find a place to play<br>
+          It&rsquo;s time to see the sunshine<br>
+          Come on and shine shine shine<br>
+          Oh you bright new light o&rsquo; mine<br>
+          Colour in the world again<br>
+          I see green leaves on the trees<br>
+          Big leaves will give us shade to dig and plant the seeds<br>
+          A feel good about today<br>
+          Gonna make a little time to play<br>
+          You smile at the blue sky<br>
+          Turn to me and say</p>
+            </blockquote>
+            <div class="sleeve__thoughts">
+              <p class="sleeve__label">Thoughts</p>
+              <p class="sleeve__text">This song reminds me of being positive, especially when I wake up in a bad mood or I just have a bad day. This song always sparks a better mindset in me. For example, the first time that I listened to the song, it was in the pandemic when I was very anxious because of the quarantine, and the song had a significant impact on me on how I was dealing with that situation.</p>
+            </div>
+          </div>
+        </article>
+        <article class="sleeve" data-track="beautiful-day" aria-labelledby="song-beautiful-day">
+          <div class="sleeve__side">
+            <figure class="sleeve__art" data-reveal>
+              <img src="../assets/img/articles/w08-heart-beautiful-day.webp"
+                   alt="The cover of the single Beautiful Day: four men in dark coats walk along a pebble beach in a pale fog, small against the empty sky. In the sky, in small capitals, it reads U2 Beautiful Day."
+                   loading="lazy" decoding="async" width="599" height="517">
+            </figure>
+            <div class="deck" data-deck>
+              <noscript><audio controls preload="none" src="../assets/audio/beautiful-day.mp3"></audio></noscript>
+            </div>
+          </div>
+          <div class="sleeve__body" data-reveal>
+            <p class="sleeve__chosen">Chosen by <span class="sleeve__who">Juan</span></p>
+            <h3 class="sleeve__title" id="song-beautiful-day"><span class="sleeve__song" data-song>Beautiful Day</span> <span class="sleeve__credit"><span class="sleeve__artist" data-artist>U2</span></span></h3>
+            <blockquote class="lyrics">
+          <p>It&rsquo;s a beautiful day<br>
+          Sky falls, you feel like<br>
+          It&rsquo;s a beautiful day<br>
+          Don&rsquo;t let it get away</p>
+          <p>You&rsquo;re on the road, but you&rsquo;ve got no destination<br>
+          You&rsquo;re in the mud, in the maze of her imagination<br>
+          You love this town even if that doesn&rsquo;t ring true<br>
+          You&rsquo;ve been all over, and it&rsquo;s been all over you</p>
+            </blockquote>
+            <div class="sleeve__thoughts">
+              <p class="sleeve__label">Thoughts</p>
+              <p class="sleeve__text">This song evokes a sensation of freedom on a sunny day. Everything is okay, so enjoy the moment. The lyrics are definitely an expression of this feeling. Besides, this reminds me of the high school era which was a period to discover new perspectives. Also, music has been a company for my entire life, and I remember playing this song when I commuted from the school to my house. I used to spend one hour walking in the countryside, and I did it often alone, so, it was me and these lyrics reminding me that life is good.</p>
+            </div>
+          </div>
+        </article>
+        <article class="sleeve" data-track="if-we-have-each-other" aria-labelledby="song-if-we-have-each-other">
+          <div class="sleeve__side">
+            <figure class="sleeve__art" data-reveal>
+              <img src="../assets/img/articles/w08-heart-if-we-have-each-other.webp"
+                   alt="The cover of Narrated for You by Alec Benjamin: a blurred young man in a dark green hoodie, seen from the side, against a sky of peach and blue clouds covered in faint handwriting. The name ALEC BENJAMIN and the title NARRATED FOR YOU are written in yellow."
+                   loading="lazy" decoding="async" width="500" height="500">
+            </figure>
+            <div class="deck" data-deck>
+              <noscript><audio controls preload="none" src="../assets/audio/if-we-have-each-other.mp3"></audio></noscript>
+            </div>
+          </div>
+          <div class="sleeve__body" data-reveal>
+            <p class="sleeve__chosen">Chosen by <span class="sleeve__who">Santiago</span></p>
+            <h3 class="sleeve__title" id="song-if-we-have-each-other"><span class="sleeve__song" data-song>If we have each other</span> <span class="sleeve__credit"><span class="sleeve__by">by</span> <span class="sleeve__artist" data-artist>Alec Benjamin</span></span></h3>
+            <blockquote class="lyrics">
+          <p>I&rsquo;m 23, and my folks are getting old<br>
+          I know they don&rsquo;t have forever, and I&rsquo;m scared to be alone<br>
+          So, I&rsquo;m thankful for my sister, even though sometimes we fight<br>
+          When high school wasn&rsquo;t easy, she&rsquo;s the reason I survived<br>
+          I know she&rsquo;d never leave me and I hate to see her cry<br>
+          So, I wrote this verse to tell her that I&rsquo;m always by her side<br>
+          I wrote this verse to tell her that I&rsquo;m always by her side<br>
+          I wrote this verse to tell her that</p>
+            </blockquote>
+            <div class="sleeve__thoughts">
+              <p class="sleeve__label">Thoughts</p>
+              <p class="sleeve__text">I love this part of the song because it shows us how important the family is. Furthermore, it reminds us to appreciate the people we love because we don&rsquo;t know how much time we have left with them. Finally, it makes us realize that we&rsquo;ll always have important people that will be there for us.</p>
+            </div>
+          </div>
+        </article>
+        </div>
+
+        <!-- ---------- 2. THE PLAYLIST: its cover and its buttons on one side, the 33 songs on the other ---------- -->
+        <h2 class="wide" id="the-playlist">The playlist</h2>
+
+        <section class="playlist wide" aria-labelledby="the-playlist">
+          <div class="playlist__side">
+            <figure class="playlist__cover" data-reveal>
+              <img src="../assets/img/articles/w08-cover.png"
+                   alt="A neon-line drawing on a dark blue background. In the middle, a pair of headphones with a heart and sound waves inside; thin lines join it to seven small icons around it: a synthesizer keyboard, a music note, an electric guitar on fire, a vinyl record, a spiky star, an acoustic guitar with a flower and a palm tree with a music note. Below it, the words Book Smart."
+                   loading="lazy" decoding="async" width="911" height="882">
+            </figure>
+            <p class="playlist__name">Book Smart Recommends</p>
+            <p class="playlist__meta" data-playlist-meta>33 songs</p>
+            <div class="playlist__actions">
+              <button class="btn" type="button" data-play-all disabled>Play all</button>
+              <a class="btn btn--ghost" href="" target="_blank" rel="noopener noreferrer" data-external hidden>Open the playlist<span class="visually-hidden"> (opens in a new tab)</span></a>
+            </div>
+          </div>
+
+          <ol class="tracks" role="list">
+            <li class="track" data-track="smalltown-boy">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">01</span></span>
+                <span class="track__text"><span class="track__song" data-song>Smalltown Boy</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Bronski Beat</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/smalltown-boy.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="amerika">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">02</span></span>
+                <span class="track__text"><span class="track__song" data-song>Amerika</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Rammstein</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/amerika.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="love-me-not">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">03</span></span>
+                <span class="track__text"><span class="track__song" data-song>Love me not</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Ravyn Lenae</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/love-me-not.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="everybody-wants-to-rule-the-world">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">04</span></span>
+                <span class="track__text"><span class="track__song" data-song>Everybody wants to rule the world</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Tears for fears</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/everybody-wants-to-rule-the-world.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="freed-from-desire">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">05</span></span>
+                <span class="track__text"><span class="track__song" data-song>Freed from desire</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Gala</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/freed-from-desire.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="la-isla-bonita">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">06</span></span>
+                <span class="track__text"><span class="track__song" data-song>La isla bonita</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Madonna</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/la-isla-bonita.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="hips-dont-lie">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">07</span></span>
+                <span class="track__text"><span class="track__song" data-song>Hips don&rsquo;t lie</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Shakira</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/hips-dont-lie.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="sun-a-shine">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">08</span></span>
+                <span class="track__text"><span class="track__song" data-song>Sun a shine</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Elkin Robinson</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/sun-a-shine.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="creole-vibration">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">09</span></span>
+                <span class="track__text"><span class="track__song" data-song>Creole Vibration</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Elkin Robinson</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/creole-vibration.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="come-round">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">10</span></span>
+                <span class="track__text"><span class="track__song" data-song>Come &lsquo;round</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Elkin Robinson</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/come-round.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="change">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">11</span></span>
+                <span class="track__text"><span class="track__song" data-song>Change</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Elkin Robinson</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/change.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="wiser">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">12</span></span>
+                <span class="track__text"><span class="track__song" data-song>Wiser</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Madilyn Bailey</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/wiser.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="death-of-me">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">13</span></span>
+                <span class="track__text"><span class="track__song" data-song>Death of me</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Madilyn Bailey</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/death-of-me.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="cheezy-street">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">14</span></span>
+                <span class="track__text"><span class="track__song" data-song>Cheezy Street</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Louie Zong</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/cheezy-street.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="attention">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">15</span></span>
+                <span class="track__text"><span class="track__song" data-song>Attention</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Charlie Puth</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/attention.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="perfect">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">16</span></span>
+                <span class="track__text"><span class="track__song" data-song>Perfect</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Ed Sheeran</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/perfect.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="we-dont-talk-anymore">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">17</span></span>
+                <span class="track__text"><span class="track__song" data-song>We don&rsquo;t talk anymore</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Charlie Puth and Selena Gomez</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/we-dont-talk-anymore.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="snowman">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">18</span></span>
+                <span class="track__text"><span class="track__song" data-song>Snowman</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Sia</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/snowman.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="lovely">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">19</span></span>
+                <span class="track__text"><span class="track__song" data-song>Lovely</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Billie Eilish and Khaldi</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/lovely.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="die-with-a-smile">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">20</span></span>
+                <span class="track__text"><span class="track__song" data-song>Die With a Smile</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Bruno mars and Lady Gaga</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/die-with-a-smile.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="there-is-nothing-holding-me-back">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">21</span></span>
+                <span class="track__text"><span class="track__song" data-song>There is nothing holding me back</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Shawn Mendes</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/there-is-nothing-holding-me-back.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="famous-last-words">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">22</span></span>
+                <span class="track__text"><span class="track__song" data-song>Famous last words</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Chemical Romance</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/famous-last-words.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="one-more-time">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">23</span></span>
+                <span class="track__text"><span class="track__song" data-song>One more time</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Daft punk</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/one-more-time.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="billie-jean">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">24</span></span>
+                <span class="track__text"><span class="track__song" data-song>Billie Jean</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Michael Jackson</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/billie-jean.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="radio-ga-ga">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">25</span></span>
+                <span class="track__text"><span class="track__song" data-song>Radio Ga Ga</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Queen</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/radio-ga-ga.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="we-are-young">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">26</span></span>
+                <span class="track__text"><span class="track__song" data-song>We are young</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>fun (feat Janelle Monae)</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/we-are-young.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="the-reason">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">27</span></span>
+                <span class="track__text"><span class="track__song" data-song>The Reason</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Hoobstank</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/the-reason.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="losing-my-religion">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">28</span></span>
+                <span class="track__text"><span class="track__song" data-song>Losing my religion</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>R.E.M.</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/losing-my-religion.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="stairway-to-heaven">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">29</span></span>
+                <span class="track__text"><span class="track__song" data-song>Stairway to heaven</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Led Zeppelin</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/stairway-to-heaven.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="what-ive-done">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">30</span></span>
+                <span class="track__text"><span class="track__song" data-song>What i&rsquo;ve done</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Linkin Park</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/what-ive-done.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="hey-jude">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">31</span></span>
+                <span class="track__text"><span class="track__song" data-song>Hey Jude</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>The Beatles</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/hey-jude.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="beautiful-day">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">32</span></span>
+                <span class="track__text"><span class="track__song" data-song>Beautiful Day</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>U2</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/beautiful-day.mp3"></audio></noscript>
+            </li>
+            <li class="track" data-track="if-we-have-each-other">
+              <button class="track__main" type="button" data-play disabled>
+                <span class="track__lead" aria-hidden="true"><span class="track__no">33</span></span>
+                <span class="track__text"><span class="track__song" data-song>If we have each other</span> <span class="track__credit"><span class="track__by">by</span> <span class="track__artist" data-artist>Alec Benjamin</span></span></span>
+              </button>
+              <div class="track__wave" data-wave></div>
+              <span class="track__time" data-time></span>
+              <span class="track__note">Audio not available</span>
+              <noscript><audio controls preload="none" src="../assets/audio/if-we-have-each-other.mp3"></audio></noscript>
+            </li>
+          </ol>
+        </section>
+
+        <!-- The previous / next issue and the archive. Built by js/article.js from
+             the manifest, so publishing a new issue never means editing this one. -->
+        <nav class="article-nav" aria-label="Elsewhere" data-article-nav>
+          <noscript>
+            <a class="door" href="../archive.html">
+              <span class="door__top">Archive</span>
+              <span class="door__title">Every issue this semester</span>
+            </a>
+          </noscript>
+        </nav>
+
+      </div>
+    </article>
+  </main>
+
+  <!-- The footer is the same on every page. The section legend and the team's
+       names are generated by js/core.js from SECTIONS and TEAM in
+       js/data/articles.js: write the names there, not here. -->
+  <footer class="site-footer">
+    <nav class="legend" aria-label="Sections" data-legend>
+      <noscript><a class="legend__item" href="../archive.html"><span class="legend__name">Browse by section</span></a></noscript>
+    </nav>
+    <div class="container site-footer__inner">
+      <p class="site-footer__name">Book Smart</p>
+      <p class="site-footer__info">Intensive English III<br>Universidad Nacional de Colombia, Bogot&aacute;<br>Semester 2026-2</p>
+      <a class="site-footer__top" href="#top" data-top>Back to top</a>
+    </div>
+  </footer>
+</body>
+</html>

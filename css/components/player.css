@@ -1,0 +1,236 @@
+/* ============================================================
+   PLAYER
+   The parts of the song player of Week 08 (behaviour: js/player.js). One
+   <audio> element plays everything; these are the things drawn from its state:
+
+   - .wave   a song's own waveform. Two stacked copies of the same bars: a muted
+             one, and one in the section's hue clipped to the part already played
+             (--p, 0 to 1, set by the script). Clicking or dragging it seeks, and
+             on the song that is current it is a real slider (arrow keys).
+   - .eq     four bars that dance while a song plays and rest in a fixed pose
+             while it is paused.
+   - .deck   a sleeve's own controls: play button, waveform and clock.
+   - .dock   the same controls at the foot of the screen, so they follow the
+             reader down the page. It appears with the first play.
+
+   Every place that shows a song carries data-state ("idle", "loading",
+   "playing", "paused" or "error"); the rules below and the page's own
+   stylesheet (css/issues/w08.css) are written against it.
+
+   Colour: the unplayed bars are the colour of a control's border (3:1 against
+   the canvas); the played bars, the bars of the equalizer and the line over the
+   dock are the section's hue. Nothing here is a block of solid colour.
+   ============================================================ */
+
+/* ---------- The waveform ---------- */
+.wave {
+  --wave-h: 2.25rem;
+  position: relative;
+  display: block;
+  height: var(--wave-h);
+  color: var(--hue);
+  cursor: pointer;
+  touch-action: pan-y;               /* a sideways drag seeks; a vertical one still scrolls the page */
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+/* The target is taller than the drawing, so a thumb does not have to hit the bars. */
+.wave::before {
+  content: "";
+  position: absolute;
+  inset: -0.5rem 0;
+}
+.wave > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+.wave__base { color: var(--c-border); }
+.wave__done {
+  color: var(--hue);
+  clip-path: inset(0 calc((1 - var(--p, 0)) * 100%) 0 0);
+}
+
+/* Buffering: the bars breathe until the sound arrives. */
+[data-state="loading"] .wave { animation: wave-wait 900ms var(--ease-in-out) infinite alternate; }
+@keyframes wave-wait {
+  from { opacity: 0.4; }
+}
+
+/* ---------- The equalizer ---------- */
+.eq {
+  display: inline-flex;
+  flex: none;
+  align-items: flex-end;
+  gap: 2px;
+  width: 1.25rem;
+  height: 1.125rem;
+  color: var(--hue);
+}
+.eq > i {
+  flex: 1;
+  height: 100%;
+  background-color: currentColor;
+  transform-origin: 50% 100%;
+  transform: scaleY(var(--rest));
+}
+/* --rest is the pose it holds when still; --lo and --hi are the ends of its dance. */
+.eq > i:nth-child(1) { --rest: 0.45; --lo: 0.2;  --hi: 0.95; --d: 820ms; }
+.eq > i:nth-child(2) { --rest: 0.85; --lo: 0.9;  --hi: 0.3;  --d: 640ms; }
+.eq > i:nth-child(3) { --rest: 0.6;  --lo: 0.35; --hi: 1;    --d: 940ms; }
+.eq > i:nth-child(4) { --rest: 0.3;  --lo: 0.8;  --hi: 0.25; --d: 720ms; }
+[data-state="playing"] .eq > i { animation: eq var(--d) var(--ease-in-out) infinite alternate; }
+@keyframes eq {
+  from { transform: scaleY(var(--lo)); }
+  to   { transform: scaleY(var(--hi)); }
+}
+
+/* ---------- Play buttons ---------- */
+/* The icon is a play triangle, not an arrow: it must not slide on hover. */
+.deck__play:hover svg,
+.dock__btn:hover svg,
+.btn[data-play-all]:hover svg { transform: none; }
+.deck__play { width: 3rem; min-height: 3rem; }
+.deck__play svg,
+.dock__play svg { width: 1.4rem; height: 1.4rem; }
+
+/* ---------- The deck: a sleeve's own controls ----------
+   The button on the left, the waveform with the clock under it on the right:
+   the clock changes width ("5:21", "1:23 / 5:21") without moving anything. */
+.deck {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    "play wave"
+    "play time";
+  align-items: center;
+  column-gap: var(--space-4);
+  row-gap: var(--space-1);
+}
+.deck__play { grid-area: play; }
+.deck__wave { grid-area: wave; }
+.deck__time { grid-area: time; text-align: start; }
+.deck__time,
+.dock__time {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  color: var(--c-text-muted);
+}
+/* In the dock the clock shares a line with the waveform, so it keeps the room
+   for its longest form ("1:23 / 4:59") and the waveform never shifts. */
+.dock__time { min-width: 11ch; text-align: end; }
+/* Shown instead of the waveform when the file did not load. */
+.deck__note,
+.dock__note {
+  display: none;
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  color: var(--c-text-soft);
+}
+[data-state="error"] .deck__wave,
+[data-state="error"] .deck__time { display: none; }
+[data-state="error"] .deck__note { display: block; grid-area: wave / wave / time / time; }
+
+/* ---------- The dock ---------- */
+.dock {
+  --dock-gap: var(--space-4);
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: var(--z-overlay);
+  display: grid;
+  grid-template-columns: 3rem minmax(9rem, 20vw) auto minmax(5rem, 1fr) auto auto;
+  grid-template-areas: "art now buttons wave time close";
+  align-items: center;
+  column-gap: var(--dock-gap);
+  padding-block: var(--space-3);
+  padding-inline: max(var(--gutter), calc((100% - var(--w-max)) / 2 + var(--gutter)));
+  background-color: var(--c-surface);
+  border-block-start: var(--rule-accent) solid var(--hue);
+  box-shadow: inset 0 1px 0 var(--c-edge);
+  animation: dock-in var(--t-slow) both;
+}
+/* It rises once, so the reader sees where the controls went. */
+@keyframes dock-in {
+  from { transform: translateY(100%); }
+}
+/* The page keeps a margin as tall as the dock (the script measures it), and a
+   focused element is scrolled clear of it. */
+:root.has-dock body { padding-block-end: var(--dock-h, 5rem); }
+:root.has-dock { scroll-padding-bottom: calc(var(--dock-h, 5rem) + var(--space-4)); }
+
+.dock__art {
+  grid-area: art;
+  width: 3rem;
+  height: 3rem;
+  object-fit: cover;
+  background-color: var(--c-surface-2);
+  border: var(--hairline) solid var(--c-line);
+}
+.dock__now {
+  grid-area: now;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.25;
+}
+.dock__song,
+.dock__artist {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dock__song {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  font-stretch: var(--stretch-ui);
+}
+.dock__artist {
+  font-size: var(--fs-sm);
+  color: var(--c-text-soft);
+}
+.dock__buttons {
+  grid-area: buttons;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+.dock__wave { grid-area: wave; }
+.dock__time { grid-area: time; }
+.dock__note { grid-area: wave / wave / wave / time; }
+.dock[data-state="error"] .dock__wave,
+.dock[data-state="error"] .dock__time { display: none; }
+.dock[data-state="error"] .dock__note { display: block; }
+.dock__close { grid-area: close; }
+.dock__btn:disabled { opacity: 0.4; cursor: default; }
+/* A button that cannot be pressed must not light up under the pointer. */
+.btn--ghost.dock__btn:disabled:hover {
+  color: var(--c-text);
+  background-color: transparent;
+  border-color: var(--c-border);
+}
+
+/* A phone: the picture goes, the controls take the top line and the waveform
+   the bottom one. */
+@media (max-width: 40rem) {
+  .dock {
+    --dock-gap: var(--space-3);
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      "now  buttons buttons"
+      "wave time    close";
+    row-gap: var(--space-2);
+  }
+  .dock__art { display: none; }
+  .dock__note { grid-area: wave / wave / wave / time; }
+}

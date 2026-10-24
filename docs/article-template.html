@@ -73,7 +73,10 @@
        also loads firebase-config.js (before core.js) and live.js (after it),
        as those issues do. Any other issue leaves them out. An issue with polls
        must also give its [data-versus] a data-versus-key of its own (Week 07 uses
-       "top5"), or it would take back the votes of Week 04: see the README. -->
+       "top5"), or it would take back the votes of Week 04: see the README.
+       An issue with SONGS to play (Week 08) loads data/audio.js (after
+       articles.js) and player.js (after article.js), and links its own
+       css/issues/wNN.css after main.css: copy the head of Week 08. -->
   <script defer src="../js/article.js"></script>
 </head>
 <body data-base="../">
@@ -187,7 +190,12 @@
                under one caption
                a ranked list of picks    Week 07  (li.pick, number as text, in css/issues/w07.css;
                with a picture each,      an animated GIF goes in a <picture> whose reduced-motion
-               and a poll per list       source is a still frame; the polls are Week 04's cards) -->
+               and a poll per list       source is a still frame; the polls are Week 04's cards)
+               songs to play: four       Week 08  (css/issues/w08.css + css/components/player.css +
+               "sleeves" and a numbered           js/player.js; each song is a data-track="slug" whose
+               playlist, each with a              MP3 is assets/audio/slug.mp3, its length and waveform
+               player and a waveform              come from js/data/audio.js: see "Songs and the player"
+                                                  in the README) -->
 
         <!-- When you publish, also update the two fallbacks on index.html that
              name the newest issue for visitors without JavaScript (the hero
