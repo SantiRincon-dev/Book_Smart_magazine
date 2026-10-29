@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Haikus &amp; a Fifty-Word Story - Book Smart</title>
+  <meta name="description" content="Two haikus and a fifty-word story, made for Session 9.">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Haikus &amp; a Fifty-Word Story - Book Smart">
+  <meta property="og:description" content="Two haikus and a fifty-word story, made for Session 9.">
+  <meta property="article:published_time" content="2026-10-28">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Haikus &amp; a Fifty-Word Story - Book Smart">
+  <meta name="twitter:description" content="Two haikus and a fifty-word story, made for Session 9.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#ecece9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#18181a" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+
+  <!-- Runs before the first paint, on every page:
+       1. applies a saved light/dark choice, so nobody sees a flash of the wrong one;
+       2. if the reader just clicked an issue, puts that issue's colour over the page
+          (the arriving half of the page transition, see css/components/curtain.css)
+          and flags the page as arriving, so its entrance waits for the curtain. -->
+  <script>
+    (function (d) {
+      try {
+        var t = localStorage.getItem('magazine:theme');
+        if (t === 'light' || t === 'dark') d.dataset.theme = t;
+      } catch (e) {}
+      try {
+        var n = JSON.parse(sessionStorage.getItem('bs:nav') || 'null');
+        sessionStorage.removeItem('bs:nav');
+        if (n && n.hue && Date.now() - n.t < 6000) {
+          var c = d.appendChild(document.createElement('div'));
+          c.className = 'curtain curtain--arriving';
+          c.setAttribute('aria-hidden', 'true');
+          c.style.backgroundColor = n.hue;
+          d.classList.add('is-arriving');
+        }
+      } catch (e) {}
+    })(document.documentElement);
+  </script>
+
+  <!-- Relative paths: this file sits one level below the project root -->
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/issues/w09.css">
+  <script defer src="../js/vendor/gsap.min.js"></script>
+  <script defer src="../js/vendor/ScrollTrigger.min.js"></script>
+  <script defer src="../js/data/articles.js"></script>
+  <script defer src="../js/core.js"></script>
+  <script defer src="../js/article.js"></script>
+</head>
+<body data-base="../" data-issue="w09">
+  <a class="skip-link" href="#content">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="../index.html">Book Smart</a>
+      <div class="site-header__tools">
+        <nav aria-label="Main">
+          <ul class="nav" role="list">
+            <li><a class="nav__link" href="../index.html">Home</a></li>
+            <li><a class="nav__link" href="../archive.html">Archive</a></li>
+          </ul>
+        </nav>
+        <button class="btn btn--ghost btn--icon" data-theme-toggle type="button" aria-label="Switch theme"></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="content">
+    <article data-section="current-events">
+
+      <!-- ============ ARTICLE HEADER ============
+           The issue's masthead (see docs/article-template.html). -->
+      <header class="article-header" data-section="current-events" data-week="09">
+        <div class="article-header__inner">
+          <p class="article-header__tags">
+            <span class="pill">Current Events</span>
+            <span class="pill pill--neutral">Week 09</span>
+          </p>
+          <h1>Haikus &amp; a Fifty-Word Story</h1>
+          <p class="article-header__kicker">Short Forms</p>
+          <p class="lede">Two haikus and a fifty-word story.</p>
+          <p class="meta">
+            <span>Editorial Board</span>
+            <time datetime="2026-10-28">October 28, 2026</time>
+          </p>
+        </div>
+      </header>
+
+      <!-- ============ ARTICLE BODY ============
+           Everything the students wrote is reproduced from "task 1/haikus.txt" and
+           "task 2/Thank you!.txt" in sesión 9, word for word: the six lines of the two
+           haikus (lower case where they began in lower case, no final full stop, the
+           apostrophes as they typed them) and the story with its title. Only the line
+           breaks are typeset. The numerals 1 and 2 are the students' own numbering of
+           the haikus; the 50 counts the words of the story (title not included); the
+           label, the picture descriptions and the headings "Haikus" and "Haiku 1/2" are
+           interface. The two haikus have no title and none was invented.
+
+           THIS ISSUE SHARES NOTHING LIVE: it loads neither firebase-config.js nor
+           live.js, and has no poll, counter or tick-list.
+
+           There is no introduction because the students wrote none for this session
+           (the task asks for two haikus and a story). If they send one, it goes right
+           under the header as <section><p class="dropcap">...</p></section>.
+
+           Each piece is a "plate": a panel forced to the night edition (see
+           css/issues/w09.css) with its picture, all three at the same width, and the
+           text under it. -->
+      <div class="article-body prose">
+
+        <!-- ---------- 1. HAIKUS ---------- -->
+        <h2 class="plate-head" id="haikus">Haikus</h2>
+
+        <section class="plate plate--haiku" aria-labelledby="haiku-1">
+          <h3 class="visually-hidden" id="haiku-1">Haiku 1</h3>
+          <p class="plate__no" aria-hidden="true">1</p>
+          <figure class="plate__art" data-reveal>
+            <img src="../assets/img/articles/w09-haiku-1-lamp.webp"
+                 alt="A painting of a man in a long coat sitting on a wooden park bench at night, in the rain, his head turned to the left toward a single street lamp that glows orange among bare trees and fog."
+                 width="732" height="481" loading="lazy" decoding="async">
+          </figure>
+          <div class="plate__text" data-lines>
+            <p class="haiku">
+              <span class="haiku__line" data-line>I wait for a light</span>
+              <span class="haiku__line" data-line>to see you at least at night</span>
+              <span class="haiku__line" data-line>melancholic cage</span>
+            </p>
+          </div>
+        </section>
+
+        <section class="plate plate--haiku" aria-labelledby="haiku-2">
+          <h3 class="visually-hidden" id="haiku-2">Haiku 2</h3>
+          <p class="plate__no" aria-hidden="true">2</p>
+          <figure class="plate__art" data-reveal>
+            <img src="../assets/img/articles/w09-haiku-2-moon.webp"
+                 alt="An illustration of a woman in a dress and a ponytail, in silhouette on a dark hill under a starry blue night sky, looking up at a huge glowing full moon whose surface is drawn as an eye, with a pale iris and a dark pupil."
+                 width="662" height="757" loading="lazy" decoding="async">
+          </figure>
+          <div class="plate__text" data-lines>
+            <p class="haiku">
+              <span class="haiku__line" data-line>Your stunning eyes shine</span>
+              <span class="haiku__line" data-line>Darling, look at the moonlight</span>
+              <span class="haiku__line" data-line>it&rsquo;s your soul&rsquo;s mirror</span>
+            </p>
+          </div>
+        </section>
+
+        <!-- ---------- 2. THE FIFTY-WORD STORY ---------- -->
+        <section class="plate plate--story" aria-labelledby="story">
+          <div class="plate__head">
+            <p class="plate__label">A fifty-word story</p>
+            <h2 class="plate__title" id="story">Thank you</h2>
+          </div>
+          <figure class="plate__art" data-reveal>
+            <img src="../assets/img/articles/w09-story-thank-you.webp"
+                 alt="A black-and-white photograph of a man in profile, in a wool coat, with tears running down his face, looking out at a calm sea under a heavy cloudy sky while the sun sets low on the horizon."
+                 width="1312" height="727" loading="lazy" decoding="async">
+          </figure>
+          <div class="plate__text" data-lines>
+            <p class="story"><span class="story__body" data-line>I always assume that you will be by my side. I always think we will get older together. Not until that heartbreaking message hits me do I finally realize that the time we spent together is gone forever. I just want to say to you one more thing:</span> <span class="story__last" data-line data-line-late>Thank you.</span></p>
+          </div>
+        </section>
+
+        <!-- The previous / next issue and the archive. Built by js/article.js from
+             the manifest, so publishing a new issue never means editing this one. -->
+        <nav class="article-nav" aria-label="Elsewhere" data-article-nav>
+          <noscript>
+            <a class="door" href="../archive.html">
+              <span class="door__top">Archive</span>
+              <span class="door__title">Every issue this semester</span>
+            </a>
+          </noscript>
+        </nav>
+
+      </div>
+    </article>
+  </main>
+
+  <!-- The footer is the same on every page. The section legend and the team's
+       names are generated by js/core.js from SECTIONS and TEAM in
+       js/data/articles.js: write the names there, not here. -->
+  <footer class="site-footer">
+    <nav class="legend" aria-label="Sections" data-legend>
+      <noscript><a class="legend__item" href="../archive.html"><span class="legend__name">Browse by section</span></a></noscript>
+    </nav>
+    <div class="container site-footer__inner">
+      <p class="site-footer__name">Book Smart</p>
+      <p class="site-footer__info">Intensive English III<br>Universidad Nacional de Colombia, Bogot&aacute;<br>Semester 2026-2</p>
+      <a class="site-footer__top" href="#top" data-top>Back to top</a>
+    </div>
+  </footer>
+</body>
+</html>

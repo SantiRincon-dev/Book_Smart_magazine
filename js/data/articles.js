@@ -57,7 +57,8 @@
     'visual-essay':        { label: 'Visual Essay' },
     comics:                { label: 'Comics' },
     literature:            { label: 'Literature' },
-    interactive:           { label: 'Interactive' },     // the reader can vote, tick, like or press play
+    poetry:                { label: 'Poetry' },
+    interactive:          { label: 'Interactive' },     // the reader can vote, tick, like or press play
     // What it looks at
     'film-critique':       { label: 'Film Critique' },
     'media-critique':      { label: 'Media Critique' },
@@ -110,6 +111,25 @@
    *                                       that is much taller than its frame
    */
   var ARTICLES = [
+    {
+      id:      '2026-w09-haikus-and-a-fifty-word-story',
+      week:    9,
+      title:   'Haikus & a Fifty-Word Story',
+      kicker:  'Short Forms',
+      section: 'current-events',
+      author:  'Editorial Board',
+      date:    '2026-10-28',
+      readingTime: 2,
+      tags:    ['poetry', 'literature', 'visual-essay'],
+      keywords: ['haiku', 'haikus', 'poetry', 'story', 'fifty-word story', '50-word story', 'flash fiction',
+                 'inversion', 'thank you', 'night', 'rain', 'moonlight', 'melancholic cage'],
+      excerpt: 'Two haikus and a fifty-word story called “Thank you”, each with the picture that goes with it.',
+      cover:   'assets/img/articles/w09-cover.png',   // the issue's three pictures (tools/w09-cover.html)
+      thumb:   'assets/img/articles/thumbs/w09-cover.webp',
+      coverW:  1278, coverH: 757,
+      coverAlt:'Three framed pictures: a painting of a man in a coat on a park bench in the rain beside a glowing street lamp, a black-and-white photograph of a man in tears looking out at the sea at sunset, and, taller, an illustration of a silhouetted woman looking up at a full moon drawn as an eye.',
+      url:     'articles/2026-w09-haikus-and-a-fifty-word-story.html'
+    },
     {
       id:      '2026-w08-book-smart-recommends',
       week:    8,
@@ -273,12 +293,12 @@
 
     // ---- Template for the next assignment: copy, uncomment, fill in ----
     // {
-    //   id: '2026-w09-slug', week: 9, title: '', kicker: '',
+    //   id: '2026-w10-slug', week: 10, title: '', kicker: '',
     //   section: 'politics',       // a key of SECTIONS above
-    //   author: '', date: '2026-10-28', readingTime: 4,
+    //   author: '', date: '2026-11-04', readingTime: 4,
     //   tags: ['opinion', 'humor'],   // keys of TAGS above: three to five
     //   excerpt: '', cover: '', coverAlt: '',
-    //   url: 'articles/2026-w08-slug.html'
+    //   url: 'articles/2026-w10-slug.html'
     //   // optional: thumb, coverW, coverH, coverPosition (see the list above)
     // }
   ];

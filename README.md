@@ -162,7 +162,7 @@ previous / next links at the end of every article all update themselves.
 **Never** edit `archive.html` to publish, and edit `index.html` only for the one
 manual touch-point: the hero button's `href` and the `<noscript>` link on the
 home page name the newest issue for visitors without JavaScript (with
-JavaScript the button is filled from the manifest). Today both point at Week 08.
+JavaScript the button is filled from the manifest). Today both point at Week 09.
 
 Blocks an issue can reuse (copy them from the issue that has them): mock posts
 (Week 01), job profiles (Week 02), a plain framed figure (Week 03 and, for
@@ -179,6 +179,15 @@ Songs to play (Week 08): four "sleeves" (a picture in one equal square frame, th
 verse a student pasted, their thoughts and a player that stays in view while you
 read) and a numbered playlist, all driven by one player; see "Songs and the
 player" below.
+Short pieces with a picture each (Week 09): a "plate" per piece, `section.plate`
+inside `.prose`, a panel forced to the night edition (`color-scheme: dark`) with
+its numeral or label, a picture and the text under it. All the pictures share one
+width (`--pic-w`, narrower than the narrowest file, so none is enlarged or
+cropped) and a haiku is a `p.haiku` of `span.haiku__line[data-line]`, sized from
+the plate's own width so each line stays on one line. Mark the lines of a piece
+`data-line` inside a `data-lines` box and `js/article.js` brings them in one after
+another (`data-line-late` waits a little longer); without a script, or with
+reduced motion, every line is simply there. Week 09 uses no Firebase.
 
 Optional but recommended, once the cover image is in `assets/img/articles/`:
 
@@ -220,9 +229,9 @@ votes** (Week 04), the **tick-list of clichés** (Week 06), the **likes and
 reposts** of the mock tweets (Week 01; the fictional numbers inside each card
 are the students' and are never touched, the small numbers beside the heart and
 the arrows are the real ones) and the **"your number one" votes** of the four
-top 5s (Week 07). Nothing else on the site talks to a server. (Week 08 does not
-use Firebase at all: it loads neither `firebase-config.js` nor `live.js`, and its
-songs are files of the site itself.)
+top 5s (Week 07). Nothing else on the site talks to a server. (Weeks 08 and 09
+do not use Firebase at all: they load neither `firebase-config.js` nor `live.js`;
+the songs of Week 08 are files of the site itself.)
 
 How it works, in three files:
 
@@ -448,6 +457,7 @@ Only needed when you change something they generate. They need Python 3.
 | `tools/w01-cover.html` | The source of Week 01's cover: three real posts from the article, drawn in the night tones on a transparent background so the cover sits on the tile's mat in either edition. Screenshot it at 1600x1000 with a transparent background, then run `make-thumbs.py`. |
 | `tools/w05-cover.html` | The source of Week 05's cover: the three comic strips, untouched, each in the frame it has in the article, side by side on a transparent background. Same two steps as the Week 01 cover. |
 | `tools/w07-cover.html` | The source of Week 07's cover: four of the issue's own stills (one per list), never enlarged, side by side on a transparent background. Same two steps as the Week 01 cover. |
+| `tools/w09-cover.html` | The source of Week 09's cover: the issue's three pictures, never enlarged, in the frame they have in the other issues, the two landscapes stacked beside the portrait (the widths make both columns end together), on a transparent background. Screenshot it at 1300x780 with a transparent background, then run `make-thumbs.py`. |
 | `tools/make-audio.py` | Copies Week 08's songs from the two session folders to `assets/audio/<slug>.mp3` under plain names, byte for byte; checks that a song found twice is the same file, and prints the size and length of each. Python 3 only. |
 | `tools/make-peaks.cjs` | Writes `js/data/audio.js` (length and waveform of every song in `assets/audio/`). Needs Node 24 and an installed Chrome or Edge, which decodes the MP3s; nothing to install. Run it again whenever a song is added or replaced. |
 

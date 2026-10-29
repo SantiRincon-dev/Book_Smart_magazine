@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!-- Source of assets/img/articles/w09-cover.png: the issue's three pictures, never
+     enlarged or cropped, in the same framed print as the figures of the other
+     issues, on a TRANSPARENT background in the night tones, so the cover sits on
+     the tile's mat in either theme. The two landscapes are stacked on the left
+     (the lamp in the rain, the sea at sunset) and the portrait, the moon, takes
+     the right column; its width is set so that both columns end at the same
+     height. Render it with a transparent screenshot of a 1300x780 viewport (for
+     example Page.captureScreenshot with a transparent default background in the
+     DevTools protocol), then run tools/make-thumbs.py to refresh the thumbnail.
+     The files are 732, 1312 and 662 px wide: the widths below are all smaller. -->
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <title>Week 09 cover</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    html { background: transparent; }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      width: 1300px;
+      height: 780px;
+      overflow: hidden;
+      background: transparent;
+    }
+    /* No film grain on a cover: it would speckle the transparent areas. */
+    body::before, body::after { content: none; }
+
+    .col { display: flex; flex-direction: column; gap: 24px; }
+
+    /* The same frame as a figure in the article (css/layout/article.css). */
+    .print {
+      margin: 0;
+      padding: var(--mat);
+      background-color: var(--c-surface);
+      border: var(--hairline) solid var(--c-line);
+      border-block-start: var(--rule-accent) solid var(--hue);
+      box-shadow: inset 0 1px 0 var(--c-edge);
+    }
+    .print img { display: block; height: auto; }
+
+    /* Nothing overlaps, nothing is cropped, nothing is enlarged. */
+    .print--lamp  img { width: 560px; }      /* the file is 732 px wide  */
+    .print--sea   img { width: 560px; }      /* the file is 1312 px wide */
+    .print--moon  img { width: 638px; }      /* the file is 662 px wide; both columns end together */
+  </style>
+</head>
+<body data-section="current-events">
+  <div class="col">
+    <figure class="print print--lamp"><img src="../assets/img/articles/w09-haiku-1-lamp.webp" alt=""></figure>
+    <figure class="print print--sea"><img src="../assets/img/articles/w09-story-thank-you.webp" alt=""></figure>
+  </div>
+  <div class="col">
+    <figure class="print print--moon"><img src="../assets/img/articles/w09-haiku-2-moon.webp" alt=""></figure>
+  </div>
+</body>
+</html>

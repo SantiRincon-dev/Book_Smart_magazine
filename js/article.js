@@ -55,6 +55,18 @@
         { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.1, ease: 'power3.out', stagger: 0.28, clearProps: 'clipPath',
           scrollTrigger: { trigger: clock, start: 'top 90%', once: true } });
     });
+
+    // The lines of a haiku (Week 09) come in one after another, as it is read:
+    // a breath each. A line marked data-line-late (the story's last words)
+    // waits a little longer, because the story turns on it. Nothing is hidden
+    // until this runs, so without a script (or with reduced motion) every line
+    // is simply there.
+    $$('[data-lines]').forEach(function (box) {
+      gsap.from($$('[data-line]', box), {
+        autoAlpha: 0, y: 10, duration: 0.7, ease: 'power2.out',
+        delay: function (i, line) { return i * 0.45 + (line.hasAttribute('data-line-late') ? 0.6 : 0); },
+        scrollTrigger: { trigger: box, start: 'top 85%', once: true } });
+    });
   }
 
   /* ---------- The doors: previous issue, next issue, archive ---------- */
