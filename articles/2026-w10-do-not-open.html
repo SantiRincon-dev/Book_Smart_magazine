@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Do Not Open - Book Smart</title>
+  <meta name="description" content="A short story in two parts, made for Session 10.">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Do Not Open - Book Smart">
+  <meta property="og:description" content="A short story in two parts, made for Session 10.">
+  <meta property="article:published_time" content="2026-11-06">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Do Not Open - Book Smart">
+  <meta name="twitter:description" content="A short story in two parts, made for Session 10.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#ecece9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#18181a" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+
+  <!-- Runs before the first paint, on every page:
+       1. applies a saved light/dark choice, so nobody sees a flash of the wrong one;
+       2. if the reader just clicked an issue, puts that issue's colour over the page
+          (the arriving half of the page transition, see css/components/curtain.css)
+          and flags the page as arriving, so its entrance waits for the curtain. -->
+  <script>
+    (function (d) {
+      try {
+        var t = localStorage.getItem('magazine:theme');
+        if (t === 'light' || t === 'dark') d.dataset.theme = t;
+      } catch (e) {}
+      try {
+        var n = JSON.parse(sessionStorage.getItem('bs:nav') || 'null');
+        sessionStorage.removeItem('bs:nav');
+        if (n && n.hue && Date.now() - n.t < 6000) {
+          var c = d.appendChild(document.createElement('div'));
+          c.className = 'curtain curtain--arriving';
+          c.setAttribute('aria-hidden', 'true');
+          c.style.backgroundColor = n.hue;
+          d.classList.add('is-arriving');
+        }
+      } catch (e) {}
+    })(document.documentElement);
+  </script>
+
+  <!-- Relative paths: this file sits one level below the project root -->
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/issues/w10.css">
+  <script defer src="../js/vendor/gsap.min.js"></script>
+  <script defer src="../js/vendor/ScrollTrigger.min.js"></script>
+  <script defer src="../js/data/articles.js"></script>
+  <script defer src="../js/core.js"></script>
+  <script defer src="../js/article.js"></script>
+</head>
+<body data-base="../" data-issue="w10">
+  <a class="skip-link" href="#content">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="../index.html">Book Smart</a>
+      <div class="site-header__tools">
+        <nav aria-label="Main">
+          <ul class="nav" role="list">
+            <li><a class="nav__link" href="../index.html">Home</a></li>
+            <li><a class="nav__link" href="../archive.html">Archive</a></li>
+          </ul>
+        </nav>
+        <button class="btn btn--ghost btn--icon" data-theme-toggle type="button" aria-label="Switch theme"></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="content">
+    <article data-section="politics">
+
+      <!-- ============ ARTICLE HEADER ============
+           The issue's masthead (see docs/article-template.html).
+           THE TITLE "Do Not Open" IS NOT THE STUDENTS': their file has none (the task
+           asks them to choose one) and the editor was asked to invent it. It is taken
+           from the envelope in the picture ("WARNING: DO NOT OPEN"). To change it:
+           the <title>, the og/twitter titles, the h1 here and `title` in js/data/articles.js. -->
+      <header class="article-header" data-section="politics" data-week="10">
+        <div class="article-header__inner">
+          <p class="article-header__tags">
+            <span class="pill">Politics</span>
+            <span class="pill pill--neutral">Week 10</span>
+          </p>
+          <h1>Do Not Open</h1>
+          <p class="article-header__kicker">A Short Story</p>
+          <p class="lede">A short story in two parts, made for Session 10.</p>
+          <p class="meta">
+            <span>Editorial Board</span>
+            <time datetime="2026-11-06">November 6, 2026</time>
+          </p>
+        </div>
+      </header>
+
+      <!-- ============ ARTICLE BODY ============
+           Everything the students wrote is reproduced from "solution.txt" in sesión 10,
+           word for word, errors included ("River board", "Of" in "University Of
+           Washington", the double space in "doesn’t  want", no full stop after "never
+           open it"): the two character cards and the story (265 words). Only the line
+           breaks are typeset. The two blank lines before "Samantha has always been a
+           curious woman" are NOT turned into a chapter: the story runs on, and the
+           change from the light sheet to the dark one is the only mark. The headings
+           "The cards" and "The story", and the picture's description, are interface.
+
+           THIS ISSUE SHARES NOTHING LIVE: it loads neither firebase-config.js nor
+           live.js, and has no poll, counter or tick-list.
+
+           There is no introduction because the students wrote none for this session.
+           If they send one, it goes right under the header as
+           <section><p class="dropcap">...</p></section>.
+
+           The page is read in two times, like the story: the picture, the two cards
+           and the first part in the reader's own edition; the sentence that is written
+           on the envelope on a sheet of paper (always the day edition); and the part
+           after the envelope is opened on a dark sheet (always the night edition). -->
+      <div class="article-body prose">
+
+        <!-- ---------- THE PICTURE (the task asks for one) ---------- -->
+        <div class="scene">
+          <figure data-reveal>
+            <img src="../assets/img/articles/w10-do-not-open.webp"
+                 alt="An illustration of a flat on a rainy winter day. A young woman in a green University of Washington hoodie, a brown backpack over her shoulder, stands in tears in the foreground. Behind her a bearded man in a jacket stands in the open door with a grocery bag, looking at her in alarm. On the dining table in front of them lie a brown envelope marked WARNING: DO NOT OPEN, an FBI police sketch of a man, an open pack of cigarettes, an ashtray and newspapers headed SERIAL KILLER SOUGHT IN NORTHWEST."
+                 width="1408" height="768" decoding="async">
+          </figure>
+        </div>
+
+        <!-- ---------- THE TWO CARDS ---------- -->
+        <h2 id="cards">The cards</h2>
+
+        <ul class="cards" role="list">
+          <li class="card" data-reveal>
+            <p class="card__label">Character with a mysterious past<span class="visually-hidden">:</span></p>
+            <p class="card__name">Bruce Johnson</p>
+          </li>
+          <li class="card" data-reveal>
+            <p class="card__label">Character as a cashier at a dollar store<span class="visually-hidden">:</span></p>
+            <p class="card__name">Samantha Anderson</p>
+          </li>
+        </ul>
+
+        <!-- ---------- THE STORY, BEFORE THE ENVELOPE ---------- -->
+        <h2 id="story">The story</h2>
+
+        <p>A few months ago, Bruce Johnson decided to start over again in Seattle trying to leave behind his past.</p>
+        <p>Recently, he has fallen in love with a wonderful woman, Samantha, who has accepted him for who he is for the first time in his life. On the other hand, Samantha Anderson belongs to a humble family, that’s why she works hard as a cashier at a dollar store while she is finishing her engineering degree at the University Of Washington.</p>
+        <p>As the relationship progresses, Samantha has noticed that Bruce is very discreet when he talks about his past. As a result, she starts to feel more suspicious every time he avoids a conversation. Everything changes when she unexpectedly receives an enigmatic envelope with a warning outside.</p>
+
+        <!-- ---------- WHAT IS WRITTEN ON THE ENVELOPE ---------- -->
+        <div class="letter" data-reveal>
+          <p class="letter__text">Only by opening the letter would the truth be revealed, but if you want to keep your life as always, you must never open it</p>
+        </div>
+
+        <!-- ---------- THE STORY, AFTER THE ENVELOPE ---------- -->
+        <section class="after" aria-label="The story, after the envelope is opened">
+          <div class="after__text" data-lines>
+            <p data-line>Samantha has always been a curious woman. That is why she decides to open the envelope despite her worries. Only in her nightmares had she dreamed the truth. After that, she finds out that her boyfriend is a serial killer. All of their relationship has been a lie, at least to her. She doesn’t  want to believe the envelope contains. So she stays awake all night and she walks along the river board of the city and she smokes a complete pack of cigarettes.</p>
+            <p data-line>The next day, Samantha makes the decision to run away. But her boyfriend arrives home in the morning and she already knows that there is no place to hide anymore.</p>
+          </div>
+        </section>
+
+        <!-- The previous / next issue and the archive. Built by js/article.js from
+             the manifest, so publishing a new issue never means editing this one. -->
+        <nav class="article-nav" aria-label="Elsewhere" data-article-nav>
+          <noscript>
+            <a class="door" href="../archive.html">
+              <span class="door__top">Archive</span>
+              <span class="door__title">Every issue this semester</span>
+            </a>
+          </noscript>
+        </nav>
+
+      </div>
+    </article>
+  </main>
+
+  <!-- The footer is the same on every page. The section legend and the team's
+       names are generated by js/core.js from SECTIONS and TEAM in
+       js/data/articles.js: write the names there, not here. -->
+  <footer class="site-footer">
+    <nav class="legend" aria-label="Sections" data-legend>
+      <noscript><a class="legend__item" href="../archive.html"><span class="legend__name">Browse by section</span></a></noscript>
+    </nav>
+    <div class="container site-footer__inner">
+      <p class="site-footer__name">Book Smart</p>
+      <p class="site-footer__info">Intensive English III<br>Universidad Nacional de Colombia, Bogot&aacute;<br>Semester 2026-2</p>
+      <a class="site-footer__top" href="#top" data-top>Back to top</a>
+    </div>
+  </footer>
+</body>
+</html>

@@ -499,5 +499,28 @@ before-and-after screenshot comparison of the eight earlier pages (light and
 dark, 1440 and 390 px) found nothing changed except what Week 08 adds: its
 tile, the Next link on Week 07 and the History count in the footer. axe-core
 was not run on Week 08.
+
+Week 09 (the haikus and the story) was tested the same way: its six lines and
+the story against the students' files (identical; the story is exactly 50
+words), no request to Firebase, every verse on one line and the three pictures
+at one width from 320 to 1920 px, the lines coming in one after another and
+everything visible with reduced motion, without JavaScript and with GSAP blocked,
+contrast in both editions, the shelf, the archive filters, the topics and the
+doors, and a before-and-after screenshot comparison of the eight earlier pages:
+only the Current Events count in the footer (2 to 3 issues), the new tile and
+hero button and Week 08's new Next link changed. axe-core was not run on it.
+
+Week 10 (the short story "Do Not Open") has no Firebase either. Its text (the
+two character cards and the 265 words of the story) was compared with the
+students' file and is identical; no request to Firebase or to any other site
+is made; nothing overflows from 320 to 1920 px and the picture is never shown
+above its 1408 px; the sheet of paper and the dark sheet are the same in both
+editions; the lines after the envelope come in one after another and everything
+is visible with reduced motion, without JavaScript and with GSAP blocked; the
+lowest contrast is 4.79:1 (an existing pill); the home page's tile and hero
+button, the shelf at six screen sizes, the archive filters (Politics, Thriller,
+Literature) and the doors between Weeks 09 and 10 work. The title "Do Not Open"
+is the editor's, not the students': their file has none. axe-core was not run
+on it.
 Not yet tested: Safari, Firefox, a real touch device, the lock-screen controls
 of a real phone.

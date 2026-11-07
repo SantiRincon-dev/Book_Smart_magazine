@@ -1,0 +1,163 @@
+/* ============================================================
+   WEEK 10: DO NOT OPEN   (Politics, terracotta)
+   A short story in two parts, written around an envelope that says "do not
+   open". The terracotta of this section is the kraft of that envelope. The page
+   is read in two times, as the story is, and the light says which one you are in:
+
+   - THE PICTURE comes first, wide and alone (the task asks for one), at the
+     width of the wide lane and never above its file (1408 px).
+   - THE TWO CARDS, side by side (they are the same kind of thing), each a
+     character card of the task: what the card says, and the name the students
+     gave that character. A thin ochre rule on top, a nod to the yellow cards.
+   - BEFORE THE ENVELOPE: the first three paragraphs, in the reader's own
+     edition, in the ordinary reading column.
+   - THE ENVELOPE: the sentence written on it, alone, on a sheet of paper. A
+     sheet is always the day edition (color-scheme: light makes every token inside
+     resolve to its day value, the same device as the proofs of Week 03 and the
+     vote sheet of Week 04).
+   - AFTER THE ENVELOPE: the rest of the story on a dark sheet, always the night
+     edition (color-scheme: dark, as the plates of Week 09), the lit window in
+     the dark. The change from the paper to the dark is the only mark of the turn;
+     nothing is added to the students' text, and the two blank lines they left
+     there are not made a chapter.
+
+   What stays as in every issue: the standard header (numeral, rule, title
+   entrance), the scroll reveals (the picture, each card and the letter are
+   data-reveal; the two paragraphs after the envelope come in one after another:
+   js/article.js, [data-lines]), the doors. Scoped by [data-issue="w10"] on <body>.
+   Every rule lives in @layer pages, which beats the layout layer, so what
+   .prose places is set again here.
+   ============================================================ */
+
+@layer pages {
+
+[data-issue="w10"] {
+  --panel-pad: clamp(1.25rem, 5vw, 3.5rem);
+  --card-hue: light-dark(var(--ocre-day), var(--ocre-night));   /* the task's yellow cards, muted */
+  --wide-w: min(var(--w-wide), 100% - var(--gutter) * 2);
+}
+
+/* ---------- The wide lane: the picture and the cards ---------- */
+[data-issue="w10"] .prose > .scene,
+[data-issue="w10"] .prose > .cards {
+  grid-column: full;
+  justify-self: center;
+  width: var(--wide-w);
+  margin-inline: 0;
+}
+[data-issue="w10"] .prose > .scene { margin-block: 0; }
+[data-issue="w10"] .scene figure { margin: 0; }
+[data-issue="w10"] .scene img {
+  display: block;
+  width: 100%;
+  height: auto;                                     /* the whole file, never cropped, never enlarged */
+  border: var(--hairline) solid var(--c-line);
+}
+
+/* The heading of the cards sits on the left edge of the cards, not of the text. */
+[data-issue="w10"] .prose > #cards {
+  grid-column: full;
+  justify-self: center;
+  width: var(--wide-w);
+  margin-inline: 0;
+}
+
+/* ---------- The two cards ---------- */
+[data-issue="w10"] .prose > .cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+  margin-block: var(--space-6) 0;
+  padding: 0;
+  list-style: none;
+}
+@media (max-width: 40rem) {
+  [data-issue="w10"] .prose > .cards { grid-template-columns: minmax(0, 1fr); }
+}
+[data-issue="w10"] .card {
+  margin: 0;
+  padding: var(--space-6);
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  background-color: color-mix(in srgb, var(--card-hue) 11%, var(--c-surface));
+  border: var(--hairline) solid var(--c-line);
+  border-block-start: var(--rule-accent) solid var(--card-hue);
+}
+[data-issue="w10"] .card__label {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-ui);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  line-height: 1.3;
+  color: var(--c-text-soft);
+}
+[data-issue="w10"] .card__name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-tile);
+  font-weight: 800;
+  font-stretch: var(--stretch-display);
+  line-height: var(--lh-display);
+  text-wrap: balance;
+  color: var(--c-text);
+}
+
+/* ---------- The sentence on the envelope: a sheet of paper ---------- */
+[data-issue="w10"] .prose > .letter {
+  grid-column: full;
+  justify-self: center;
+  width: min(100% - var(--gutter) * 2, 40rem);
+  margin: var(--space-8) 0;
+  padding: var(--space-7) var(--space-6);
+  color-scheme: light;                              /* paper, in either edition */
+  color: var(--c-text);
+  background-color: var(--c-surface);
+  border: var(--hairline) solid var(--c-line);
+  border-block-start: var(--rule-accent) solid var(--hue);
+  box-shadow: 0 1.5rem 3rem -1.5rem rgb(24 24 26 / 0.5);
+}
+[data-issue="w10"] .letter__text {
+  margin: 0;
+  font-family: var(--font-text);
+  font-size: var(--fs-md);
+  font-style: italic;
+  line-height: 1.45;
+  text-wrap: balance;
+  color: var(--c-text);
+}
+
+/* ---------- After the envelope: a dark sheet ---------- */
+[data-issue="w10"] .prose > .after {
+  grid-column: full;
+  justify-self: center;
+  /* One reading measure for the paper's text and the dark sheet's: 66ch of the
+     sheet's own type, plus its padding. */
+  width: min(100% - var(--gutter) * 2, calc(var(--w-content) + var(--panel-pad) * 2 + var(--hairline) * 2));
+  margin: 0;
+  padding: var(--panel-pad);
+  color-scheme: dark;                               /* a lit window in the dark, in either edition */
+  color: var(--c-text);
+  background-color: var(--c-surface);
+  border: var(--hairline) solid var(--c-line);
+  border-block-start: var(--rule-accent) solid var(--hue);
+  box-shadow: inset 0 1px 0 var(--c-edge);
+}
+[data-issue="w10"] .after__text {
+  display: grid;
+  gap: var(--space-5);
+}
+[data-issue="w10"] .after__text p {
+  margin: 0;
+  line-height: 1.7;
+  color: var(--c-text);
+}
+
+/* Paper is always the day edition (tokens.css): a dark sheet would print as a
+   black block, so on paper it is a plain framed sheet. */
+@media print {
+  [data-issue="w10"] .prose > .after { color-scheme: light; }
+}
+
+} /* @layer pages */

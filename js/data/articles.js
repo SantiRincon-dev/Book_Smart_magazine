@@ -57,6 +57,7 @@
     'visual-essay':        { label: 'Visual Essay' },
     comics:                { label: 'Comics' },
     literature:            { label: 'Literature' },
+    thriller:              { label: 'Thriller' },
     poetry:                { label: 'Poetry' },
     interactive:          { label: 'Interactive' },     // the reader can vote, tick, like or press play
     // What it looks at
@@ -111,6 +112,26 @@
    *                                       that is much taller than its frame
    */
   var ARTICLES = [
+    {
+      id:      '2026-w10-do-not-open',
+      week:    10,
+      title:   'Do Not Open',                         // invented by the editor: the students' file has no title
+      kicker:  'A Short Story',
+      section: 'politics',
+      author:  'Editorial Board',
+      date:    '2026-11-06',
+      readingTime: 2,
+      tags:    ['literature', 'thriller', 'visual-essay'],
+      keywords: ['short story', 'story', 'fiction', 'thriller', 'mystery', 'envelope', 'letter', 'warning',
+                 'bruce johnson', 'samantha anderson', 'seattle', 'dollar store', 'cashier', 'university of washington',
+                 'inversion', 'cards', 'characters', 'rain'],
+      excerpt: 'A short story about Bruce Johnson, Samantha Anderson and an envelope that says do not open, with the two character cards and the picture made for it.',
+      cover:   'assets/img/articles/w10-do-not-open.webp',   // the story's own picture (session 10)
+      thumb:   'assets/img/articles/thumbs/w10-do-not-open.webp',
+      coverW:  1408, coverH: 768,
+      coverAlt:'An illustration of a rainy flat: a young woman in a green University of Washington hoodie stands in tears beside a table with a brown envelope marked WARNING: DO NOT OPEN, a police sketch and newspapers about a serial killer, while a man holding a grocery bag looks at her from the open door.',
+      url:     'articles/2026-w10-do-not-open.html'
+    },
     {
       id:      '2026-w09-haikus-and-a-fifty-word-story',
       week:    9,
