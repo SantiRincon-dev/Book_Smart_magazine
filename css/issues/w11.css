@@ -1,0 +1,144 @@
+/* ============================================================
+   WEEK 11: PHOTO GALLERY   (Education, indigo)
+   Task 1 of Session 11: the eight favourite photos the students took around
+   campus, and a vote for the favourite. The students wrote no text, so the page
+   is the photos and nothing else: a heading, one line of instructions, the
+   photos, and a button under each.
+
+   - THE PHOTOS ARE THE STUDENTS' OWN, so each keeps its real proportions (--ar,
+     set on the <li>): 16:9, 9:16 and 3:4, never cropped, never enlarged past
+     their file. They are laid out so they still look even:
+       wide screens   two rows of four. A row holds one 16:9, one 9:16 and two 3:4
+                      photos, and each photo's width is its --ar, so the four of
+                      a row come out at ONE height (flex: var(--ar) 1 0);
+       tablets        two columns, four photos each (CSS multi-column; the two
+                      columns add up to the same height for the same reason);
+       phones         one column, each photo as wide as the page.
+   - THE VOTE is Week 04's poll (js/article.js, initPolls) and its .vote button,
+     under each photo: one favourite per reader, shared live (js/live.js). The
+     photo you chose carries a star and a firm outline (.is-mine); the readers'
+     favourite takes the section's indigo (.is-leading). A tie has no favourite.
+   - Press a photo to open it whole in the lightbox (initLightbox).
+
+   What stays as in every issue: the standard header (numeral, rule, title
+   entrance), the scroll reveals (each photo is data-reveal), the doors. Scoped
+   by [data-issue="w11"] on <body>. Every rule lives in @layer pages, which beats
+   the layout and components layers, so what .prose > .wide and .gallery__trigger
+   place is set again here.
+   ============================================================ */
+
+@layer pages {
+
+[data-issue="w11"] {
+  --shot-gap: var(--space-4);
+}
+
+/* ---------- The heading: a hue rule as wide as the photos under it ---------- */
+[data-issue="w11"] .prose > h2.wide {
+  margin-block: var(--space-7) 0;
+  padding-block-start: var(--space-4);
+  border-block-start: var(--rule-accent) solid var(--hue);
+}
+[data-issue="w11"] .prose > h2.wide + .wide { margin-block-start: var(--space-6); }
+[data-issue="w11"] .prose > .favourite { margin-block-end: 0; }
+
+/* ---------- The instructions ---------- */
+[data-issue="w11"] .favourite__intro {
+  display: grid;
+  gap: var(--space-3);
+  max-width: 60ch;
+  margin-block-end: var(--space-6);
+}
+[data-issue="w11"] .favourite__intro p {
+  margin: 0;
+  font-size: var(--fs-md);
+  line-height: var(--lh-snug);
+}
+[data-issue="w11"] .favourite__intro .favourite__total {
+  font-family: var(--font-display);
+  font-size: var(--fs-ui);
+  font-weight: 700;
+  font-stretch: var(--stretch-ui);
+  font-variant-numeric: tabular-nums;
+  color: var(--c-text-muted);
+}
+[data-issue="w11"] .favourite__intro .favourite__note {
+  font-size: var(--fs-sm);
+  color: var(--c-text-muted);
+}
+
+/* ---------- The photos ----------
+   Phones: one column. Tablets: two columns, the DOM order (photos 1-4, then 5-8)
+   is the column order, so the keyboard follows what the eye does. */
+[data-issue="w11"] .shots-wrap {
+  columns: 2;
+  column-gap: var(--shot-gap);
+}
+@media (max-width: 33.99rem) {
+  [data-issue="w11"] .shots-wrap { columns: 1; }
+}
+/* The two rows dissolve into one list: every photo is a child of the columns. */
+[data-issue="w11"] .shots {
+  display: contents;
+  list-style: none;
+}
+[data-issue="w11"] .shot {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0 0 var(--shot-gap);
+  break-inside: avoid;
+}
+
+/* Wide screens: two rows of four, each photo as wide as its proportion says. */
+@media (min-width: 62rem) {
+  [data-issue="w11"] .shots-wrap {
+    display: grid;
+    columns: auto;
+    gap: var(--shot-gap);
+  }
+  [data-issue="w11"] .shots {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--shot-gap);
+    margin: 0;
+    padding: 0;
+  }
+  [data-issue="w11"] .shot {
+    flex: var(--ar) 1 0;
+    min-width: 0;
+    margin: 0;
+  }
+}
+
+[data-issue="w11"] .shot__figure { margin: 0; }
+[data-issue="w11"] .shot .gallery__trigger {
+  aspect-ratio: var(--ar);                          /* the photo's own shape */
+  border: var(--hairline) solid var(--c-line);
+}
+[data-issue="w11"] .shot .gallery__img {
+  object-fit: cover;                                /* the frame IS the photo's shape: nothing is cut */
+  transition: transform 500ms var(--ease-out);
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  [data-issue="w11"] .shot .gallery__trigger:hover .gallery__img { transform: scale(1.03); }
+}
+
+/* ---------- The vote button under each photo ----------
+   The standard .vote (css/components/versus.css) as a strip: "Photo N" and, under
+   it, how many readers chose it and their share. Its 3px bar grows with the share. */
+[data-issue="w11"] .shot .vote {
+  width: 100%;
+  padding: var(--space-2) var(--space-3) calc(var(--space-2) + 0.5rem);
+  gap: 0;
+}
+[data-issue="w11"] .shot .vote__label { font-size: var(--fs-ui); }
+/* The star is decoration: its empty alternative keeps it out of the spoken name
+   (aria-pressed already says it). The second declaration wins where supported. */
+[data-issue="w11"] .shot .vote.is-mine .vote__label::before {
+  content: "\2605\00a0";
+  content: "\2605\00a0" / "";
+  color: var(--hue);
+}
+
+} /* @layer pages */

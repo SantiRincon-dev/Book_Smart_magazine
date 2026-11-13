@@ -224,14 +224,15 @@ add or delete lines freely) and, if you like, change the `label`. An empty
 
 ## Live counters (Firebase)
 
-Four things are shared between every reader, in real time: the **old-vs-new
+Five things are shared between every reader, in real time: the **old-vs-new
 votes** (Week 04), the **tick-list of clichés** (Week 06), the **likes and
 reposts** of the mock tweets (Week 01; the fictional numbers inside each card
 are the students' and are never touched, the small numbers beside the heart and
-the arrows are the real ones) and the **"your number one" votes** of the four
-top 5s (Week 07). Nothing else on the site talks to a server. (Weeks 08 and 09
-do not use Firebase at all: they load neither `firebase-config.js` nor `live.js`;
-the songs of Week 08 are files of the site itself.)
+the arrows are the real ones), the **"your number one" votes** of the four
+top 5s (Week 07) and the **favourite photo** of the gallery (Week 11). Nothing
+else on the site talks to a server. (Weeks 08, 09 and 10 do not use Firebase at
+all: they load neither `firebase-config.js` nor `live.js`; the songs of Week 08
+are files of the site itself.)
 
 How it works, in three files:
 
@@ -258,13 +259,15 @@ The data is a set of counter documents `{ count: n }`, moved only with
 | --- | --- | --- |
 | `cliches_stats` | `1` to `10` | readers who ticked that cliché |
 | `cliches_stats` | `_readers` | readers who ticked at least one (the denominator of the percentages) |
-| `poll_votes` | `<poll>__<option>`, e.g. `snape__left` | votes for one option of a matchup (Week 04), or the pick "number one" of a list, e.g. `top-movies__taxi-driver` (Week 07: polls `top-movies`, `top-series`, `top-soundtrack`, `top-plot-twist`) |
+| `poll_votes` | `<poll>__<option>`, e.g. `snape__left` | votes for one option of a matchup (Week 04), or the pick "number one" of a list, e.g. `top-movies__taxi-driver` (Week 07: polls `top-movies`, `top-series`, `top-soundtrack`, `top-plot-twist`), or the favourite photo, `favourite-photo__photo-1` to `favourite-photo__photo-8` (Week 11: one poll whose eight options are the eight photos) |
 | `tweet_reactions` | `<tweet>__like` or `<tweet>__retweet` | readers who pressed it |
 
-Two issues have polls, so each keeps its own storage key and its own tracker:
+Three issues have polls, so each keeps its own storage key and its own tracker:
 Week 04's `[data-versus]` has no `data-versus-key` (it keeps
 `magazine:versusChoice`), Week 07's has `data-versus-key="top5"` (it uses
-`magazine:versusChoice:top5`). Any new issue with polls MUST set its own key:
+`magazine:versusChoice:top5`) and Week 11's has `data-versus-key="photos"`
+(`magazine:versusChoice:photos`). The security rules did not change for Week 11:
+`poll_votes` already accepts those document names. Any new issue with polls MUST set its own key:
 the tracker takes back every vote this browser sent that the open page does not
 want counted, so two pages sharing one would withdraw each other's votes just by
 being opened.
@@ -522,5 +525,28 @@ button, the shelf at six screen sizes, the archive filters (Politics, Thriller,
 Literature) and the doors between Weeks 09 and 10 work. The title "Do Not Open"
 is the editor's, not the students': their file has none. axe-core was not run
 on it.
+
+Week 11 (the "Photo Gallery" of Session 11, Task 1; Task 2, the stolen painting,
+is not on the page yet) has the favourite-photo vote. It was tested against a
+fake Firestore that sits inside the page and applies the same rules as
+`firestore.rules`, so the real project was only read (the three collections
+answer 200) and nothing was written to it. Voting, changing (ONE batch, -1 and
++1), removing, the leader and the tie, the choice kept after a reload, the page
+working on its own when the SDK is blocked, Enter on a focused button and the
+lightbox (click, arrows, wrap, Escape) work; every id written is
+`poll_votes/favourite-photo__photo-N` and none is refused; Week 04's and Week
+07's votes in the same browser are not touched. Nothing overflows from 390 to
+1920 px (at 320 px the header's theme button sticks out 4 px, as on every issue),
+every photo keeps its shape, and on wide screens all eight come out at one
+height; everything is visible with reduced motion, without JavaScript and with
+GSAP blocked; the lowest contrast is 5.31:1; the home page's tile and hero
+button, the shelf at six screen sizes, the Education count (3) and the doors
+between Weeks 10 and 11 work. The title "Photo Gallery" is the editor's, not the
+students'. The photos are not shown in the order they were taken (each row holds
+one 16:9, one 9:16 and two 3:4 so the rows have the same height). A write to the
+real database (one vote and taking it back) has not been tried. axe-core was not
+run on it, and the earlier pages were not compared pixel by pixel (their files
+are byte-identical; only the manifest, the home page's two fallback links and
+this README changed).
 Not yet tested: Safari, Firefox, a real touch device, the lock-screen controls
 of a real phone.

@@ -113,6 +113,25 @@
    */
   var ARTICLES = [
     {
+      id:      '2026-w11-photo-gallery',
+      week:    11,
+      title:   'Photo Gallery',                       // not the students': their folder has no title; it changes when Task 2 joins
+      kicker:  'Around Campus',
+      section: 'education',
+      author:  'Editorial Board',
+      date:    '2026-11-12',
+      readingTime: 1,
+      tags:    ['visual-essay', 'university-life', 'interactive'],
+      keywords: ['photos', 'photography', 'gallery', 'campus', 'university', 'favourite', 'favorite', 'vote',
+                 'trees', 'lawn', 'sun', 'leaves', 'flower', 'mural', 'trombone', 'saxophone', 'sunset', 'lens flare'],
+      excerpt: 'Eight photos taken around campus, and a vote for the readers\' favourite.',
+      cover:   'assets/img/articles/w11-photo-1.webp',   // photo 1 of the gallery (session 11)
+      thumb:   'assets/img/articles/thumbs/w11-photo-1.webp',
+      coverW:  1280, coverH: 720,
+      coverAlt:'A wide lawn on campus with a young tree in the middle and tall dark trees behind it. The sun shines through the young tree\'s leaves under a blue sky with white clouds, and parked cars and a pale building stand in the distance.',
+      url:     'articles/2026-w11-photo-gallery.html'
+    },
+    {
       id:      '2026-w10-do-not-open',
       week:    10,
       title:   'Do Not Open',                         // invented by the editor: the students' file has no title

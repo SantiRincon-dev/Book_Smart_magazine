@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Gallery - Book Smart</title>
+  <meta name="description" content="Eight photos taken around campus, made for Session 11. Pick your favourite.">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Photo Gallery - Book Smart">
+  <meta property="og:description" content="Eight photos taken around campus, made for Session 11. Pick your favourite.">
+  <meta property="article:published_time" content="2026-11-12">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Photo Gallery - Book Smart">
+  <meta name="twitter:description" content="Eight photos taken around campus, made for Session 11. Pick your favourite.">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#ecece9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#18181a" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+
+  <!-- Runs before the first paint, on every page:
+       1. applies a saved light/dark choice, so nobody sees a flash of the wrong one;
+       2. if the reader just clicked an issue, puts that issue's colour over the page
+          (the arriving half of the page transition, see css/components/curtain.css)
+          and flags the page as arriving, so its entrance waits for the curtain. -->
+  <script>
+    (function (d) {
+      try {
+        var t = localStorage.getItem('magazine:theme');
+        if (t === 'light' || t === 'dark') d.dataset.theme = t;
+      } catch (e) {}
+      try {
+        var n = JSON.parse(sessionStorage.getItem('bs:nav') || 'null');
+        sessionStorage.removeItem('bs:nav');
+        if (n && n.hue && Date.now() - n.t < 6000) {
+          var c = d.appendChild(document.createElement('div'));
+          c.className = 'curtain curtain--arriving';
+          c.setAttribute('aria-hidden', 'true');
+          c.style.backgroundColor = n.hue;
+          d.classList.add('is-arriving');
+        }
+      } catch (e) {}
+    })(document.documentElement);
+  </script>
+
+  <!-- Relative paths: this file sits one level below the project root.
+       This issue shares the readers' favourite live, so it loads firebase-config.js
+       and live.js, in the same order as Weeks 04 and 07. -->
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/issues/w11.css">
+  <script defer src="../js/vendor/gsap.min.js"></script>
+  <script defer src="../js/vendor/ScrollTrigger.min.js"></script>
+  <script defer src="../js/data/articles.js"></script>
+  <script defer src="../js/data/firebase-config.js"></script>
+  <script defer src="../js/core.js"></script>
+  <script defer src="../js/live.js"></script>
+  <script defer src="../js/article.js"></script>
+</head>
+<body data-base="../" data-issue="w11">
+  <a class="skip-link" href="#content">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="../index.html">Book Smart</a>
+      <div class="site-header__tools">
+        <nav aria-label="Main">
+          <ul class="nav" role="list">
+            <li><a class="nav__link" href="../index.html">Home</a></li>
+            <li><a class="nav__link" href="../archive.html">Archive</a></li>
+          </ul>
+        </nav>
+        <button class="btn btn--ghost btn--icon" data-theme-toggle type="button" aria-label="Switch theme"></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="content">
+    <article data-section="education">
+
+      <!-- ============ ARTICLE HEADER ============
+           The issue's masthead (see docs/article-template.html).
+           THE TITLE "Photo Gallery" IS NOT THE STUDENTS': the session's folder has none.
+           It only says what the issue is, and it is meant to change when Task 2 (the
+           stolen painting) joins this page. To change it: the <title>, the og/twitter
+           titles, the h1 here and `title` in js/data/articles.js. -->
+      <header class="article-header" data-section="education" data-week="11">
+        <div class="article-header__inner">
+          <p class="article-header__tags">
+            <span class="pill">Education</span>
+            <span class="pill pill--neutral">Week 11</span>
+          </p>
+          <h1>Photo Gallery</h1>
+          <p class="article-header__kicker">Around Campus</p>
+          <p class="lede">Eight photos taken around campus, made for Session 11. Pick your favourite.</p>
+          <p class="meta">
+            <span>Editorial Board</span>
+            <time datetime="2026-11-12">November 12, 2026</time>
+          </p>
+        </div>
+      </header>
+
+      <!-- ============ ARTICLE BODY ============
+           Task 1 of Session 11: the eight favourite photos the students took around
+           campus (the originals are in "sesión 11/task 1"; here they are WebP copies at
+           their real size). The students wrote no text for them, so the page has none
+           of its own either: only interface (the heading, the instructions, "Photo N"
+           and the alt texts, which say what each picture literally shows).
+
+           THE VOTE: one favourite per reader, shared live (js/live.js), built from
+           Week 04's polls without any new script. The eight photos are the eight
+           options of ONE poll, "favourite-photo", so the counters are called
+           favourite-photo__photo-1 ... favourite-photo__photo-8 in Firestore
+           (poll_votes, the same collection as Weeks 04 and 07: firestore.rules
+           already accepts those names). data-versus-key="photos" gives this page its
+           own storage key and tracker (see initPolls in js/article.js): without it
+           the page would take Week 04's and Week 07's votes back just by opening.
+           The vote buttons ship disabled; the script enables them.
+
+           THE ORDER of the photos is not the order they were taken in: each of the two
+           rows holds one 16:9 photo, one 9:16 and two 3:4, so both rows come out at the
+           same height with every photo whole, at its own proportions (--ar). To change
+           the order, move whole <li> blocks and renumber "photo-N" and "Photo N"
+           (and keep the two rows balanced).
+
+           TASK 2 (the stolen painting) IS NOT DONE YET and is not on the page: see the
+           marker after the gallery. -->
+      <div class="article-body prose">
+
+        <h2 class="wide" id="favourite">Pick your favourite</h2>
+
+        <section class="favourite wide" aria-labelledby="favourite" data-versus data-versus-key="photos">
+          <div class="favourite__intro">
+            <p>Press the button under the photo you like best. Press another to change your vote, or press yours again to take it back.</p> 
+            <p class="favourite__total"><span data-versus-total>0 votes cast</span></p>
+            <noscript><p class="favourite__note">Voting needs JavaScript.</p></noscript>
+          </div>
+
+          <div class="shots-wrap" data-poll="favourite-photo" data-gallery role="group" aria-label="The eight photos">
+
+            <ol class="shots" role="list">
+              <li class="shot" style="--ar: 1.7778" data-reveal>
+                <figure class="shot__figure">
+                  <button class="gallery__trigger" type="button" aria-label="Enlarge photo 1">
+                    <img class="gallery__img" src="../assets/img/articles/w11-photo-1.webp"
+                         alt="A wide lawn on campus with a young tree in the middle and tall dark trees behind it. The sun shines through the young tree&rsquo;s leaves under a blue sky with white clouds, and parked cars and a pale building stand in the distance."
+                         loading="lazy" decoding="async" width="1280" height="720">
+                  </button>
+                </figure>
+                <button class="vote" type="button" data-option="photo-1" disabled>
+                  <span class="vote__label">Photo 1</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+              </li>
+              <li class="shot" style="--ar: 0.5625" data-reveal>
+                <figure class="shot__figure">
+                  <button class="gallery__trigger" type="button" aria-label="Enlarge photo 2">
+                    <img class="gallery__img" src="../assets/img/articles/w11-photo-2.webp"
+                         alt="A photo taken very low to the ground: dry grass and bare soil in the foreground, a strip of green lawn behind them and dark trees against the sky. The sun sits low in the centre, with a long ray of light and a purple lens flare."
+                         loading="lazy" decoding="async" width="720" height="1280">
+                  </button>
+                </figure>
+                <button class="vote" type="button" data-option="photo-2" disabled>
+                  <span class="vote__label">Photo 2</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+              </li>
+              <li class="shot" style="--ar: 0.75" data-reveal>
+                <figure class="shot__figure">
+                  <button class="gallery__trigger" type="button" aria-label="Enlarge photo 3">
+                    <img class="gallery__img" src="../assets/img/articles/w11-photo-3.webp"
+                         alt="Large green leaves lit from behind by the sun, sharp in the foreground, with a blurred dark tree trunk and bright sky in the background."
+                         loading="lazy" decoding="async" width="1200" height="1600">
+                  </button>
+                </figure>
+                <button class="vote" type="button" data-option="photo-3" disabled>
+                  <span class="vote__label">Photo 3</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+              </li>
+              <li class="shot" style="--ar: 0.75" data-reveal>
+                <figure class="shot__figure">
+                  <button class="gallery__trigger" type="button" aria-label="Enlarge photo 4">
+                    <img class="gallery__img" src="../assets/img/articles/w11-photo-4.webp"
+                         alt="The silhouette of a flower bud against the sun, with a green lens flare below it, blue flowers beside it, long green leaves in the foreground and dark trees behind."
+                         loading="lazy" decoding="async" width="960" height="1280">
+                  </button>
+                </figure>
+                <button class="vote" type="button" data-option="photo-4" disabled>
+                  <span class="vote__label">Photo 4</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+              </li>
+            </ol>
+
+            <ol class="shots" role="list">
+              <li class="shot" style="--ar: 1.7778" data-reveal>
+                <figure class="shot__figure">
+                  <button class="gallery__trigger" type="button" aria-label="Enlarge photo 5">
+                    <img class="gallery__img" src="../assets/img/articles/w11-photo-5.webp"
+                         alt="The thick, twisted trunk of an old tree hung with moss, standing on a lawn. Sunlight comes through the branches behind it, people sit on the grass at the left, and a road and buildings lie in the distance."
+                         loading="lazy" decoding="async" width="1280" height="720">
+                  </button>
+                </figure>
+                <button class="vote" type="button" data-option="photo-5" disabled>
+                  <span class="vote__label">Photo 5</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+              </li>
+              <li class="shot" style="--ar: 0.5625" data-reveal>
+                <figure class="shot__figure">
+                  <button class="gallery__trigger" type="button" aria-label="Enlarge photo 6">
+                    <img class="gallery__img" src="../assets/img/articles/w11-photo-6.webp"
+                         alt="Two tree trunks side by side with the low sun shining between them and a long ray of light across the picture. A small numbered metal plate is fixed to the bark, and a lawn and a parked car are in the distance."
+                         loading="lazy" decoding="async" width="720" height="1280">
+                  </button>
+                </figure>
+                <button class="vote" type="button" data-option="photo-6" disabled>
+                  <span class="vote__label">Photo 6</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+              </li>
+              <li class="shot" style="--ar: 0.75" data-reveal>
+                <figure class="shot__figure">
+                  <button class="gallery__trigger" type="button" aria-label="Enlarge photo 7">
+                    <img class="gallery__img" src="../assets/img/articles/w11-photo-7.webp"
+                         alt="A mural on a white wall of two figures with their faces wrapped in scarves, one in pink holding a trombone and one in yellow holding a saxophone. Above them a plane drops red flowers, a flag is painted in the top corner, and blurred leaves cover the bottom of the photo."
+                         loading="lazy" decoding="async" width="960" height="1280">
+                  </button>
+                </figure>
+                <button class="vote" type="button" data-option="photo-7" disabled>
+                  <span class="vote__label">Photo 7</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+              </li>
+              <li class="shot" style="--ar: 0.75" data-reveal>
+                <figure class="shot__figure">
+                  <button class="gallery__trigger" type="button" aria-label="Enlarge photo 8">
+                    <img class="gallery__img" src="../assets/img/articles/w11-photo-8.webp"
+                         alt="A wide green lawn in the evening with the sun low in the sky above the trees and a ray of light running down across the picture. Two people sit on the grass at the left and a small tent stands at the right."
+                         loading="lazy" decoding="async" width="960" height="1280">
+                  </button>
+                </figure>
+                <button class="vote" type="button" data-option="photo-8" disabled>
+                  <span class="vote__label">Photo 8</span>
+                  <span class="vote__stats"><span data-count>0</span>
+                    <span data-share>0%</span></span>
+                </button>
+              </li>
+            </ol>
+
+            <p class="visually-hidden" role="status" data-status></p>
+          </div>
+        </section>
+
+        <!-- TASK 2 GOES HERE (the stolen painting). Not done yet: it needs the painting
+             the students generated, the English prompt they wrote for it, its name and
+             who painted it, and the news report from the PDF, filled in. Nothing is
+             invented in the meantime, and there is no empty section on the page.
+             When it arrives: add it here, then update the title, lede, excerpt and
+             keywords in js/data/articles.js, the meta descriptions above and the README. -->
+
+        <!-- The previous / next issue and the archive. Built by js/article.js from
+             the manifest, so publishing a new issue never means editing this one. -->
+        <nav class="article-nav" aria-label="Elsewhere" data-article-nav>
+          <noscript>
+            <a class="door" href="../archive.html">
+              <span class="door__top">Archive</span>
+              <span class="door__title">Every issue this semester</span>
+            </a>
+          </noscript>
+        </nav>
+
+      </div>
+    </article>
+  </main>
+
+  <!-- The lightbox of the gallery (js/article.js, initLightbox): one photo at a time,
+       whole, over a dark backdrop. -->
+  <dialog class="lightbox" id="lightbox" aria-label="Enlarged photo">
+    <img id="lightbox-img" src="" alt="">
+    <div class="lightbox__bar">
+      <button type="button" data-lightbox-prev>Previous</button>
+      <span id="lightbox-label"></span>
+      <button type="button" data-lightbox-next>Next</button>
+      <button type="button" data-lightbox-close>Close</button>
+    </div>
+  </dialog>
+
+  <!-- The footer is the same on every page. The section legend and the team's
+       names are generated by js/core.js from SECTIONS and TEAM in
+       js/data/articles.js: write the names there, not here. -->
+  <footer class="site-footer">
+    <nav class="legend" aria-label="Sections" data-legend>
+      <noscript><a class="legend__item" href="../archive.html"><span class="legend__name">Browse by section</span></a></noscript>
+    </nav>
+    <div class="container site-footer__inner">
+      <p class="site-footer__name">Book Smart</p>
+      <p class="site-footer__info">Intensive English III<br>Universidad Nacional de Colombia, Bogot&aacute;<br>Semester 2026-2</p>
+      <a class="site-footer__top" href="#top" data-top>Back to top</a>
+    </div>
+  </footer>
+</body>
+</html>
