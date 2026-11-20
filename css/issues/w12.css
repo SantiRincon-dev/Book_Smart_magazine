@@ -1,0 +1,174 @@
+/* ============================================================
+   WEEK 12: CAMPUS STEREOTYPES   (Politics, terracotta)
+   Session 12's task: two types of people found at the university, one image
+   each, with the look of the group and descriptions of what they wear, how they
+   look and how they behave. The students made two annotated portraits (the CyT
+   skaters, The Daily Grinder), and every word of each is lettered inside its
+   picture, so the page is the two pictures and nothing else: a name above each
+   one, the picture on a framed mat, and one line saying it opens.
+
+   - THE TWO PLATES hang side by side at ONE height, each at its own proportions
+     (--ar, the file's width over its height, set on the plate) and never
+     enlarged past its file:
+       wide screens   side by side. A plate's flex-basis is just its frame
+                      (--frame) and its flex-grow is its --ar, so what is left
+                      is shared out in proportion to the proportions and the two
+                      pictures come out at exactly the same height. Both stop
+                      growing at --img-h-max, the smaller file's height, so the
+                      pair is never bigger than its smaller piece allows (the
+                      taller file is shown a little reduced, never enlarged);
+       below 72rem    the lettering inside the pictures would fall under about
+                      70% of its size, so the plates stack, each at its own
+                      size, one on each side (the zig-zag of the standard
+                      figures), a long gap between them;
+       phones         one column, each as wide as the page.
+   - THE LETTERING is small and cannot be made larger without enlarging the
+     picture, so each picture opens whole in the lightbox (initLightbox), and
+     this issue shows it at the file's own size, scrolling inside the box when
+     the screen is smaller than the picture.
+   - COLOUR: the two pictures are loud (slate, lime). The page does not answer
+     them: neutral mats, and the section's terracotta only as the 2 px line on
+     top of each frame and the numeral of each name.
+
+   What stays as in every issue: the standard header (numeral, rule, title
+   entrance), the scroll reveals (each plate is data-reveal), the doors. Scoped
+   by [data-issue="w12"] on <body>. Every rule lives in @layer pages, which beats
+   the layout and components layers, so what .prose > .wide and .gallery__trigger
+   place is set again here.
+   ============================================================ */
+
+@layer pages {
+
+[data-issue="w12"] {
+  --frame: calc(2 * (var(--mat) + var(--hairline)));   /* a frame's padding + border, left and right */
+  --plate-gap: var(--space-5);
+  --img-h-max: 710px;                                  /* the smaller file's height: the pair stops here */
+  --ar-sum: 1.5388;                                    /* 0.7507 + 0.7881, the two --ar of the plates */
+  --stage-w: min(calc(var(--img-h-max) * var(--ar-sum) + 2 * var(--frame) + var(--plate-gap)),
+                 100% - var(--gutter) * 2);
+}
+
+/* ---------- The stage: both plates, centred in the wide lane ---------- */
+[data-issue="w12"] .prose > .plates {
+  width: var(--stage-w);
+  margin-block: var(--space-7) 0;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+/* ---------- One plate: its name, then the framed picture ---------- */
+[data-issue="w12"] .plates { counter-reset: plate; }
+[data-issue="w12"] .plate {
+  min-width: 0;
+  width: min(100%, calc(var(--w) + var(--frame)));     /* its own size, or the page's if narrower */
+}
+[data-issue="w12"] .plate:nth-child(odd)  { align-self: flex-start; }
+[data-issue="w12"] .plate:nth-child(even) { align-self: flex-end; }
+
+[data-issue="w12"] .plate__title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  margin: 0 0 var(--space-3);
+  font-size: var(--fs-md);
+  line-height: var(--lh-snug);
+}
+/* The numeral is decoration: its empty alternative keeps it out of the spoken
+   name. The second declaration wins where supported. */
+[data-issue="w12"] .plate__title::before {
+  counter-increment: plate;
+  content: counter(plate, decimal-leading-zero);
+  content: counter(plate, decimal-leading-zero) / "";
+  color: var(--hue);
+  font-variant-numeric: lining-nums;
+}
+
+/* The frame: the same print-on-a-mat as every figure of the magazine. */
+[data-issue="w12"] .plate__figure {
+  margin: 0;
+  padding: var(--mat);
+  background-color: var(--c-surface);
+  border: var(--hairline) solid var(--c-line);
+  border-block-start: var(--rule-accent) solid var(--hue);
+  box-shadow: inset 0 1px 0 var(--c-edge);
+}
+/* The picture is the frame's whole content: its own proportions, nothing cut. */
+[data-issue="w12"] .plate .gallery__trigger {
+  aspect-ratio: auto;
+  line-height: 0;
+  background-color: transparent;
+}
+[data-issue="w12"] .plate .gallery__img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Wide screens: side by side, one height. */
+@media (min-width: 72rem) {
+  [data-issue="w12"] .prose > .plates {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: var(--plate-gap);
+  }
+  [data-issue="w12"] .plate {
+    flex: var(--ar) 1 var(--frame);
+    width: auto;
+    max-width: calc(var(--frame) + var(--ar) * var(--img-h-max));
+  }
+  [data-issue="w12"] .plate:nth-child(odd),
+  [data-issue="w12"] .plate:nth-child(even) { align-self: auto; }
+}
+
+/* ---------- The line under them ---------- */
+[data-issue="w12"] .prose > .plates__hint {
+  grid-column: full;                                   /* the lane of the plates, not the reading column */
+  width: var(--stage-w);
+  margin: var(--space-5) auto 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-stretch: var(--stretch-ui);
+  line-height: 1.3;
+  color: var(--c-text-muted);
+}
+@media (scripting: none) {
+  [data-issue="w12"] .plates__hint { display: none; }   /* nothing opens without a script */
+}
+
+/* ---------- The lightbox, at the file's own size ----------
+   The standard box (css/components/gallery.css) fits the picture into 80% of the
+   screen's height, which would shrink the lettering below what the page shows.
+   Here the picture keeps its own size and the box scrolls; the buttons stay at
+   the foot, on their own strip, wherever the picture is scrolled to. */
+[data-issue="w12"] .lightbox {
+  margin: auto;                                        /* the reset's `* { margin: 0 }` drops the dialog's own centring */
+  max-height: 92dvh;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+[data-issue="w12"] .lightbox img {
+  display: block;
+  width: auto;
+  max-width: none;
+  height: auto;
+  max-height: none;
+}
+[data-issue="w12"] .lightbox__bar {
+  position: sticky;
+  inset-block-end: 0;
+  inset-inline-start: 0;                               /* also pinned while a wide picture is scrolled sideways */
+  margin-block-start: 0;
+  padding: var(--space-3);
+  background-color: var(--carbon);
+}
+[data-issue="w12"] #lightbox-label { white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-issue="w12"] .lightbox__bar button { transition: none; }
+}
+
+} /* @layer pages */

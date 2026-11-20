@@ -446,7 +446,7 @@ revista/
 │   └── article.js              Progress, reveals, doors, tweets, polls, lightbox
 ├── firestore.rules             Security rules to publish in the Firebase console
 ├── docs/article-template.html  Copied for every new assignment
-└── tools/                      One-off generators (fonts, thumbnails, W01, W05 and W07 covers, W08 audio)
+└── tools/                      One-off generators (fonts, thumbnails, W01, W05 and W07 covers, W08 audio, W12 images)
 ```
 
 ## Tools
@@ -461,6 +461,7 @@ Only needed when you change something they generate. They need Python 3.
 | `tools/w05-cover.html` | The source of Week 05's cover: the three comic strips, untouched, each in the frame it has in the article, side by side on a transparent background. Same two steps as the Week 01 cover. |
 | `tools/w07-cover.html` | The source of Week 07's cover: four of the issue's own stills (one per list), never enlarged, side by side on a transparent background. Same two steps as the Week 01 cover. |
 | `tools/w09-cover.html` | The source of Week 09's cover: the issue's three pictures, never enlarged, in the frame they have in the other issues, the two landscapes stacked beside the portrait (the widths make both columns end together), on a transparent background. Screenshot it at 1300x780 with a transparent background, then run `make-thumbs.py`. |
+| `tools/w12-images.py` | Makes Week 12's three images from the students' two screenshots in `fotos y trabajo por sesión/sesión 12/`: a WebP copy of each piece at its real size (quality 94, so the small lettering stays crisp) and the cover, both pieces side by side at the smaller one's height on a transparent background. Then run `make-thumbs.py`. Needs `pillow`. |
 | `tools/make-audio.py` | Copies Week 08's songs from the two session folders to `assets/audio/<slug>.mp3` under plain names, byte for byte; checks that a song found twice is the same file, and prints the size and length of each. Python 3 only. |
 | `tools/make-peaks.cjs` | Writes `js/data/audio.js` (length and waveform of every song in `assets/audio/`). Needs Node 24 and an installed Chrome or Edge, which decodes the MP3s; nothing to install. Run it again whenever a song is added or replaced. |
 
@@ -548,5 +549,27 @@ real database (one vote and taking it back) has not been tried. axe-core was not
 run on it, and the earlier pages were not compared pixel by pixel (their files
 are byte-identical; only the manifest, the home page's two fallback links and
 this README changed).
+Week 12 (the "Campus Stereotypes" of Session 12: the CyT skaters and The Daily
+Grinder) shares nothing live: it loads neither `firebase-config.js` nor
+`live.js`. Tested in Chrome over `file://`: both pictures load at their real
+size and are never enlarged (from 1152 px of window up they sit side by side at
+one height, which shows the taller one at about 80%; below that they stack, each
+at its own size); nothing overflows from 390 to 1920 px (at 320 px, the header's
+theme button sticks out 4 px, as on every issue); the lightbox shows each
+picture at its file's own size and scrolls inside the box, its buttons stay at
+the foot and its counter on one line on a phone, and it opens with a click or
+Enter, wraps, and closes with Escape or Close; the alt texts carry the ten labels
+of each picture word for word (a script checked them), slips included;
+everything is visible with reduced motion, without JavaScript and with GSAP
+blocked, and the page prints in the day edition; the lowest contrast is 4.79:1
+(the Politics pill at night); the home page's tile and hero button, the shelf
+at nine screen sizes, the archive (Politics shows 4; Satire, Humor, University
+Life and Visual Essay; the search for "skateboard") and the doors between Weeks
+11 and 12 work. The title "Campus Stereotypes" is the editor's, not the
+students'. Week 12's lightbox is centred by its own stylesheet; the shared one
+(`css/components/gallery.css`, still used by Week 11) opens in the top-left
+corner of the window because the reset's `* { margin: 0 }` removes the dialog's
+own centring: known, not changed. axe-core was not run on Week 12, and the
+earlier pages were not compared pixel by pixel.
 Not yet tested: Safari, Firefox, a real touch device, the lock-screen controls
 of a real phone.

@@ -113,6 +113,26 @@
    */
   var ARTICLES = [
     {
+      id:      '2026-w12-campus-stereotypes',
+      week:    12,
+      title:   'Campus Stereotypes',                  // not the students': their folder has no title (the task only asks for two images)
+      kicker:  'Two Types of People',
+      section: 'politics',
+      author:  'Editorial Board',
+      date:    '2026-11-19',
+      readingTime: 1,
+      tags:    ['humor', 'satire', 'university-life', 'visual-essay'],
+      keywords: ['stereotypes', 'types of people', 'groups', 'university', 'students', 'skaters', 'skateboard', 'skating',
+                 'cyt', 'daily grinder', 'grinder', 'gym', 'training', 'basketball', 'sports', 'joggers', 'sneakers',
+                 'headphones', 'smartwatch', 'tank top', 'clothes', 'accessories', 'fashion', 'rap'],
+      excerpt: 'Two types of people found at the university, drawn and described: the CyT skaters and The Daily Grinder.',
+      cover:   'assets/img/articles/w12-cover.webp',   // the two pieces side by side at one height (tools/w12-images.py)
+      thumb:   'assets/img/articles/thumbs/w12-cover.webp',
+      coverW:  1117, coverH: 710,
+      coverAlt:'Two hand-drawn, annotated portraits side by side. On the left, on a slate-teal background, a skater with dyed green hair under a backwards cap holds a skateboard, under the title "CyT skaters". On the right, on a light-green background, a sweaty young man in a tank top holds a basketball and a four-litre water jug, with a sports bag on his shoulder, under the title "THE DAILY GRINDER".',
+      url:     'articles/2026-w12-campus-stereotypes.html'
+    },
+    {
       id:      '2026-w11-photo-gallery',
       week:    11,
       title:   'Photo Gallery',                       // not the students': their folder has no title; it changes when Task 2 joins
@@ -333,12 +353,12 @@
 
     // ---- Template for the next assignment: copy, uncomment, fill in ----
     // {
-    //   id: '2026-w10-slug', week: 10, title: '', kicker: '',
+    //   id: '2026-w13-slug', week: 13, title: '', kicker: '',
     //   section: 'politics',       // a key of SECTIONS above
-    //   author: '', date: '2026-11-04', readingTime: 4,
+    //   author: '', date: '2026-11-26', readingTime: 4,
     //   tags: ['opinion', 'humor'],   // keys of TAGS above: three to five
     //   excerpt: '', cover: '', coverAlt: '',
-    //   url: 'articles/2026-w10-slug.html'
+    //   url: 'articles/2026-w13-slug.html'
     //   // optional: thumb, coverW, coverH, coverPosition (see the list above)
     // }
   ];
